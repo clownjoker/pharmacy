@@ -1,0 +1,9 @@
+{
+  "[project]/components/SafeDate.js [client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/components/SafeDate.js [client] (ecmascript, next/dynamic entry)",
+    "files": [
+      "static/chunks/components_SafeDate_629bb44c.js",
+      "static/chunks/components_SafeDate_d7dca17b.js"
+    ]
+  }
+}
