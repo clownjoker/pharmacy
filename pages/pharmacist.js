@@ -1,61 +1,819 @@
-import { useState } from "react";
-import Layout from "../components/Layout";
-import { mockMedicines } from "../mock/data";
+// pages/pharmacist.js
+import { useMemo, useState } from 'react'
+import { useRouter } from 'next/router'
+import Layout from '../components/Layout'
+import Modal from '../components/Modal'
+import toast from 'react-hot-toast'
 
 export default function PharmacistPage() {
-  const [user] = useState({ name: "محمد", role: "pharmacist" });
-  const [medicines, setMedicines] = useState(mockMedicines);
-  const [search, setSearch] = useState("");
+  // 🔹 المستخدم الحالي
+  const [user] = useState({ name: 'الصيدلي محمد', role: 'pharmacist' })
 
-  const filtered = medicines.filter(
-    (m) =>
-      m.name.includes(search) ||
-      m.category.includes(search)
-  );
+  // 🔹 تبويب الشاشة: الأدوية | مبيعات | تنبيهات
+  const [activeTab, setActiveTab] = useState('medicines') // medicines | sales | alerts
 
-  return (
-    <Layout user={user} title="💊 إدارة الأدوية">
-      <div dir="rtl" className="space-y-6">
+  // 🔹 الأدوية (بيانات تجريبية)
+  const [medicines, setMedicines] = useState([
+    {
+      id: 1,
+      name: 'باراسيتامول 500mg',
+      company: 'GSK',
+      category: 'مسكنات',
+      price: 15,
+      quantity: 10,
+      minQty: 5,
+      expiry: '2025-12-10',
+      sku: 'MED-0001',
+    },
+    {
+      id: 2,
+      name: 'أموكسيسيلين 250mg',
+      company: 'Pfizer',
+      category: 'مضادات حيوية',
+      price: 25,
+      quantity: 3,
+      minQty: 5,
+      expiry: '2024-06-02',
+      sku: 'MED-0002',
+    },
+    {
+      id: 3,
+      name: 'ايبوبروفين 400mg',
+      company: 'Novartis',
+      category: 'مسكنات',
+      price: 18,
+      quantity: 2,
+      minQty: 5,
+      expiry: '2023-12-30',
+      sku: 'MED-0003',
+    },
+    {
+      id: 4,
+      name: 'فيتامين د 1000IU',
+      company: 'GSK',
+      category: 'فيتامينات',
+      price: 22,
+      quantity: 20,
+      minQty: 5,
+      expiry: '2026-03-15',
+      sku: 'MED-0004',
+    },
+  ])
 
-        {/* البحث */}
-        <input
-          type="text"
-          placeholder="🔍 بحث عن دواء"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full px-3 py-2 border rounded-md"
-        />
+  const [search, setSearch] = useState('')
+  const [companyFilter, setCompanyFilter] = useState('all')
+  const [stockFilter, setStockFilter] = useState('all') // all | low | expired
 
-        {/* جدول الأدوية */}
-        <div className="overflow-x-auto bg-white border rounded-lg shadow-sm">
-          <table className="w-full min-w-[800px] text-sm text-right">
-            <thead className="text-gray-600 bg-gray-50">
+  // 🔹 البيع من شاشة الصيدلي
+  const [showSaleModal, setShowSaleModal] = useState(false)
+  const [saleForm, setSaleForm] = useState({ medId: '', qty: 1, price: 0 })
+
+  // 🔹 مبيعات الصيدلي (تقرير بسيط)
+  const [sales, setSales] = useState([
+    { id: 1, date: '2025-11-17', name: 'باراسيتامول 500mg', qty: 2, price: 15 },
+    { id: 2, date: '2025-11-17', name: 'فيتامين د 1000IU', qty: 1, price: 22 },
+    { id: 3, date: '2025-11-16', name: 'أموكسيسيلين 250mg', qty: 1, price: 25 },
+  ])
+  const [dateRange, setDateRange] = useState('today') // today | week | month | all
+
+  const router = useRouter()
+  const today = new Date()
+
+  // ================== Helpers ==================
+  const companies = useMemo(() => {
+    const set = new Set(medicines.map((m) => m.company).filter(Boolean))
+    return ['all', ...Array.from(set)]
+  }, [medicines])
+
+  const lowStock = useMemo(
+    () => medicines.filter((m) => m.quantity <= (m.minQty || 5)),
+    [medicines]
+  )
+
+  const expired = useMemo(
+    () => medicines.filter((m) => new Date(m.expiry) < today),
+    [medicines, today]
+  )
+
+  const filteredMedicines = useMemo(() => {
+    const s = search.trim().toLowerCase()
+    return medicines.filter((m) => {
+      const matchText =
+        m.name.toLowerCase().includes(s) ||
+        m.company.toLowerCase().includes(s) ||
+        (m.category || '').toLowerCase().includes(s) ||
+        (m.sku || '').toLowerCase().includes(s)
+
+      if (!matchText) return false
+
+      const matchCompany =
+        companyFilter === 'all' ? true : m.company === companyFilter
+
+      const isLow = m.quantity <= (m.minQty || 5)
+      const isExpired = new Date(m.expiry) < today
+      const matchStock =
+        stockFilter === 'all'
+          ? true
+          : stockFilter === 'low'
+          ? isLow
+          : isExpired
+
+      return matchCompany && matchStock
+    })
+  }, [medicines, search, companyFilter, stockFilter, today])
+
+  const formatCurrency = (v) =>
+    `${Number(v || 0).toLocaleString('ar-SA')} ر.س`
+
+  const withinRange = (dateStr) => {
+    if (!dateStr) return false
+    const d = new Date(dateStr)
+    const oneDay = 24 * 60 * 60 * 1000
+    const diff = (today - d) / oneDay
+
+    if (dateRange === 'today') {
+      return d.toDateString() === today.toDateString()
+    }
+    if (dateRange === 'week') {
+      return diff >= 0 && diff <= 7
+    }
+    if (dateRange === 'month') {
+      return diff >= 0 && diff <= 30
+    }
+    if (dateRange === 'all') {
+      return true
+    }
+    return true
+  }
+
+  const filteredSales = useMemo(
+    () => sales.filter((s) => withinRange(s.date)),
+    [sales, dateRange]
+  )
+
+  const totalSalesValue = useMemo(
+    () => filteredSales.reduce((sum, s) => sum + s.qty * s.price, 0),
+    [filteredSales]
+  )
+
+  // ================== البيع من شاشة الصيدلي ==================
+  const openSaleModal = (medId) => {
+    const med = medicines.find((m) => m.id === medId)
+    if (!med) return
+    setSaleForm({
+      medId,
+      qty: 1,
+      price: med.price || 0,
+    })
+    setShowSaleModal(true)
+  }
+
+  const submitSale = () => {
+    const med = medicines.find((m) => m.id === Number(saleForm.medId))
+    if (!med) {
+      toast.error('⚠️ يرجى اختيار دواء صحيح')
+      return
+    }
+
+    const qty = Number(saleForm.qty)
+    const price = Number(saleForm.price || med.price)
+
+    if (!qty || qty <= 0) {
+      toast.error('❌ الكمية غير صالحة')
+      return
+    }
+    if (qty > med.quantity) {
+      toast.error('⚠️ الكمية المطلوبة أكبر من المتاح')
+      return
+    }
+
+    // خصم من المخزون (داخل شاشة الصيدلي فقط الآن)
+    const updated = medicines.map((m) =>
+      m.id === med.id ? { ...m, quantity: m.quantity - qty } : m
+    )
+    setMedicines(updated)
+
+    // إضافة إلى مبيعات الصيدلي (تقرير بسيط)
+    const sale = {
+      id: sales.length ? sales[sales.length - 1].id + 1 : 1,
+      date: new Date().toISOString().slice(0, 10),
+      name: med.name,
+      qty,
+      price,
+    }
+    setSales([sale, ...sales])
+
+    toast.success(`✅ تم تسجيل بيع ${qty} من ${med.name}`)
+    setShowSaleModal(false)
+  }
+
+  // ================== طباعة تقرير المبيعات ==================
+  const handlePrintReport = () => {
+    const html = `
+      <html dir="rtl" lang="ar">
+        <head>
+          <meta charset="utf-8" />
+          <title>تقرير مبيعات الصيدلي</title>
+          <style>
+            body { font-family: 'Tajawal', sans-serif; padding: 20px; direction: rtl; }
+            h2 { color:#0ea5e9; margin-bottom: 8px; }
+            p { margin: 4px 0; }
+            table { width:100%; border-collapse: collapse; margin-top:10px; }
+            th, td { border:1px solid #ddd; padding:6px; text-align:center; font-size: 13px; }
+            th { background:#f3f4f6; }
+            tfoot td { font-weight:bold; color:#0ea5e9; }
+          </style>
+        </head>
+        <body>
+          <h2>💊 تقرير مبيعات الصيدلي</h2>
+          <p>النطاق: ${
+            dateRange === 'today'
+              ? 'اليوم'
+              : dateRange === 'week'
+              ? 'آخر 7 أيام'
+              : dateRange === 'month'
+              ? 'آخر 30 يوم'
+              : 'كل المبيعات'
+          }</p>
+          <table>
+            <thead>
               <tr>
-                <th className="px-3 py-2">اسم الدواء</th>
-                <th className="px-3 py-2">الكمية</th>
-                <th className="px-3 py-2">السعر</th>
-                <th className="px-3 py-2">التصنيف</th>
+                <th>التاريخ</th>
+                <th>اسم الدواء</th>
+                <th>الكمية</th>
+                <th>السعر</th>
+                <th>الإجمالي</th>
               </tr>
             </thead>
-
             <tbody>
-              {filtered.map((m) => (
-                <tr key={m.id} className="border-t hover:bg-gray-50">
-                  <td className="px-3 py-2 font-semibold">{m.name}</td>
-                  <td className="px-3 py-2">{m.qty}</td>
-                  <td className="px-3 py-2">{m.price} ر.س</td>
-                  <td className="px-3 py-2">{m.category}</td>
-                </tr>
-              ))}
+              ${
+                filteredSales.length
+                  ? filteredSales
+                      .map(
+                        (s) => `
+                        <tr>
+                          <td>${s.date}</td>
+                          <td>${s.name}</td>
+                          <td>${s.qty}</td>
+                          <td>${formatCurrency(s.price)}</td>
+                          <td>${formatCurrency(s.qty * s.price)}</td>
+                        </tr>`
+                      )
+                      .join('')
+                  : `<tr><td colspan="5">لا توجد مبيعات في هذا النطاق</td></tr>`
+              }
             </tbody>
-
+            <tfoot>
+              <tr>
+                <td colspan="4">إجمالي المبيعات</td>
+                <td>${formatCurrency(totalSalesValue)}</td>
+              </tr>
+            </tfoot>
           </table>
+          <script>
+            window.onload = () => {
+              setTimeout(() => {
+                window.print();
+                setTimeout(() => window.close(), 800);
+              }, 300);
+            };
+          </script>
+        </body>
+      </html>
+    `
+    const w = window.open('', '_blank', 'width=900,height=900')
+    if (!w) return
+    w.document.write(html)
+    w.document.close()
+  }
+
+  // ================== UI ==================
+  return (
+    <Layout user={user} title="💊 شاشة الصيدلي">
+      <div dir="rtl" className="space-y-6">
+        {/* العنوان + تبويبات */}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-xl font-bold text-gray-800">
+              👨‍⚕️ مرحبًا، {user.name}
+            </h1>
+            <p className="text-sm text-gray-500">
+              إدارة الأدوية والمبيعات اليومية من شاشة الصيدلي
+            </p>
+          </div>
+
+          <div className="inline-flex overflow-hidden border rounded-full bg-gray-50">
+            <TabButton
+              label="الأدوية"
+              active={activeTab === 'medicines'}
+              onClick={() => setActiveTab('medicines')}
+            />
+            <TabButton
+              label="مبيعات الصيدلي"
+              active={activeTab === 'sales'}
+              onClick={() => setActiveTab('sales')}
+            />
+            <TabButton
+              label="تنبيهات"
+              active={activeTab === 'alerts'}
+              onClick={() => setActiveTab('alerts')}
+            />
+          </div>
         </div>
 
+        {/* محتوى التبويب */}
+        {activeTab === 'medicines' && (
+          <MedicinesTab
+            medicines={filteredMedicines}
+            search={search}
+            setSearch={setSearch}
+            companies={companies}
+            companyFilter={companyFilter}
+            setCompanyFilter={setCompanyFilter}
+            stockFilter={stockFilter}
+            setStockFilter={setStockFilter}
+            openSaleModal={openSaleModal}
+            router={router}
+          />
+        )}
+
+        {activeTab === 'sales' && (
+          <SalesTab
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            filteredSales={filteredSales}
+            formatCurrency={formatCurrency}
+            totalSalesValue={totalSalesValue}
+            onPrint={handlePrintReport}
+          />
+        )}
+
+        {activeTab === 'alerts' && (
+          <AlertsTab lowStock={lowStock} expired={expired} />
+        )}
       </div>
+
+      {/* مودال تسجيل بيع */}
+      {showSaleModal && (
+        <Modal
+          title="🧾 تسجيل بيع من الصيدلي"
+          onClose={() => setShowSaleModal(false)}
+          onConfirm={submitSale}
+        >
+          <div dir="rtl" className="space-y-3 text-sm">
+            <div>
+              <label className="block mb-1 text-xs text-gray-500">
+                الدواء
+              </label>
+              <select
+                value={saleForm.medId}
+                onChange={(e) =>
+                  setSaleForm((f) => ({
+                    ...f,
+                    medId: Number(e.target.value),
+                  }))
+                }
+                className="w-full px-3 py-2 border rounded-md"
+              >
+                <option value="">— اختر الدواء —</option>
+                {medicines.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.name} — المخزون: {m.quantity}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div>
+                <label className="block mb-1 text-xs text-gray-500">
+                  الكمية
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  value={saleForm.qty}
+                  onChange={(e) =>
+                    setSaleForm((f) => ({
+                      ...f,
+                      qty: Number(e.target.value),
+                    }))
+                  }
+                  className="w-full px-3 py-2 border rounded-md"
+                  placeholder="مثال: 1"
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-xs text-gray-500">
+                  السعر للوحدة
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  value={saleForm.price}
+                  onChange={(e) =>
+                    setSaleForm((f) => ({
+                      ...f,
+                      price: Number(e.target.value),
+                    }))
+                  }
+                  className="w-full px-3 py-2 border rounded-md"
+                  placeholder="مثال: 15"
+                />
+              </div>
+            </div>
+
+            <div className="pt-2 text-sm text-right text-gray-600">
+              الإجمالي التقريبي:{' '}
+              <span className="font-semibold text-emerald-700">
+                {formatCurrency(
+                  Number(saleForm.qty || 0) * Number(saleForm.price || 0)
+                )}
+              </span>
+            </div>
+          </div>
+        </Modal>
+      )}
     </Layout>
-  );
+  )
 }
+
+// ================== تبويبات و أجزاء UI ==================
+function TabButton({ label, active, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`px-4 py-1.5 text-xs sm:text-sm font-medium transition ${
+        active
+          ? 'bg-white text-sky-600 shadow-sm'
+          : 'text-gray-500 hover:bg-white/60'
+      }`}
+    >
+      {label}
+    </button>
+  )
+}
+
+function MedicinesTab({
+  medicines,
+  search,
+  setSearch,
+  companies,
+  companyFilter,
+  setCompanyFilter,
+  stockFilter,
+  setStockFilter,
+  openSaleModal,
+  router,
+}) {
+  return (
+    <div className="space-y-4">
+      {/* شريط الفلاتر */}
+      <div className="p-4 bg-white border rounded-lg shadow-sm">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
+          <input
+            type="text"
+            placeholder="🔍 بحث بالاسم / الشركة / التصنيف / الكود"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full px-3 py-2 text-sm border rounded-md"
+          />
+          <select
+            value={companyFilter}
+            onChange={(e) => setCompanyFilter(e.target.value)}
+            className="w-full px-3 py-2 text-sm border rounded-md"
+          >
+            <option value="all">كل الشركات</option>
+            {companies
+              .filter((c) => c !== 'all')
+              .map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+          </select>
+          <select
+            value={stockFilter}
+            onChange={(e) => setStockFilter(e.target.value)}
+            className="w-full px-3 py-2 text-sm border rounded-md"
+          >
+            <option value="all">كل الحالات</option>
+            <option value="low">كمية منخفضة</option>
+            <option value="expired">منتهي الصلاحية</option>
+          </select>
+
+          <div className="flex items-center justify-end gap-2">
+            <span className="hidden text-xs text-gray-500 sm:inline">
+              عدد الأدوية:
+            </span>
+            <span className="px-3 py-1 text-xs font-semibold rounded-full text-sky-700 bg-sky-50">
+              {medicines.length}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* جدول الأدوية */}
+      <div className="overflow-x-auto bg-white border rounded-lg shadow-sm">
+        <table className="w-full text-sm text-right min-w-[900px]">
+          <thead className="text-gray-600 bg-gray-50">
+            <tr>
+              <th className="px-3 py-2">الدواء</th>
+              <th className="px-3 py-2">الشركة</th>
+              <th className="px-3 py-2">التصنيف</th>
+              <th className="px-3 py-2">الكود</th>
+              <th className="px-3 py-2">السعر</th>
+              <th className="px-3 py-2">الكمية</th>
+              <th className="px-3 py-2">الصلاحية</th>
+              <th className="px-3 py-2 text-center">حالة</th>
+              <th className="px-3 py-2 text-center">إجراءات</th>
+            </tr>
+          </thead>
+          <tbody>
+            {medicines.length ? (
+              medicines.map((m) => {
+                const isLow = m.quantity <= (m.minQty || 5)
+                const isExpired = new Date(m.expiry) < new Date()
+                return (
+                  <tr key={m.id} className="border-t hover:bg-gray-50">
+                    <td className="px-3 py-2 font-semibold text-gray-800">
+                      {m.name}
+                    </td>
+                    <td className="px-3 py-2 text-gray-700">{m.company}</td>
+                    <td className="px-3 py-2 text-gray-700">
+                      {m.category || '-'}
+                    </td>
+                    <td className="px-3 py-2 text-xs text-gray-500">
+                      {m.sku || '-'}
+                    </td>
+                    <td className="px-3 py-2 font-semibold text-emerald-700">
+                      {m.price} ر.س
+                    </td>
+                    <td
+                      className={`px-3 py-2 ${
+                        isLow ? 'text-red-600 font-semibold' : ''
+                      }`}
+                    >
+                      {m.quantity}
+                    </td>
+                    <td className="px-3 py-2 text-xs text-gray-600">
+                      {m.expiry}
+                    </td>
+                    <td className="px-3 py-2 text-center">
+                      {isExpired ? (
+                        <span className="inline-flex px-2 py-0.5 text-xs font-semibold text-red-700 bg-red-50 rounded-full">
+                          منتهي الصلاحية
+                        </span>
+                      ) : isLow ? (
+                        <span className="inline-flex px-2 py-0.5 text-xs font-semibold text-amber-700 bg-amber-50 rounded-full">
+                          كمية منخفضة
+                        </span>
+                      ) : (
+                        <span className="inline-flex px-2 py-0.5 text-xs font-semibold text-emerald-700 bg-emerald-50 rounded-full">
+                          متوفر
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-3 py-2">
+                      <div className="flex flex-wrap justify-center gap-2">
+                        <button
+                          onClick={() => openSaleModal(m.id)}
+                          className="px-3 py-1 text-xs text-white rounded-md bg-emerald-600 hover:bg-emerald-700"
+                        >
+                          💸 بيع
+                        </button>
+                        <button
+                          onClick={() =>
+                            router.push(`/inventory?product=${m.id}`)
+                          }
+                          className="px-3 py-1 text-xs text-indigo-700 rounded-md bg-indigo-50 hover:bg-indigo-100"
+                        >
+                          📦 المخزون
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                )
+              })
+            ) : (
+              <tr>
+                <td
+                  colSpan={9}
+                  className="px-3 py-6 text-sm text-center text-gray-500"
+                >
+                  لا توجد نتائج مطابقة
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
+
+function SalesTab({
+  dateRange,
+  setDateRange,
+  filteredSales,
+  formatCurrency,
+  totalSalesValue,
+  onPrint,
+}) {
+  return (
+    <div className="space-y-4">
+      {/* فلاتر التاريخ + زر الطباعة */}
+      <div className="flex flex-col gap-3 p-4 bg-white border rounded-lg shadow-sm md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-wrap gap-2 text-xs sm:text-sm">
+          <button
+            onClick={() => setDateRange('today')}
+            className={`px-3 py-1.5 rounded-full border ${
+              dateRange === 'today'
+                ? 'bg-sky-600 text-white border-sky-600'
+                : 'bg-white text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            اليوم
+          </button>
+          <button
+            onClick={() => setDateRange('week')}
+            className={`px-3 py-1.5 rounded-full border ${
+              dateRange === 'week'
+                ? 'bg-sky-600 text-white border-sky-600'
+                : 'bg-white text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            آخر 7 أيام
+          </button>
+          <button
+            onClick={() => setDateRange('month')}
+            className={`px-3 py-1.5 rounded-full border ${
+              dateRange === 'month'
+                ? 'bg-sky-600 text-white border-sky-600'
+                : 'bg-white text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            آخر 30 يوم
+          </button>
+          <button
+            onClick={() => setDateRange('all')}
+            className={`px-3 py-1.5 rounded-full border ${
+              dateRange === 'all'
+                ? 'bg-sky-600 text-white border-sky-600'
+                : 'bg-white text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            كل المبيعات
+          </button>
+        </div>
+
+        <button
+          onClick={onPrint}
+          className="self-start px-4 py-2 text-xs text-white rounded-lg shadow-sm bg-emerald-600 sm:text-sm hover:bg-emerald-700"
+        >
+          🖨️ طباعة تقرير المبيعات
+        </button>
+      </div>
+
+      {/* جدول المبيعات */}
+      <div className="overflow-x-auto bg-white border rounded-lg shadow-sm">
+        <table className="w-full text-sm text-right min-w-[700px]">
+          <thead className="text-gray-600 bg-gray-50">
+            <tr>
+              <th className="px-3 py-2">التاريخ</th>
+              <th className="px-3 py-2">اسم الدواء</th>
+              <th className="px-3 py-2">الكمية</th>
+              <th className="px-3 py-2">السعر</th>
+              <th className="px-3 py-2">الإجمالي</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredSales.length ? (
+              filteredSales.map((s) => (
+                <tr key={s.id} className="border-t hover:bg-gray-50">
+                  <td className="px-3 py-2">{s.date}</td>
+                  <td className="px-3 py-2">{s.name}</td>
+                  <td className="px-3 py-2">{s.qty}</td>
+                  <td className="px-3 py-2">{formatCurrency(s.price)}</td>
+                  <td className="px-3 py-2 font-semibold text-sky-700">
+                    {formatCurrency(s.qty * s.price)}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan={5}
+                  className="px-3 py-6 text-sm text-center text-gray-500"
+                >
+                  لا توجد مبيعات في هذا النطاق
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* ملخص */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <SummaryCard
+          title="إجمالي المبيعات"
+          value={formatCurrency(totalSalesValue)}
+          color="text-emerald-600"
+        />
+        <SummaryCard
+          title="عدد العمليات"
+          value={filteredSales.length.toLocaleString('ar-SA')}
+          color="text-sky-600"
+        />
+        <SummaryCard
+          title="متوسط العملية"
+          value={
+            filteredSales.length
+              ? formatCurrency(totalSalesValue / filteredSales.length)
+              : formatCurrency(0)
+          }
+          color="text-amber-600"
+        />
+      </div>
+    </div>
+  )
+}
+
+function AlertsTab({ lowStock, expired }) {
+  return (
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      {/* كمية منخفضة */}
+      <div className="p-4 bg-white border rounded-lg shadow-sm">
+        <h3 className="flex items-center gap-2 mb-3 text-sm font-semibold text-amber-700">
+          ⚠️ أدوية بكمية منخفضة
+        </h3>
+        {lowStock.length ? (
+          <ul className="space-y-2 text-sm">
+            {lowStock.map((m) => (
+              <li
+                key={m.id}
+                className="flex items-center justify-between px-3 py-2 border rounded-md"
+              >
+                <div>
+                  <p className="font-semibold text-gray-800">{m.name}</p>
+                  <p className="text-xs text-gray-500">{m.company}</p>
+                </div>
+                <span className="px-2 py-0.5 text-xs font-semibold text-amber-700 bg-amber-50 rounded-full">
+                  الكمية: {m.quantity}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-sm text-gray-500">
+            لا توجد أدوية بكمية منخفضة حاليًا 👌
+          </p>
+        )}
+      </div>
+
+      {/* منتهي الصلاحية */}
+      <div className="p-4 bg-white border rounded-lg shadow-sm">
+        <h3 className="flex items-center gap-2 mb-3 text-sm font-semibold text-red-700">
+          ❌ أدوية منتهية الصلاحية
+        </h3>
+        {expired.length ? (
+          <ul className="space-y-2 text-sm">
+            {expired.map((m) => (
+              <li
+                key={m.id}
+                className="flex items-center justify-between px-3 py-2 border rounded-md"
+              >
+                <div>
+                  <p className="font-semibold text-gray-800">{m.name}</p>
+                  <p className="text-xs text-gray-500">{m.company}</p>
+                </div>
+                <span className="px-2 py-0.5 text-xs font-semibold text-red-700 bg-red-50 rounded-full">
+                  الصلاحية: {m.expiry}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-sm text-gray-500">
+            لا توجد أدوية منتهية حاليًا 👌
+          </p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function SummaryCard({ title, value, color }) {
+  return (
+    <div className="p-4 text-center bg-white border rounded-lg shadow-sm">
+      <p className="text-xs text-gray-500">{title}</p>
+      <p className={`mt-1 text-xl font-bold sm:text-2xl ${color}`}>{value}</p>
+    </div>
+  )
+}
+
+
 
 
 

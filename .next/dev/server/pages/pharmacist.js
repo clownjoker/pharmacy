@@ -1,5 +1,5 @@
 var R=require("../chunks/ssr/[turbopack]_runtime.js")("server/pages/pharmacist.js")
-R.c("server/chunks/ssr/[root-of-the-server]__0c6463b3._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__b0da1ccd._.js")
 R.c("server/chunks/ssr/node_modules_next_0d76db03._.js")
 R.c("server/chunks/ssr/node_modules_react-icons_fa_index_mjs_57cf400d._.js")
 R.c("server/chunks/ssr/node_modules_react-icons_lib_d9e6764d._.js")
