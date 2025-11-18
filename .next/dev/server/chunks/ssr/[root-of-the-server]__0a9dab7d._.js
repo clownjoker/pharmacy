@@ -51,7 +51,7 @@ function Login() {
         // تحديد الدور تلقائياً حسب اسم المستخدم
         let role = "admin";
         let redirect = "/dashboard";
-        if (username.toLowerCase() === "pharma") {
+        if (username.toLowerCase() === "ph") {
             role = "pharmacist";
             redirect = "/pharmacist";
         }

@@ -2,7 +2,6 @@
 import Layout from "../components/Layout";
 
 export default function ForbiddenPage() {
-  // لو حاب تستخدم نفس المستخدم التجريبي
   const user = { name: "زائر النظام", role: "guest" };
 
   return (
@@ -14,13 +13,13 @@ export default function ForbiddenPage() {
             لا تمتلك الصلاحيات الكافية للوصول إلى هذه الصفحة.
           </p>
           <p className="mb-6 text-xs text-gray-500">
-            الرجاء التواصل مع مدير النظام لإضافة صلاحيات الحساب أو تغيير الدور.
+            الرجاء التواصل مع مدير النظام لإضافة صلاحيات الحساب أو تعديل الدور.
           </p>
           <a
             href="/"
             className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white rounded-lg bg-sky-600 hover:bg-sky-700"
           >
-            ⬅ العودة للواجهة الرئيسية
+            ⬅ العودة للصفحة الرئيسية
           </a>
         </div>
       </div>

@@ -1,284 +1,206 @@
 // pages/sales.js
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Layout from "../components/Layout";
 import Modal from "../components/Modal";
 import toast from "react-hot-toast";
 
-import dynamic from "next/dynamic";
-import { useInventory } from "../context/InventoryContext";
-import { useShift } from "../context/ShiftContext";
+import {
+  getSales,
+  addSale,
+  applySaleToInventory,
+} from "../lib/fakeBackend";
 
-// 🔥 SafeDate dynamic — يمنع Hydration mismatch نهائيًا
-const SafeDate = dynamic(() => import("../components/SafeDate"), {
-  ssr: false,
-});
+// ======= تنسيق التاريخ الآمن لمنع أخطاء الهيدرشن =======
+function SafeDate({ value }) {
+  const [formatted, setFormatted] = useState("");
+
+  useEffect(() => {
+    try {
+      const d = new Date(value);
+      const f = d.toLocaleString("ar-EG", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      setFormatted(f);
+    } catch {
+      setFormatted(value || "");
+    }
+  }, [value]);
+
+  return <span>{formatted}</span>;
+}
 
 export default function Sales() {
   const [user] = useState({ name: "أحمد", role: "admin" });
 
-  // المخزون
-  const {
-    products,
-    decreaseStockOnSale,
-    increaseStockOnReturn,
-    getWarnings,
-  } = useInventory();
-
-  // الشفت
-  const { activeShift, registerInvoice } = useShift();
-
-  // بيانات افتراضية للمبيعات
-  const [sales, setSales] = useState([
-    {
-      id: "INV-1001",
-      date: new Date().toISOString(),
-      customer: "عميل نقدي",
-      cashier: "أحمد",
-      payment: "cash",
-      type: "sale",
-      discount: 0,
-      tax: 0,
-      total: 120,
-      items: [{ productId: 1, name: "باراسيتامول", qty: 2, price: 30 }],
-    },
-  ]);
-
-  // فلاتر
+  const [sales, setSales] = useState([]);
   const [search, setSearch] = useState("");
   const [cashier, setCashier] = useState("all");
   const [payment, setPayment] = useState("all");
+  const [saleType, setSaleType] = useState("all"); // بيع / مرتجع / كلهم
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
 
   const [viewInvoice, setViewInvoice] = useState(null);
 
-  // مودال إضافة فاتورة
-  const [showNewInvoice, setShowNewInvoice] = useState(false);
-  const [invoiceType, setInvoiceType] = useState("sale");
-  const [invoiceCustomer, setInvoiceCustomer] = useState("عميل نقدي");
-  const [invoicePayment, setInvoicePayment] = useState("cash");
-  const [invoiceDiscount, setInvoiceDiscount] = useState(0);
-  const [invoiceTax, setInvoiceTax] = useState(0);
-  const [invoiceItems, setInvoiceItems] = useState([]);
-
-  const [selectedProductId, setSelectedProductId] = useState("");
-  const [selectedQty, setSelectedQty] = useState(1);
+  // تحميل المبيعات من الباك اند الوهمي
+  useEffect(() => {
+    const data = getSales() || [];
+    setSales(data);
+  }, []);
 
   const formatCurrency = (v) =>
     `${Number(v || 0).toLocaleString("ar-SA")} ر.س`;
 
-  const computeTotals = (items, discount, tax) => {
-    const subtotal = items.reduce((sum, it) => sum + it.qty * it.price, 0);
-    const disc = Number(discount || 0);
-    const t = Number(tax || 0);
-    return {
-      subtotal,
-      discount: disc,
-      tax: t,
-      total: subtotal - disc + t,
-    };
-  };
-
-  const invoiceTotal = (inv) =>
-    computeTotals(inv.items || [], inv.discount, inv.tax).total;
-
+  // فلترة البيانات
   const filtered = useMemo(() => {
-    return sales.filter((s) => {
-      const q = search.trim().toLowerCase();
-      const matchesSearch =
+    const q = search.toLowerCase().trim();
+
+    return (sales || []).filter((s) => {
+      const matchSearch =
         !q ||
-        s.id.toLowerCase().includes(q) ||
-        s.customer.toLowerCase().includes(q);
+        s.id.toString().includes(q) ||
+        (s.customer || "").toLowerCase().includes(q);
 
-      const matchesCashier = cashier === "all" || s.cashier === cashier;
-      const matchesPayment = payment === "all" || s.payment === payment;
+      const matchCashier =
+        cashier === "all" || s.cashier === cashier;
 
-      const dateStr = s.date?.slice(0, 10);
-      const betweenFrom = !dateFrom || dateStr >= dateFrom;
-      const betweenTo = !dateTo || dateStr <= dateTo;
+      const matchPayment =
+        payment === "all" || s.payment === payment;
+
+      const matchType =
+        saleType === "all" || s.type === saleType;
+
+      const matchFrom = !dateFrom || s.date.slice(0, 10) >= dateFrom;
+      const matchTo = !dateTo || s.date.slice(0, 10) <= dateTo;
 
       return (
-        matchesSearch &&
-        matchesCashier &&
-        matchesPayment &&
-        betweenFrom &&
-        betweenTo
+        matchSearch &&
+        matchCashier &&
+        matchPayment &&
+        matchType &&
+        matchFrom &&
+        matchTo
       );
     });
-  }, [sales, search, cashier, payment, dateFrom, dateTo]);
+  }, [sales, search, cashier, payment, saleType, dateFrom, dateTo]);
 
+  // الإحصائيات
   const totals = useMemo(() => {
     const totalValue = filtered.reduce(
-      (sum, s) => sum + invoiceTotal(s),
+      (sum, s) => sum + Number(s.total),
       0
     );
     const count = filtered.length;
-    return {
-      totalValue,
-      count,
-      avg: count ? totalValue / count : 0,
-    };
+    const avg = count ? totalValue / count : 0;
+    return { totalValue, count, avg };
   }, [filtered]);
 
-  const openNewInvoiceModal = () => {
-    setShowNewInvoice(true);
-    setInvoiceItems([]);
-    setInvoiceCustomer("عميل نقدي");
-    setInvoicePayment("cash");
-    setInvoiceDiscount(0);
-    setInvoiceTax(0);
-    setInvoiceType("sale");
+  // عرض الفاتورة
+  const handleViewInvoice = (id) => {
+    const inv = sales.find((x) => x.id === id);
+    if (!inv) return toast.error("الفاتورة غير موجودة");
+    setViewInvoice(inv);
   };
 
-  const handleAddItemToInvoice = () => {
-    if (!selectedProductId) return toast.error("اختر منتج");
+  // الطباعة
+  const handlePrintInvoice = (invoice) => {
+    const html = `
+      <html dir="rtl" lang="ar">
+      <head>
+        <meta charset="UTF-8" />
+        <title>فاتورة ${invoice.id}</title>
+        <style>
+          body { font-family: 'Tajawal', sans-serif; padding: 20px; }
+          table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+          th, td { border: 1px solid #ddd; padding: 6px; text-align: center; }
+          th { background: #f3f4f6; }
+        </style>
+      </head>
+      <body>
+        <h2>صيدلية المعلم — فاتورة ${invoice.id}</h2>
+        <p>العميل: ${invoice.customer}</p>
+        <p>الكاشير: ${invoice.cashier}</p>
+        <p>التاريخ: ${new Date(invoice.date).toLocaleString("ar-EG")}</p>
 
-    const qty = Number(selectedQty || 0);
-    if (qty <= 0) return toast.error("كمية غير صحيحة");
+        <table>
+          <thead>
+            <tr>
+              <th>الصنف</th>
+              <th>الكمية</th>
+              <th>السعر</th>
+              <th>الإجمالي</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${
+              invoice.items
+                .map(
+                  (it) =>
+                    `<tr>
+                      <td>${it.name}</td>
+                      <td>${it.qty}</td>
+                      <td>${it.price}</td>
+                      <td>${it.qty * it.price}</td>
+                    </tr>`
+                )
+                .join("") || ""
+            }
+          </tbody>
+        </table>
 
-    const product = products.find(
-      (p) => p.id === Number(selectedProductId)
-    );
-    if (!product) return;
+        <h3>الإجمالي النهائي: ${invoice.total} ر.س</h3>
 
-    // منع بيع كمية أكبر من المتوفر
-    if (invoiceType === "sale") {
-      const existingQty =
-        invoiceItems.find((i) => i.productId === product.id)?.qty || 0;
-      if (existingQty + qty > product.quantity) {
-        return toast.error("الكمية المطلوبة أكبر من المتوفر");
-      }
-    }
+        <script>
+          window.onload = () => {
+            window.print();
+            setTimeout(() => window.close(), 500);
+          };
+        </script>
+      </body>
+      </html>
+    `;
 
-    setInvoiceItems((prev) => {
-      const exists = prev.find((i) => i.productId === product.id);
-      if (exists) {
-        return prev.map((i) =>
-          i.productId === product.id
-            ? { ...i, qty: i.qty + qty }
-            : i
-        );
-      }
-      return [
-        ...prev,
-        {
-          productId: product.id,
-          name: product.name,
-          qty,
-          price: product.price,
-        },
-      ];
-    });
+    const w = window.open("", "_blank", "width=900,height=900");
+    w.document.write(html);
+    w.document.close();
   };
-
-  const saveInvoice = () => {
-    if (!activeShift) {
-      return toast.error("❌ يجب فتح شِفت قبل إضافة الفواتير");
-    }
-
-    if (!invoiceItems.length) {
-      return toast.error("أضف صنفًا واحدًا على الأقل");
-    }
-
-    const totals = computeTotals(
-      invoiceItems,
-      invoiceDiscount,
-      invoiceTax
-    );
-
-    const id = `INV-${String(Date.now()).slice(-6)}`;
-
-    const inv = {
-      id,
-      date: new Date().toISOString(),
-      customer: invoiceCustomer,
-      cashier: user.name,
-      payment: invoicePayment,
-      type: invoiceType,
-      discount: Number(invoiceDiscount),
-      tax: Number(invoiceTax),
-      total: totals.total,
-      items: invoiceItems,
-    };
-
-    // إضافة للواجهة
-    setSales((prev) => [inv, ...prev]);
-
-    // تحديث مخزون
-    invoiceItems.forEach((it) => {
-      if (invoiceType === "sale") decreaseStockOnSale(it.productId, it.qty);
-      else increaseStockOnReturn(it.productId, it.qty);
-    });
-
-    // ربط بالشفت
-    registerInvoice(inv);
-
-    toast.success("✔️ تم حفظ الفاتورة");
-    setShowNewInvoice(false);
-  };
-
-  const removeItem = (id) => {
-    setInvoiceItems((prev) =>
-      prev.filter((i) => i.productId !== id)
-    );
-  };
-
-  const ActionButtons = ({ invoice }) => (
-    <div className="flex gap-2">
-      <button
-        className="px-2 py-1 text-xs border rounded border-sky-300 text-sky-700"
-        onClick={() => setViewInvoice(invoice)}
-      >
-        👁️ عرض
-      </button>
-      <button className="px-2 py-1 text-xs border rounded border-emerald-300 text-emerald-700">
-        🖨️ طباعة
-      </button>
-    </div>
-  );
 
   return (
     <Layout user={user} title="المبيعات">
       <div dir="rtl" className="space-y-6">
 
-        {/* هيدر */}
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <h1 className="text-xl font-bold text-gray-800">🧾 المبيعات</h1>
-
-          <button
-            onClick={openNewInvoiceModal}
-            className="px-4 py-2 text-sm font-semibold text-white rounded bg-emerald-600 hover:bg-emerald-700"
-          >
-            ➕ إضافة فاتورة
-          </button>
-        </div>
-
-        {/* فلاتر */}
+        {/* فلاتر البحث */}
         <div className="p-4 bg-white border rounded-lg shadow-sm">
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-5">
-
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-6">
             <input
-              className="p-2 border rounded"
-              placeholder="بحث..."
+              type="text"
+              placeholder="بحث برقم الفاتورة أو اسم العميل"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              className="px-3 py-2 text-sm border rounded-md"
             />
 
             <select
-              className="p-2 border rounded"
               value={cashier}
               onChange={(e) => setCashier(e.target.value)}
+              className="px-3 py-2 text-sm border rounded-md"
             >
               <option value="all">كل الكاشير</option>
-              {[...new Set(sales.map((s) => s.cashier))].map((c) => (
-                <option key={c}>{c}</option>
+              {Array.from(new Set(sales.map((s) => s.cashier))).map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
               ))}
             </select>
 
             <select
-              className="p-2 border rounded"
               value={payment}
               onChange={(e) => setPayment(e.target.value)}
+              className="px-3 py-2 text-sm border rounded-md"
             >
               <option value="all">كل طرق الدفع</option>
               <option value="cash">نقدًا</option>
@@ -286,270 +208,751 @@ export default function Sales() {
               <option value="wallet">محفظة</option>
             </select>
 
-            <input
-              type="date"
-              className="p-2 border rounded"
-              value={dateFrom}
-              onChange={(e) => setDateFrom(e.target.value)}
-            />
+            <select
+              value={saleType}
+              onChange={(e) => setSaleType(e.target.value)}
+              className="px-3 py-2 text-sm border rounded-md"
+            >
+              <option value="all">الكل</option>
+              <option value="sale">فواتير بيع</option>
+              <option value="return">مرتجعات</option>
+            </select>
 
             <input
               type="date"
-              className="p-2 border rounded"
+              value={dateFrom}
+              onChange={(e) => setDateFrom(e.target.value)}
+              className="px-3 py-2 text-sm border rounded-md"
+            />
+            <input
+              type="date"
               value={dateTo}
               onChange={(e) => setDateTo(e.target.value)}
+              className="px-3 py-2 text-sm border rounded-md"
             />
           </div>
         </div>
 
-        {/* جدول */}
+        {/* جدول المبيعات */}
         <div className="p-4 overflow-x-auto bg-white border rounded-lg shadow-sm">
-          <table className="w-full text-right text-sm min-w-[900px]">
-            <thead className="bg-gray-100">
+          <table className="w-full text-sm min-w-[880px] text-right">
+            <thead className="text-gray-600 bg-gray-50">
               <tr>
-                <th className="px-3 py-2">#</th>
-                <th className="px-3 py-2">رقم</th>
-                <th className="px-3 py-2">نوع</th>
-                <th className="px-3 py-2">التاريخ</th>
-                <th className="px-3 py-2">العميل</th>
-                <th className="px-3 py-2">الكاشير</th>
-                <th className="px-3 py-2">الدفع</th>
-                <th className="px-3 py-2">الإجمالي</th>
-                <th className="px-3 py-2">الإجراءات</th>
+                <th className="p-2">#</th>
+                <th>رقم الفاتورة</th>
+                <th>النوع</th>
+                <th>التاريخ</th>
+                <th>العميل</th>
+                <th>الكاشير</th>
+                <th>الدفع</th>
+                <th>الإجمالي</th>
+                <th>إجراءات</th>
               </tr>
             </thead>
-
             <tbody>
-              {filtered.map((s, i) => (
-                <tr key={s.id} className="border-t hover:bg-gray-50">
-                  <td className="px-3 py-2">{i + 1}</td>
-                  <td className="px-3 py-2 text-sky-700">{s.id}</td>
-                  <td className="px-3 py-2">{s.type === "sale" ? "بيع" : "مرتجع"}</td>
-                  <td className="px-3 py-2">
-                    <SafeDate value={s.date} />
-                  </td>
-                  <td className="px-3 py-2">{s.customer}</td>
-                  <td className="px-3 py-2">{s.cashier}</td>
-                  <td className="px-3 py-2">
-                    {s.payment === "cash"
-                      ? "نقدًا"
-                      : s.payment === "card"
-                      ? "بطاقة"
-                      : "محفظة"}
-                  </td>
-                  <td className="px-3 py-2 font-semibold text-emerald-700">
-                    {formatCurrency(invoiceTotal(s))}
-                  </td>
-                  <td className="px-3 py-2">
-                    <ActionButtons invoice={s} />
+              {filtered.length ? (
+                filtered.map((s, i) => (
+                  <tr key={s.id} className="border-t hover:bg-gray-50">
+                    <td className="p-2">{i + 1}</td>
+                    <td className="p-2 text-sky-700">{s.id}</td>
+                    <td className="p-2">
+                      {s.type === "sale" ? "بيع" : "مرتجع"}
+                    </td>
+                    <td className="p-2">
+                      <SafeDate value={s.date} />
+                    </td>
+                    <td className="p-2">{s.customer}</td>
+                    <td className="p-2">{s.cashier}</td>
+                    <td className="p-2">
+                      {s.payment === "cash"
+                        ? "نقدًا"
+                        : s.payment === "card"
+                        ? "بطاقة"
+                        : "محفظة"}
+                    </td>
+                    <td className="p-2 font-semibold text-emerald-700">
+                      {formatCurrency(s.total)}
+                    </td>
+                    <td className="p-2">
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          onClick={() => handleViewInvoice(s.id)}
+                          className="px-2 py-1 text-xs text-indigo-700 border rounded bg-indigo-50 hover:bg-indigo-100"
+                        >
+                          👁️ عرض
+                        </button>
+                        <button
+                          onClick={() => handlePrintInvoice(s)}
+                          className="px-2 py-1 text-xs border rounded bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
+                        >
+                          🖨️ طباعة
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="9"
+                    className="p-6 text-center text-gray-500"
+                  >
+                    لا توجد بيانات مطابقة
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
 
-        {/* ملخص */}
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <SummaryBox
+        {/* الملخص */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <Summary
             title="إجمالي المبيعات"
             value={formatCurrency(totals.totalValue)}
             color="text-emerald-600"
           />
-          <SummaryBox
+          <Summary
             title="عدد الفواتير"
-            value={totals.count}
+            value={totals.count.toLocaleString("ar-SA")}
             color="text-sky-600"
           />
-          <SummaryBox
+          <Summary
             title="متوسط الفاتورة"
             value={formatCurrency(totals.avg)}
             color="text-amber-600"
           />
         </div>
-
-        {/* عرض فاتورة */}
-        {viewInvoice && (
-          <Modal
-            title={`عرض الفاتورة ${viewInvoice.id}`}
-            onClose={() => setViewInvoice(null)}
-          >
-            <div className="space-y-2 text-sm">
-              <p><strong>العميل:</strong> {viewInvoice.customer}</p>
-              <p><strong>الكاشير:</strong> {viewInvoice.cashier}</p>
-            </div>
-          </Modal>
-        )}
-
-        {/* مودال إضافة فاتورة */}
-        {showNewInvoice && (
-          <Modal
-            title="➕ إضافة فاتورة جديدة"
-            onClose={() => setShowNewInvoice(false)}
-            onConfirm={saveInvoice}
-            confirmLabel="حفظ الفاتورة"
-          >
-            <div className="space-y-4 text-sm">
-
-              {/* بيانات */}
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-                <input
-                  className="p-2 border rounded"
-                  value={invoiceCustomer}
-                  onChange={(e) => setInvoiceCustomer(e.target.value)}
-                />
-
-                <select
-                  className="p-2 border rounded"
-                  value={invoicePayment}
-                  onChange={(e) => setInvoicePayment(e.target.value)}
-                >
-                  <option value="cash">نقدًا</option>
-                  <option value="card">بطاقة</option>
-                  <option value="wallet">محفظة</option>
-                </select>
-
-                <select
-                  className="p-2 border rounded"
-                  value={invoiceType}
-                  onChange={(e) => setInvoiceType(e.target.value)}
-                >
-                  <option value="sale">بيع</option>
-                  <option value="return">مرتجع</option>
-                </select>
-              </div>
-
-              {/* اختيار صنف */}
-              <div className="p-3 space-y-3 border rounded bg-gray-50">
-                <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-                  <select
-                    className="p-2 border rounded"
-                    value={selectedProductId}
-                    onChange={(e) =>
-                      setSelectedProductId(e.target.value)
-                    }
-                  >
-                    <option value="">اختر صنفًا</option>
-                    {products.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {p.name}
-                      </option>
-                    ))}
-                  </select>
-
-                  <input
-                    type="number"
-                    className="p-2 border rounded"
-                    min={1}
-                    value={selectedQty}
-                    onChange={(e) => setSelectedQty(e.target.value)}
-                  />
-
-                  <button
-                    onClick={handleAddItemToInvoice}
-                    className="px-3 py-2 text-white rounded bg-emerald-600 hover:bg-emerald-700"
-                  >
-                    ➕ إضافة للسلة
-                  </button>
-                </div>
-              </div>
-
-              {/* سلة */}
-              <div className="overflow-x-auto border rounded">
-                <table className="w-full text-xs min-w-[500px]">
-                  <thead className="bg-gray-100">
-                    <tr>
-                      <th>#</th>
-                      <th>الصنف</th>
-                      <th>كمية</th>
-                      <th>سعر</th>
-                      <th>إجمالي</th>
-                      <th>إزالة</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {invoiceItems.length ? (
-                      invoiceItems.map((it, i) => (
-                        <tr key={it.productId} className="border-t">
-                          <td>{i + 1}</td>
-                          <td>{it.name}</td>
-                          <td>{it.qty}</td>
-                          <td>{formatCurrency(it.price)}</td>
-                          <td>
-                            {formatCurrency(it.price * it.qty)}
-                          </td>
-                          <td>
-                            <button
-                              onClick={() => removeItem(it.productId)}
-                              className="px-2 py-1 text-red-600 border border-red-300 rounded"
-                            >
-                              ✕
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="6" className="py-3 text-center">
-                          لا توجد أصناف…
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-
-              {/* إجمالي */}
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-                <input
-                  type="number"
-                  className="p-2 border rounded"
-                  placeholder="خصم"
-                  value={invoiceDiscount}
-                  onChange={(e) => setInvoiceDiscount(e.target.value)}
-                />
-
-                <input
-                  type="number"
-                  className="p-2 border rounded"
-                  placeholder="ضريبة"
-                  value={invoiceTax}
-                  onChange={(e) => setInvoiceTax(e.target.value)}
-                />
-
-                <div className="p-2 text-right border rounded bg-gray-50">
-                  {(() => {
-                    const t = computeTotals(
-                      invoiceItems,
-                      invoiceDiscount,
-                      invoiceTax
-                    );
-                    return (
-                      <p>
-                        <strong>الإجمالي:</strong>{" "}
-                        {formatCurrency(t.total)}
-                      </p>
-                    );
-                  })()}
-                </div>
-              </div>
-            </div>
-          </Modal>
-        )}
       </div>
+
+      {/* مودال تفاصيل الفاتورة */}
+      {viewInvoice && (
+        <Modal
+          title={`تفاصيل الفاتورة — ${viewInvoice.id}`}
+          onClose={() => setViewInvoice(null)}
+        >
+          <div className="space-y-2 text-sm">
+            <p>
+              <strong>العميل:</strong> {viewInvoice.customer}
+            </p>
+            <p>
+              <strong>الكاشير:</strong> {viewInvoice.cashier}
+            </p>
+
+            <table className="w-full mt-2 text-xs border">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th>#</th>
+                  <th>الصنف</th>
+                  <th>الكمية</th>
+                  <th>السعر</th>
+                  <th>الإجمالي</th>
+                </tr>
+              </thead>
+              <tbody>
+                {viewInvoice.items.map((it, i) => (
+                  <tr key={i}>
+                    <td>{i + 1}</td>
+                    <td>{it.name}</td>
+                    <td>{it.qty}</td>
+                    <td>{it.price}</td>
+                    <td>{it.qty * it.price}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <div className="mt-3 font-semibold text-end text-emerald-700">
+              الإجمالي النهائي:
+              {formatCurrency(viewInvoice.total)}
+            </div>
+          </div>
+        </Modal>
+      )}
     </Layout>
   );
 }
 
-function SummaryBox({ title, value, color }) {
+// بطاقة ملخص صغيرة
+function Summary({ title, value, color }) {
   return (
-    <div className="p-4 text-center bg-white border rounded">
+    <div className="p-4 text-center bg-white border rounded-lg shadow-sm">
       <p className="text-xs text-gray-500">{title}</p>
-      <p className={`text-xl font-bold ${color}`}>{value}</p>
+      <p className={`text-xl font-bold mt-1 ${color}`}>{value}</p>
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // pages/sales.js
+// import { useMemo, useState } from "react";
+// import Layout from "../components/Layout";
+// import Modal from "../components/Modal";
+// import toast from "react-hot-toast";
+
+// import dynamic from "next/dynamic";
+// import { useInventory } from "../context/InventoryContext";
+// import { useShift } from "../context/ShiftContext";
+
+// // 🔥 SafeDate dynamic — يمنع Hydration mismatch نهائيًا
+// const SafeDate = dynamic(() => import("../components/SafeDate"), {
+//   ssr: false,
+// });
+
+// export default function Sales() {
+//   const [user] = useState({ name: "أحمد", role: "admin" });
+
+//   // المخزون
+//   const {
+//     products,
+//     decreaseStockOnSale,
+//     increaseStockOnReturn,
+//     getWarnings,
+//   } = useInventory();
+
+//   // الشفت
+//   const { activeShift, registerInvoice } = useShift();
+
+//   // بيانات افتراضية للمبيعات
+//   const [sales, setSales] = useState([
+//     {
+//       id: "INV-1001",
+//       date: new Date().toISOString(),
+//       customer: "عميل نقدي",
+//       cashier: "أحمد",
+//       payment: "cash",
+//       type: "sale",
+//       discount: 0,
+//       tax: 0,
+//       total: 120,
+//       items: [{ productId: 1, name: "باراسيتامول", qty: 2, price: 30 }],
+//     },
+//   ]);
+
+//   // فلاتر
+//   const [search, setSearch] = useState("");
+//   const [cashier, setCashier] = useState("all");
+//   const [payment, setPayment] = useState("all");
+//   const [dateFrom, setDateFrom] = useState("");
+//   const [dateTo, setDateTo] = useState("");
+
+//   const [viewInvoice, setViewInvoice] = useState(null);
+
+//   // مودال إضافة فاتورة
+//   const [showNewInvoice, setShowNewInvoice] = useState(false);
+//   const [invoiceType, setInvoiceType] = useState("sale");
+//   const [invoiceCustomer, setInvoiceCustomer] = useState("عميل نقدي");
+//   const [invoicePayment, setInvoicePayment] = useState("cash");
+//   const [invoiceDiscount, setInvoiceDiscount] = useState(0);
+//   const [invoiceTax, setInvoiceTax] = useState(0);
+//   const [invoiceItems, setInvoiceItems] = useState([]);
+
+//   const [selectedProductId, setSelectedProductId] = useState("");
+//   const [selectedQty, setSelectedQty] = useState(1);
+
+//   const formatCurrency = (v) =>
+//     `${Number(v || 0).toLocaleString("ar-SA")} ر.س`;
+
+//   const computeTotals = (items, discount, tax) => {
+//     const subtotal = items.reduce((sum, it) => sum + it.qty * it.price, 0);
+//     const disc = Number(discount || 0);
+//     const t = Number(tax || 0);
+//     return {
+//       subtotal,
+//       discount: disc,
+//       tax: t,
+//       total: subtotal - disc + t,
+//     };
+//   };
+
+//   const invoiceTotal = (inv) =>
+//     computeTotals(inv.items || [], inv.discount, inv.tax).total;
+
+//   const filtered = useMemo(() => {
+//     return sales.filter((s) => {
+//       const q = search.trim().toLowerCase();
+//       const matchesSearch =
+//         !q ||
+//         s.id.toLowerCase().includes(q) ||
+//         s.customer.toLowerCase().includes(q);
+
+//       const matchesCashier = cashier === "all" || s.cashier === cashier;
+//       const matchesPayment = payment === "all" || s.payment === payment;
+
+//       const dateStr = s.date?.slice(0, 10);
+//       const betweenFrom = !dateFrom || dateStr >= dateFrom;
+//       const betweenTo = !dateTo || dateStr <= dateTo;
+
+//       return (
+//         matchesSearch &&
+//         matchesCashier &&
+//         matchesPayment &&
+//         betweenFrom &&
+//         betweenTo
+//       );
+//     });
+//   }, [sales, search, cashier, payment, dateFrom, dateTo]);
+
+//   const totals = useMemo(() => {
+//     const totalValue = filtered.reduce(
+//       (sum, s) => sum + invoiceTotal(s),
+//       0
+//     );
+//     const count = filtered.length;
+//     return {
+//       totalValue,
+//       count,
+//       avg: count ? totalValue / count : 0,
+//     };
+//   }, [filtered]);
+
+//   const openNewInvoiceModal = () => {
+//     setShowNewInvoice(true);
+//     setInvoiceItems([]);
+//     setInvoiceCustomer("عميل نقدي");
+//     setInvoicePayment("cash");
+//     setInvoiceDiscount(0);
+//     setInvoiceTax(0);
+//     setInvoiceType("sale");
+//   };
+
+//   const handleAddItemToInvoice = () => {
+//     if (!selectedProductId) return toast.error("اختر منتج");
+
+//     const qty = Number(selectedQty || 0);
+//     if (qty <= 0) return toast.error("كمية غير صحيحة");
+
+//     const product = products.find(
+//       (p) => p.id === Number(selectedProductId)
+//     );
+//     if (!product) return;
+
+//     // منع بيع كمية أكبر من المتوفر
+//     if (invoiceType === "sale") {
+//       const existingQty =
+//         invoiceItems.find((i) => i.productId === product.id)?.qty || 0;
+//       if (existingQty + qty > product.quantity) {
+//         return toast.error("الكمية المطلوبة أكبر من المتوفر");
+//       }
+//     }
+
+//     setInvoiceItems((prev) => {
+//       const exists = prev.find((i) => i.productId === product.id);
+//       if (exists) {
+//         return prev.map((i) =>
+//           i.productId === product.id
+//             ? { ...i, qty: i.qty + qty }
+//             : i
+//         );
+//       }
+//       return [
+//         ...prev,
+//         {
+//           productId: product.id,
+//           name: product.name,
+//           qty,
+//           price: product.price,
+//         },
+//       ];
+//     });
+//   };
+
+//   const saveInvoice = () => {
+//     if (!activeShift) {
+//       return toast.error("❌ يجب فتح شِفت قبل إضافة الفواتير");
+//     }
+
+//     if (!invoiceItems.length) {
+//       return toast.error("أضف صنفًا واحدًا على الأقل");
+//     }
+
+//     const totals = computeTotals(
+//       invoiceItems,
+//       invoiceDiscount,
+//       invoiceTax
+//     );
+
+//     const id = `INV-${String(Date.now()).slice(-6)}`;
+
+//     const inv = {
+//       id,
+//       date: new Date().toISOString(),
+//       customer: invoiceCustomer,
+//       cashier: user.name,
+//       payment: invoicePayment,
+//       type: invoiceType,
+//       discount: Number(invoiceDiscount),
+//       tax: Number(invoiceTax),
+//       total: totals.total,
+//       items: invoiceItems,
+//     };
+
+//     // إضافة للواجهة
+//     setSales((prev) => [inv, ...prev]);
+
+//     // تحديث مخزون
+//     invoiceItems.forEach((it) => {
+//       if (invoiceType === "sale") decreaseStockOnSale(it.productId, it.qty);
+//       else increaseStockOnReturn(it.productId, it.qty);
+//     });
+
+//     // ربط بالشفت
+//     registerInvoice(inv);
+
+//     toast.success("✔️ تم حفظ الفاتورة");
+//     setShowNewInvoice(false);
+//   };
+
+//   const removeItem = (id) => {
+//     setInvoiceItems((prev) =>
+//       prev.filter((i) => i.productId !== id)
+//     );
+//   };
+
+//   const ActionButtons = ({ invoice }) => (
+//     <div className="flex gap-2">
+//       <button
+//         className="px-2 py-1 text-xs border rounded border-sky-300 text-sky-700"
+//         onClick={() => setViewInvoice(invoice)}
+//       >
+//         👁️ عرض
+//       </button>
+//       <button className="px-2 py-1 text-xs border rounded border-emerald-300 text-emerald-700">
+//         🖨️ طباعة
+//       </button>
+//     </div>
+//   );
+
+//   return (
+//     <Layout user={user} title="المبيعات">
+//       <div dir="rtl" className="space-y-6">
+
+//         {/* هيدر */}
+//         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+//           <h1 className="text-xl font-bold text-gray-800">🧾 المبيعات</h1>
+
+//           <button
+//             onClick={openNewInvoiceModal}
+//             className="px-4 py-2 text-sm font-semibold text-white rounded bg-emerald-600 hover:bg-emerald-700"
+//           >
+//             ➕ إضافة فاتورة
+//           </button>
+//         </div>
+
+//         {/* فلاتر */}
+//         <div className="p-4 bg-white border rounded-lg shadow-sm">
+//           <div className="grid grid-cols-1 gap-3 md:grid-cols-5">
+
+//             <input
+//               className="p-2 border rounded"
+//               placeholder="بحث..."
+//               value={search}
+//               onChange={(e) => setSearch(e.target.value)}
+//             />
+
+//             <select
+//               className="p-2 border rounded"
+//               value={cashier}
+//               onChange={(e) => setCashier(e.target.value)}
+//             >
+//               <option value="all">كل الكاشير</option>
+//               {[...new Set(sales.map((s) => s.cashier))].map((c) => (
+//                 <option key={c}>{c}</option>
+//               ))}
+//             </select>
+
+//             <select
+//               className="p-2 border rounded"
+//               value={payment}
+//               onChange={(e) => setPayment(e.target.value)}
+//             >
+//               <option value="all">كل طرق الدفع</option>
+//               <option value="cash">نقدًا</option>
+//               <option value="card">بطاقة</option>
+//               <option value="wallet">محفظة</option>
+//             </select>
+
+//             <input
+//               type="date"
+//               className="p-2 border rounded"
+//               value={dateFrom}
+//               onChange={(e) => setDateFrom(e.target.value)}
+//             />
+
+//             <input
+//               type="date"
+//               className="p-2 border rounded"
+//               value={dateTo}
+//               onChange={(e) => setDateTo(e.target.value)}
+//             />
+//           </div>
+//         </div>
+
+//         {/* جدول */}
+//         <div className="p-4 overflow-x-auto bg-white border rounded-lg shadow-sm">
+//           <table className="w-full text-right text-sm min-w-[900px]">
+//             <thead className="bg-gray-100">
+//               <tr>
+//                 <th className="px-3 py-2">#</th>
+//                 <th className="px-3 py-2">رقم</th>
+//                 <th className="px-3 py-2">نوع</th>
+//                 <th className="px-3 py-2">التاريخ</th>
+//                 <th className="px-3 py-2">العميل</th>
+//                 <th className="px-3 py-2">الكاشير</th>
+//                 <th className="px-3 py-2">الدفع</th>
+//                 <th className="px-3 py-2">الإجمالي</th>
+//                 <th className="px-3 py-2">الإجراءات</th>
+//               </tr>
+//             </thead>
+
+//             <tbody>
+//               {filtered.map((s, i) => (
+//                 <tr key={s.id} className="border-t hover:bg-gray-50">
+//                   <td className="px-3 py-2">{i + 1}</td>
+//                   <td className="px-3 py-2 text-sky-700">{s.id}</td>
+//                   <td className="px-3 py-2">{s.type === "sale" ? "بيع" : "مرتجع"}</td>
+//                   <td className="px-3 py-2">
+//                     <SafeDate value={s.date} />
+//                   </td>
+//                   <td className="px-3 py-2">{s.customer}</td>
+//                   <td className="px-3 py-2">{s.cashier}</td>
+//                   <td className="px-3 py-2">
+//                     {s.payment === "cash"
+//                       ? "نقدًا"
+//                       : s.payment === "card"
+//                       ? "بطاقة"
+//                       : "محفظة"}
+//                   </td>
+//                   <td className="px-3 py-2 font-semibold text-emerald-700">
+//                     {formatCurrency(invoiceTotal(s))}
+//                   </td>
+//                   <td className="px-3 py-2">
+//                     <ActionButtons invoice={s} />
+//                   </td>
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
+//         </div>
+
+//         {/* ملخص */}
+//         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+//           <SummaryBox
+//             title="إجمالي المبيعات"
+//             value={formatCurrency(totals.totalValue)}
+//             color="text-emerald-600"
+//           />
+//           <SummaryBox
+//             title="عدد الفواتير"
+//             value={totals.count}
+//             color="text-sky-600"
+//           />
+//           <SummaryBox
+//             title="متوسط الفاتورة"
+//             value={formatCurrency(totals.avg)}
+//             color="text-amber-600"
+//           />
+//         </div>
+
+//         {/* عرض فاتورة */}
+//         {viewInvoice && (
+//           <Modal
+//             title={`عرض الفاتورة ${viewInvoice.id}`}
+//             onClose={() => setViewInvoice(null)}
+//           >
+//             <div className="space-y-2 text-sm">
+//               <p><strong>العميل:</strong> {viewInvoice.customer}</p>
+//               <p><strong>الكاشير:</strong> {viewInvoice.cashier}</p>
+//             </div>
+//           </Modal>
+//         )}
+
+//         {/* مودال إضافة فاتورة */}
+//         {showNewInvoice && (
+//           <Modal
+//             title="➕ إضافة فاتورة جديدة"
+//             onClose={() => setShowNewInvoice(false)}
+//             onConfirm={saveInvoice}
+//             confirmLabel="حفظ الفاتورة"
+//           >
+//             <div className="space-y-4 text-sm">
+
+//               {/* بيانات */}
+//               <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+//                 <input
+//                   className="p-2 border rounded"
+//                   value={invoiceCustomer}
+//                   onChange={(e) => setInvoiceCustomer(e.target.value)}
+//                 />
+
+//                 <select
+//                   className="p-2 border rounded"
+//                   value={invoicePayment}
+//                   onChange={(e) => setInvoicePayment(e.target.value)}
+//                 >
+//                   <option value="cash">نقدًا</option>
+//                   <option value="card">بطاقة</option>
+//                   <option value="wallet">محفظة</option>
+//                 </select>
+
+//                 <select
+//                   className="p-2 border rounded"
+//                   value={invoiceType}
+//                   onChange={(e) => setInvoiceType(e.target.value)}
+//                 >
+//                   <option value="sale">بيع</option>
+//                   <option value="return">مرتجع</option>
+//                 </select>
+//               </div>
+
+//               {/* اختيار صنف */}
+//               <div className="p-3 space-y-3 border rounded bg-gray-50">
+//                 <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+//                   <select
+//                     className="p-2 border rounded"
+//                     value={selectedProductId}
+//                     onChange={(e) =>
+//                       setSelectedProductId(e.target.value)
+//                     }
+//                   >
+//                     <option value="">اختر صنفًا</option>
+//                     {products.map((p) => (
+//                       <option key={p.id} value={p.id}>
+//                         {p.name}
+//                       </option>
+//                     ))}
+//                   </select>
+
+//                   <input
+//                     type="number"
+//                     className="p-2 border rounded"
+//                     min={1}
+//                     value={selectedQty}
+//                     onChange={(e) => setSelectedQty(e.target.value)}
+//                   />
+
+//                   <button
+//                     onClick={handleAddItemToInvoice}
+//                     className="px-3 py-2 text-white rounded bg-emerald-600 hover:bg-emerald-700"
+//                   >
+//                     ➕ إضافة للسلة
+//                   </button>
+//                 </div>
+//               </div>
+
+//               {/* سلة */}
+//               <div className="overflow-x-auto border rounded">
+//                 <table className="w-full text-xs min-w-[500px]">
+//                   <thead className="bg-gray-100">
+//                     <tr>
+//                       <th>#</th>
+//                       <th>الصنف</th>
+//                       <th>كمية</th>
+//                       <th>سعر</th>
+//                       <th>إجمالي</th>
+//                       <th>إزالة</th>
+//                     </tr>
+//                   </thead>
+
+//                   <tbody>
+//                     {invoiceItems.length ? (
+//                       invoiceItems.map((it, i) => (
+//                         <tr key={it.productId} className="border-t">
+//                           <td>{i + 1}</td>
+//                           <td>{it.name}</td>
+//                           <td>{it.qty}</td>
+//                           <td>{formatCurrency(it.price)}</td>
+//                           <td>
+//                             {formatCurrency(it.price * it.qty)}
+//                           </td>
+//                           <td>
+//                             <button
+//                               onClick={() => removeItem(it.productId)}
+//                               className="px-2 py-1 text-red-600 border border-red-300 rounded"
+//                             >
+//                               ✕
+//                             </button>
+//                           </td>
+//                         </tr>
+//                       ))
+//                     ) : (
+//                       <tr>
+//                         <td colSpan="6" className="py-3 text-center">
+//                           لا توجد أصناف…
+//                         </td>
+//                       </tr>
+//                     )}
+//                   </tbody>
+//                 </table>
+//               </div>
+
+//               {/* إجمالي */}
+//               <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+//                 <input
+//                   type="number"
+//                   className="p-2 border rounded"
+//                   placeholder="خصم"
+//                   value={invoiceDiscount}
+//                   onChange={(e) => setInvoiceDiscount(e.target.value)}
+//                 />
+
+//                 <input
+//                   type="number"
+//                   className="p-2 border rounded"
+//                   placeholder="ضريبة"
+//                   value={invoiceTax}
+//                   onChange={(e) => setInvoiceTax(e.target.value)}
+//                 />
+
+//                 <div className="p-2 text-right border rounded bg-gray-50">
+//                   {(() => {
+//                     const t = computeTotals(
+//                       invoiceItems,
+//                       invoiceDiscount,
+//                       invoiceTax
+//                     );
+//                     return (
+//                       <p>
+//                         <strong>الإجمالي:</strong>{" "}
+//                         {formatCurrency(t.total)}
+//                       </p>
+//                     );
+//                   })()}
+//                 </div>
+//               </div>
+//             </div>
+//           </Modal>
+//         )}
+//       </div>
+//     </Layout>
+//   );
+// }
+
+// function SummaryBox({ title, value, color }) {
+//   return (
+//     <div className="p-4 text-center bg-white border rounded">
+//       <p className="text-xs text-gray-500">{title}</p>
+//       <p className={`text-xl font-bold ${color}`}>{value}</p>
+//     </div>
+//   );
+// }
 
 
 

@@ -3,8 +3,16 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 /**
- * allowedRoles: ['admin','cashier',...]
- * requiredPermissions: ['view_reports','add_sale',...]
+ * props:
+ *  - allowedRoles: ['admin','cashier', ...]
+ *  - requiredPermissions: ['view_reports','add_sale', ...]
+ *
+ * يعتمد على وجود كائن "pharmacy_user" في localStorage بالشكل:
+ * {
+ *   id, name, username, email,
+ *   role: 'admin' | 'pharmacist' | 'cashier',
+ *   permissions: ['view_reports','add_sale', ...]
+ * }
  */
 export default function AuthGuard({
   children,

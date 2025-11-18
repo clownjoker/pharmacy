@@ -674,6 +674,10 @@ select {
   margin-top: 1.5rem;
 }
 
+.mt-8 {
+  margin-top: 2rem;
+}
+
 .mt-auto {
   margin-top: auto;
 }
@@ -762,8 +766,8 @@ select {
   max-height: 20rem;
 }
 
-.max-h-\[500px\] {
-  max-height: 500px;
+.max-h-\[300px\] {
+  max-height: 300px;
 }
 
 .max-h-\[70vh\] {
@@ -826,16 +830,20 @@ select {
   width: 1px;
 }
 
+.w-20 {
+  width: 5rem;
+}
+
 .min-w-\[500px\] {
   min-width: 500px;
 }
 
-.min-w-\[700px\] {
-  min-width: 700px;
+.min-w-\[600px\] {
+  min-width: 600px;
 }
 
-.min-w-\[780px\] {
-  min-width: 780px;
+.min-w-\[700px\] {
+  min-width: 700px;
 }
 
 .min-w-\[800px\] {
@@ -1068,10 +1076,6 @@ select {
 
 .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 1;
-}
-
-.overflow-auto {
-  overflow: auto;
 }
 
 .overflow-hidden {
@@ -1320,6 +1324,11 @@ select {
   background-color: rgb(209 250 229 / var(--tw-bg-opacity, 1));
 }
 
+.bg-emerald-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 253 245 / var(--tw-bg-opacity, 1));
+}
+
 .bg-emerald-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(5 150 105 / var(--tw-bg-opacity, 1));
@@ -1387,6 +1396,11 @@ select {
 .bg-red-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(254 226 226 / var(--tw-bg-opacity, 1));
+}
+
+.bg-red-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 242 242 / var(--tw-bg-opacity, 1));
 }
 
 .bg-red-500 {
@@ -1639,6 +1653,10 @@ select {
   padding: 0;
 }
 
+.p-1 {
+  padding: .25rem;
+}
+
 .p-1\.5 {
   padding: .375rem;
 }
@@ -1757,6 +1775,11 @@ select {
   padding-bottom: 1.5rem;
 }
 
+.px-1 {
+  padding-left: .25rem;
+  padding-right: .25rem;
+}
+
 .pb-2 {
   padding-bottom: .5rem;
 }
@@ -1795,6 +1818,10 @@ select {
 
 .text-right {
   text-align: right;
+}
+
+.text-end {
+  text-align: end;
 }
 
 .text-2xl {
@@ -2276,6 +2303,11 @@ body.modal-open {
   background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-emerald-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 250 229 / var(--tw-bg-opacity, 1));
+}
+
 .hover\:bg-emerald-200:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(167 243 208 / var(--tw-bg-opacity, 1));
@@ -2326,6 +2358,11 @@ body.modal-open {
   background-color: rgb(21 128 61 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-indigo-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(224 231 255 / var(--tw-bg-opacity, 1));
+}
+
 .hover\:bg-indigo-50:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(238 242 255 / var(--tw-bg-opacity, 1));
@@ -2339,6 +2376,11 @@ body.modal-open {
 .hover\:bg-purple-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(126 34 206 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-red-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 226 226 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-red-200:hover {
@@ -2497,6 +2539,10 @@ body.modal-open {
     width: auto;
   }
 
+  .sm\:w-1\/2 {
+    width: 50%;
+  }
+
   .sm\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2630,6 +2676,10 @@ body.modal-open {
     --tw-space-y-reverse: 0;
     margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
     margin-bottom: calc(0px * var(--tw-space-y-reverse));
+  }
+
+  .md\:text-right {
+    text-align: right;
   }
 }
 

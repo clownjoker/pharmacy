@@ -1,179 +1,172 @@
 // pages/activity.js
 import { useMemo, useState } from "react";
 import Layout from "../components/Layout";
-import AuthGuard from "../components/AuthGuard";
+import { useAuth } from "../context/AuthContext";
 
-// بيانات تجريبية لسجل النشاط
-const MOCK_ACTIVITY = [
+const MOCK_LOGS = [
   {
     id: 1,
-    user: "أحمد (كاشير)",
-    role: "cashier",
-    action: "إنشاء فاتورة رقم INV-1001",
     type: "sale",
-    createdAt: "2025-11-17T08:30:00Z",
+    user: "أحمد الكاشير",
+    message: "إصدار فاتورة بيع رقم INV-1001",
+    createdAt: new Date().toISOString(),
   },
   {
     id: 2,
-    user: "مها (مدير)",
-    role: "admin",
-    action: "تعديل صلاحيات المستخدم محمد الكاشير",
-    type: "permissions",
-    createdAt: "2025-11-17T09:10:00Z",
+    type: "return",
+    user: "أحمد الكاشير",
+    message: "إضافة مرتجع على الفاتورة INV-0999",
+    createdAt: new Date().toISOString(),
   },
   {
     id: 3,
-    user: "أحمد (صيدلي)",
-    role: "pharmacist",
-    action: "إضافة دواء جديد: فيتامين C 500mg",
-    type: "inventory",
-    createdAt: "2025-11-17T09:45:00Z",
+    type: "stock",
+    user: "مها الصيدلانية",
+    message: "توريد 50 حبة من دواء بانادول",
+    createdAt: new Date().toISOString(),
   },
   {
     id: 4,
-    user: "أحمد (كاشير)",
-    role: "cashier",
-    action: "مرتجع جزئي للفاتورة INV-1001",
-    type: "return",
-    createdAt: "2025-11-17T10:20:00Z",
+    type: "shift",
+    user: "أحمد الكاشير",
+    message: "إغلاق شفت رقم 3",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 5,
+    type: "user",
+    user: "المدير أحمد",
+    message: "إضافة مستخدم جديد (كاشير محمد)",
+    createdAt: new Date().toISOString(),
   },
 ];
 
-function formatDate(value) {
-  try {
-    return new Date(value).toLocaleString("ar-EG");
-  } catch {
-    return value;
-  }
-}
+const TYPE_LABEL = {
+  sale: "بيع",
+  return: "مرتجع",
+  stock: "مخزون",
+  shift: "شفت",
+  user: "مستخدم",
+  system: "نظام",
+};
 
-export default function ActivityPage() {
-  const [user] = useState({ name: "المدير أحمد", role: "admin" });
-
-  const [search, setSearch] = useState("");
+export default function ActivityLogPage() {
+  const { user, hasPermission } = useAuth();
+  const [logs] = useState(MOCK_LOGS);
   const [type, setType] = useState("all");
-  const [roleFilter, setRoleFilter] = useState("all");
+  const [search, setSearch] = useState("");
+
+  if (!hasPermission(["admin"])) {
+    return (
+      <div dir="rtl" className="p-6 text-center text-red-600">
+        ⚠️ هذه الشاشة مخصصة للمدير فقط.
+      </div>
+    );
+  }
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return MOCK_ACTIVITY.filter((a) => {
-      const passSearch =
+    return logs.filter((l) => {
+      const byType = type === "all" || l.type === type;
+      const bySearch =
         !q ||
-        a.user.toLowerCase().includes(q) ||
-        a.action.toLowerCase().includes(q);
-      const passType = type === "all" || a.type === type;
-      const passRole = roleFilter === "all" || a.role === roleFilter;
-      return passSearch && passType && passRole;
+        l.message.toLowerCase().includes(q) ||
+        l.user.toLowerCase().includes(q);
+      return byType && bySearch;
     });
-  }, [search, type, roleFilter]);
+  }, [logs, type, search]);
+
+  const formatDate = (v) =>
+    new Date(v).toLocaleString("ar-EG", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 
   return (
-    <AuthGuard
-      allowedRoles={["admin"]}
-      requiredPermissions={["view_reports"]}
-    >
-      <Layout user={user} title="📜 سجل نشاط المستخدمين">
-        <div dir="rtl" className="space-y-6">
-          {/* فلاتر البحث */}
-          <div className="p-4 bg-white border rounded-lg shadow-sm">
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
-              <input
-                type="text"
-                placeholder="🔍 بحث باسم المستخدم أو العملية"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full px-3 py-2 text-sm border rounded-md"
-              />
-
-              <select
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-                className="w-full px-3 py-2 text-sm border rounded-md"
-              >
-                <option value="all">كل العمليات</option>
-                <option value="sale">مبيعات</option>
-                <option value="return">مرتجعات</option>
-                <option value="inventory">مخزون / أدوية</option>
-                <option value="permissions">صلاحيات</option>
-              </select>
-
-              <select
-                value={roleFilter}
-                onChange={(e) => setRoleFilter(e.target.value)}
-                className="w-full px-3 py-2 text-sm border rounded-md"
-              >
-                <option value="all">كل الأدوار</option>
-                <option value="admin">المدير</option>
-                <option value="pharmacist">الصيدلي</option>
-                <option value="cashier">الكاشير</option>
-              </select>
-
-              <div className="flex items-center justify-end text-xs text-gray-500">
-                عدد السجلات:{" "}
-                <span className="mr-1 font-semibold text-sky-600">
-                  {filtered.length}
-                </span>
-              </div>
-            </div>
+    <Layout user={user} title="📜 سجل النشاط">
+      <div dir="rtl" className="space-y-6">
+        {/* شريط الفلترة */}
+        <div className="flex flex-col gap-3 p-4 bg-white border rounded-lg shadow-sm sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-lg font-bold text-gray-800">
+              سجل نشاط النظام
+            </h1>
+            <p className="text-xs text-gray-500">
+              متابعة جميع العمليات: مبيعات، مرتجعات، مخزون، شفتات، مستخدمين…
+            </p>
           </div>
 
-          {/* جدول النشاط */}
-          <div className="overflow-x-auto bg-white border rounded-lg shadow-sm">
-            <table className="w-full text-sm text-right min-w-[780px]">
-              <thead className="text-xs text-gray-600 bg-gray-50">
-                <tr>
-                  <th className="px-3 py-2">#</th>
-                  <th className="px-3 py-2">المستخدم</th>
-                  <th className="px-3 py-2">الدور</th>
-                  <th className="px-3 py-2">العملية</th>
-                  <th className="px-3 py-2">النوع</th>
-                  <th className="px-3 py-2">التاريخ</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.length ? (
-                  filtered.map((a, i) => (
-                    <tr key={a.id} className="border-t hover:bg-gray-50">
-                      <td className="px-3 py-2">{i + 1}</td>
-                      <td className="px-3 py-2">{a.user}</td>
-                      <td className="px-3 py-2 text-xs">
-                        {a.role === "admin"
-                          ? "مدير"
-                          : a.role === "pharmacist"
-                          ? "صيدلي"
-                          : "كاشير"}
-                      </td>
-                      <td className="px-3 py-2 text-xs">{a.action}</td>
-                      <td className="px-3 py-2 text-xs">
-                        {a.type === "sale"
-                          ? "بيع"
-                          : a.type === "return"
-                          ? "مرتجع"
-                          : a.type === "inventory"
-                          ? "مخزون"
-                          : "صلاحيات"}
-                      </td>
-                      <td className="px-3 py-2 text-xs">
-                        {formatDate(a.createdAt)}
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td
-                      colSpan={6}
-                      className="px-3 py-6 text-sm text-center text-gray-500"
-                    >
-                      لا توجد سجلات مطابقة للبحث الحالي
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+          <div className="flex flex-wrap items-center gap-2">
+            <input
+              type="text"
+              placeholder="بحث في الرسالة أو باسم المستخدم"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="px-3 py-2 text-sm border rounded-md"
+            />
+            <select
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+              className="px-3 py-2 text-sm border rounded-md"
+            >
+              <option value="all">كل الأنواع</option>
+              <option value="sale">مبيعات</option>
+              <option value="return">مرتجعات</option>
+              <option value="stock">مخزون</option>
+              <option value="shift">شفتات</option>
+              <option value="user">مستخدمين</option>
+              <option value="system">نظام</option>
+            </select>
           </div>
         </div>
-      </Layout>
-    </AuthGuard>
+
+        {/* الجدول */}
+        <div className="p-4 overflow-x-auto bg-white border rounded-lg shadow-sm">
+          <table className="w-full text-sm text-right min-w-[800px]">
+            <thead className="text-gray-600 bg-gray-50">
+              <tr>
+                <th className="p-2">#</th>
+                <th>النوع</th>
+                <th>الوصف</th>
+                <th>المستخدم</th>
+                <th>التاريخ</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.length ? (
+                filtered.map((l, i) => (
+                  <tr key={l.id || i} className="border-t hover:bg-gray-50">
+                    <td className="p-2">{i + 1}</td>
+                    <td className="p-2">
+                      <span className="px-2 py-0.5 text-xs rounded-full bg-sky-50 text-sky-700">
+                        {TYPE_LABEL[l.type] || l.type}
+                      </span>
+                    </td>
+                    <td className="p-2 text-gray-800">{l.message}</td>
+                    <td className="p-2 text-gray-600">{l.user}</td>
+                    <td className="p-2 text-gray-600">
+                      {formatDate(l.createdAt)}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="5"
+                    className="py-6 text-center text-gray-500"
+                  >
+                    لا توجد سجلات مطابقة للحالي.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </Layout>
   );
 }
 

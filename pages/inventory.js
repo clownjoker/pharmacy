@@ -2,15 +2,59 @@
 import { useState } from "react";
 import Layout from "../components/Layout";
 import Modal from "../components/Modal";
-import { useInventory } from "../context/InventoryContext";
 import { useAuth } from "../context/AuthContext";
 import WarningIndicator from "../components/WarningIndicator";
 
+// ⚠️ حالياً نستخدم بيانات تجريبية داخل الصفحة نفسها
+// لاحقاً يمكن نقلها إلى InventoryContext أو API
+const initialProducts = [
+  {
+    id: 1,
+    name: "باراسيتامول 500mg",
+    sku: "P-500",
+    category: "مسكنات",
+    quantity: 35,
+    minQty: 10,
+    expiryDate: "2026-01-15",
+  },
+  {
+    id: 2,
+    name: "فيتامين C 1000mg",
+    sku: "VIT-C-1000",
+    category: "فيتامينات",
+    quantity: 8,
+    minQty: 15,
+    expiryDate: "2025-12-01",
+  },
+  {
+    id: 3,
+    name: "أموكسيسيلين 250mg",
+    sku: "AMOX-250",
+    category: "مضادات حيوية",
+    quantity: 0,
+    minQty: 5,
+    expiryDate: "2024-11-20",
+  },
+];
+
+function getWarnings(p) {
+  const warnings = [];
+  if (p.quantity <= 0) warnings.push("out_of_stock");
+  else if (p.quantity <= (p.minQty || 5)) warnings.push("low_stock");
+
+  if (p.expiryDate) {
+    const diffDays =
+      (new Date(p.expiryDate).getTime() - new Date().getTime()) /
+      (1000 * 60 * 60 * 24);
+    if (diffDays < 0) warnings.push("expired");
+    else if (diffDays <= 60) warnings.push("near_expiry");
+  }
+  return warnings;
+}
+
 export default function InventoryPage() {
   const { user, hasPermission } = useAuth();
-  const { products, updateStock, getWarnings, printInventoryReport } =
-    useInventory();
-
+  const [products, setProducts] = useState(initialProducts);
   const [showModal, setShowModal] = useState(false);
   const [selected, setSelected] = useState(null);
   const [qty, setQty] = useState("");
@@ -18,9 +62,11 @@ export default function InventoryPage() {
 
   if (!hasPermission(["admin", "pharmacist"])) {
     return (
-      <div dir="rtl" className="p-6 text-center text-red-600">
-        ⚠️ ليس لديك صلاحية لدخول شاشة المخزون.
-      </div>
+      <Layout user={user} title="المخزون">
+        <div dir="rtl" className="p-6 text-center text-red-600">
+          ⚠️ ليس لديك صلاحية لدخول شاشة المخزون.
+        </div>
+      </Layout>
     );
   }
 
@@ -37,8 +83,76 @@ export default function InventoryPage() {
       alert("أدخل كمية صحيحة");
       return;
     }
-    updateStock(selected.id, n, type);
+
+    setProducts((prev) =>
+      prev.map((p) =>
+        p.id === selected.id
+          ? {
+              ...p,
+              quantity: type === "in" ? p.quantity + n : p.quantity - n,
+            }
+          : p
+      )
+    );
     setShowModal(false);
+  };
+
+  const printInventoryReport = () => {
+    const html = `
+      <html dir="rtl" lang="ar">
+        <head>
+          <meta charSet="utf-8" />
+          <title>تقرير المخزون</title>
+          <style>
+            body { font-family: 'Tajawal', sans-serif; padding: 20px; }
+            h2 { color:#0ea5e9; margin-bottom: 10px; }
+            table { width:100%; border-collapse: collapse; margin-top:10px; }
+            th, td { border:1px solid #ddd; padding:6px; text-align:center; }
+            th { background:#f3f4f6; }
+          </style>
+        </head>
+        <body>
+          <h2>🏬 تقرير المخزون</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>المنتج</th>
+                <th>الكود</th>
+                <th>الفئة</th>
+                <th>الكمية</th>
+                <th>الحد الأدنى</th>
+                <th>الصلاحية</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${products
+                .map(
+                  (p) => `
+                <tr>
+                  <td>${p.name}</td>
+                  <td>${p.sku}</td>
+                  <td>${p.category}</td>
+                  <td>${p.quantity}</td>
+                  <td>${p.minQty}</td>
+                  <td>${p.expiryDate || "-"}</td>
+                </tr>
+              `
+                )
+                .join("")}
+            </tbody>
+          </table>
+          <script>
+            window.onload = () => {
+              window.print();
+              setTimeout(() => window.close(), 800);
+            };
+          </script>
+        </body>
+      </html>
+    `;
+    const w = window.open("", "_blank", "width=900,height=900");
+    w.document.write(html);
+    w.document.close();
   };
 
   return (
@@ -72,11 +186,10 @@ export default function InventoryPage() {
             <tbody>
               {products.map((p) => {
                 const warnings = getWarnings(p);
-                const daysLeft =
-                  p.expiryDate
-                    ? (new Date(p.expiryDate) - new Date()) /
-                      (1000 * 60 * 60 * 24)
-                    : null;
+                const daysLeft = p.expiryDate
+                  ? (new Date(p.expiryDate) - new Date()) /
+                    (1000 * 60 * 60 * 24)
+                  : null;
 
                 return (
                   <tr
@@ -88,8 +201,10 @@ export default function InventoryPage() {
                     <td className="p-3">{p.category}</td>
                     <td
                       className={`p-3 ${
-                        p.quantity < (p.minQty || 5)
-                          ? "text-red-600 font-semibold"
+                        p.quantity <= 0
+                          ? "text-red-700 font-bold"
+                          : p.quantity < (p.minQty || 5)
+                          ? "text-amber-600 font-semibold"
                           : ""
                       }`}
                     >
@@ -173,6 +288,194 @@ export default function InventoryPage() {
     </Layout>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // pages/inventory.js
+// import { useState } from "react";
+// import Layout from "../components/Layout";
+// import Modal from "../components/Modal";
+// import { useInventory } from "../context/InventoryContext";
+// import { useAuth } from "../context/AuthContext";
+// import WarningIndicator from "../components/WarningIndicator";
+
+// export default function InventoryPage() {
+//   const { user, hasPermission } = useAuth();
+//   const { products, updateStock, getWarnings, printInventoryReport } =
+//     useInventory();
+
+//   const [showModal, setShowModal] = useState(false);
+//   const [selected, setSelected] = useState(null);
+//   const [qty, setQty] = useState("");
+//   const [type, setType] = useState("in");
+
+//   if (!hasPermission(["admin", "pharmacist"])) {
+//     return (
+//       <div dir="rtl" className="p-6 text-center text-red-600">
+//         ⚠️ ليس لديك صلاحية لدخول شاشة المخزون.
+//       </div>
+//     );
+//   }
+
+//   const openModal = (p) => {
+//     setSelected(p);
+//     setQty("");
+//     setType("in");
+//     setShowModal(true);
+//   };
+
+//   const handleConfirm = () => {
+//     const n = Number(qty);
+//     if (!n || n <= 0) {
+//       alert("أدخل كمية صحيحة");
+//       return;
+//     }
+//     updateStock(selected.id, n, type);
+//     setShowModal(false);
+//   };
+
+//   return (
+//     <Layout user={user} title="المخزون">
+//       <div dir="rtl" className="space-y-6">
+//         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+//           <h1 className="text-xl font-bold text-gray-800">🏬 إدارة المخزون</h1>
+
+//           <button
+//             onClick={printInventoryReport}
+//             className="px-4 py-2 text-sm text-white bg-green-600 rounded-lg hover:bg-green-700"
+//           >
+//             🖨️ طباعة تقرير المخزون
+//           </button>
+//         </div>
+
+//         <div className="overflow-x-auto bg-white border shadow rounded-xl">
+//           <table className="w-full text-sm text-right">
+//             <thead className="text-gray-700 bg-gray-50">
+//               <tr>
+//                 <th className="p-3">المنتج</th>
+//                 <th className="p-3">الكود</th>
+//                 <th className="p-3">الفئة</th>
+//                 <th className="p-3">الكمية</th>
+//                 <th className="p-3">الحد الأدنى</th>
+//                 <th className="p-3">الصلاحية</th>
+//                 <th className="p-3 text-center">تحذيرات</th>
+//                 <th className="p-3 text-center">إجراءات</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {products.map((p) => {
+//                 const warnings = getWarnings(p);
+//                 const daysLeft =
+//                   p.expiryDate
+//                     ? (new Date(p.expiryDate) - new Date()) /
+//                       (1000 * 60 * 60 * 24)
+//                     : null;
+
+//                 return (
+//                   <tr
+//                     key={p.id}
+//                     className="transition border-t hover:bg-gray-50"
+//                   >
+//                     <td className="p-3">{p.name}</td>
+//                     <td className="p-3 text-xs text-gray-600">{p.sku}</td>
+//                     <td className="p-3">{p.category}</td>
+//                     <td
+//                       className={`p-3 ${
+//                         p.quantity < (p.minQty || 5)
+//                           ? "text-red-600 font-semibold"
+//                           : ""
+//                       }`}
+//                     >
+//                       {p.quantity}
+//                     </td>
+//                     <td className="p-3">{p.minQty}</td>
+//                     <td className="p-3 text-xs">
+//                       {p.expiryDate
+//                         ? daysLeft < 0
+//                           ? "❌ منتهي"
+//                           : `${p.expiryDate}`
+//                         : "-"}
+//                     </td>
+//                     <td className="p-3 text-center">
+//                       <WarningIndicator warnings={warnings} />
+//                     </td>
+//                     <td className="p-3 text-center">
+//                       <button
+//                         onClick={() => openModal(p)}
+//                         className="px-3 py-1 text-xs text-white rounded-lg bg-sky-600 hover:bg-sky-700"
+//                       >
+//                         🔄 توريد / خصم
+//                       </button>
+//                     </td>
+//                   </tr>
+//                 );
+//               })}
+
+//               {products.length === 0 && (
+//                 <tr>
+//                   <td colSpan={8} className="p-4 text-center text-gray-400">
+//                     لا توجد بيانات مخزون حالياً…
+//                   </td>
+//                 </tr>
+//               )}
+//             </tbody>
+//           </table>
+//         </div>
+//       </div>
+
+//       {showModal && selected && (
+//         <Modal
+//           title="تعديل المخزون"
+//           onClose={() => setShowModal(false)}
+//           onConfirm={handleConfirm}
+//         >
+//           <div dir="rtl" className="space-y-3 text-sm">
+//             <p>
+//               المنتج: <strong>{selected.name}</strong>
+//             </p>
+
+//             <div>
+//               <label className="block mb-1 text-xs text-gray-500">
+//                 نوع العملية
+//               </label>
+//               <select
+//                 className="w-full p-2 border rounded"
+//                 value={type}
+//                 onChange={(e) => setType(e.target.value)}
+//               >
+//                 <option value="in">➕ توريد</option>
+//                 <option value="out">➖ خصم</option>
+//               </select>
+//             </div>
+
+//             <div>
+//               <label className="block mb-1 text-xs text-gray-500">
+//                 الكمية
+//               </label>
+//               <input
+//                 type="number"
+//                 className="w-full p-2 border rounded"
+//                 placeholder="مثال: 10"
+//                 value={qty}
+//                 onChange={(e) => setQty(e.target.value)}
+//               />
+//             </div>
+//           </div>
+//         </Modal>
+//       )}
+//     </Layout>
+//   );
+// }
 
 
 

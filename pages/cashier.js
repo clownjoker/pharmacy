@@ -1,128 +1,690 @@
+// pages/cashier.js
 import { useState } from "react";
 import Layout from "../components/Layout";
-import { mockMedicines } from "../mock/data";
+import toast from "react-hot-toast";
+import {
+  addSale,
+  applySaleToInventory,
+  openShift,
+  closeShift,
+} from "../lib/fakeBackend";
 
-export default function CashierPage() {
-  const [user] = useState({ name: "سارة", role: "cashier" });
+export default function Cashier() {
+  const [user] = useState({ name: "محمد الكاشير", role: "cashier" });
 
-  const [products] = useState(mockMedicines);
-  const [cart, setCart] = useState([]);
+  // منتجات تجريبية (تقدر تربطها لاحقًا بصفحة المنتجات/المخزون)
+  const PRODUCTS = [
+    { id: 1, name: "بانادول", price: 12, barcode: "629111" },
+    { id: 2, name: "فيتامين سي", price: 25, barcode: "629222" },
+    { id: 3, name: "كحولة طبية", price: 10, barcode: "629333" },
+    { id: 4, name: "مسكن ألترا", price: 18, barcode: "629444" },
+  ];
+
   const [search, setSearch] = useState("");
+  const [cart, setCart] = useState([]);
+  const [discount, setDiscount] = useState(0);
+  const [tax, setTax] = useState(0);
+  const [paymentMethod, setPaymentMethod] = useState("cash");
+  const [customer, setCustomer] = useState("عميل نقدي");
 
-  const addToCart = (item) => {
-    setCart([...cart, item]);
-  };
+  const [invoices, setInvoices] = useState([]); // فواتير وهمية محليًا
+  const [shiftOpen, setShiftOpen] = useState(false);
 
-  const removeItem = (index) => {
-    const updated = [...cart];
-    updated.splice(index, 1);
-    setCart(updated);
-  };
-
-  const total = cart.reduce((sum, item) => sum + item.price, 0);
-
-  const filtered = products.filter(
-    (p) =>
-      p.name.includes(search) ||
-      p.category.includes(search)
+  // 🔹 فلترة المنتجات حسب البحث
+  const filteredProducts = PRODUCTS.filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  // 🔹 إضافة منتج للسلة
+  const addToCart = (p) => {
+    if (!shiftOpen) {
+      toast.error("⚠️ يجب فتح شِفت قبل البدء في البيع");
+      return;
+    }
+
+    const exists = cart.find((c) => c.id === p.id);
+    if (exists) {
+      setCart(
+        cart.map((c) =>
+          c.id === p.id ? { ...c, qty: c.qty + 1 } : c
+        )
+      );
+    } else {
+      setCart([...cart, { ...p, qty: 1 }]);
+    }
+  };
+
+  // 🔹 إزالة من السلة
+  const removeItem = (id) => {
+    setCart(cart.filter((c) => c.id !== id));
+  };
+
+  // 🔹 إجمالي السلة
+  const subtotal = cart.reduce((sum, it) => sum + it.price * it.qty, 0);
+  const total = subtotal - discount + tax;
+
+  const formatDate = (iso) => {
+    try {
+      return new Date(iso).toISOString().replace("T", " ").slice(0, 16);
+    } catch {
+      return iso || "";
+    }
+  };
+
+  // 🔹 فتح شفت
+  const handleOpenShift = () => {
+    openShift(user.name);
+    setShiftOpen(true);
+    toast.success("✅ تم فتح الشِفت للكاشير");
+  };
+
+  // 🔹 إغلاق شفت
+  const handleCloseShift = () => {
+    closeShift(user.name);
+    setShiftOpen(false);
+    toast.success("✅ تم إغلاق الشِفت");
+  };
+
+  // 🔹 حفظ الفاتورة وربطها بالمبيعات + المخزون + الشِفت
+  const saveInvoice = () => {
+    if (!shiftOpen) {
+      toast.error("⚠️ افتح شِفت أولاً");
+      return;
+    }
+
+    if (cart.length === 0) {
+      toast.error("لم يتم اختيار أي منتج");
+      return;
+    }
+
+    const id = Date.now(); // كود فاتورة تجريبي
+    const date = new Date().toISOString();
+
+    const invoice = {
+      id,
+      date,
+      customer,
+      cashier: user.name,
+      payment: paymentMethod,
+      type: "sale",
+      items: cart.map((it) => ({
+        productId: it.id,
+        id: it.id,
+        name: it.name,
+        qty: it.qty,
+        price: it.price,
+        barcode: it.barcode,
+      })),
+      discount,
+      tax,
+      total,
+    };
+
+    // 1) حفظ الفاتورة في "المبيعات"
+    const saved = addSale(invoice);
+
+    // 2) خصم الكميات من المخزون
+    applySaleToInventory(saved);
+
+    // 3) إضافة للسجل المحلي في شاشة الكاشير
+    setInvoices((prev) => [...prev, saved]);
+
+    // 4) تصفير السلة
+    setCart([]);
+    setDiscount(0);
+    setTax(0);
+
+    toast.success("🧾 تم حفظ الفاتورة وتحديث المبيعات والمخزون (محليًا)");
+  };
+
+  // 🔹 طباعة الفاتورة
+  const printInvoice = (inv) => {
+    const html = `
+      <html dir="rtl" lang="ar">
+      <head>
+        <meta charset="utf-8" />
+        <title>فاتورة ${inv.id}</title>
+        <style>
+          body { font-family: 'Tajawal',sans-serif; padding: 20px; }
+          h2 { color:#0ea5e9; margin-bottom: 10px; }
+          table { width:100%; border-collapse: collapse; margin-top:10px; }
+          th,td { border:1px solid #ddd; padding:6px; text-align:center; }
+          th { background:#f3f4f6; }
+        </style>
+      </head>
+      <body>
+        <h2>صيدلية المعلم</h2>
+        <p>فاتورة رقم: <strong>${inv.id}</strong></p>
+        <p>العميل: ${inv.customer}</p>
+        <p>الكاشير: ${inv.cashier}</p>
+        <p>التاريخ: ${formatDate(inv.date)}</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>الصنف</th>
+              <th>الكمية</th>
+              <th>السعر</th>
+              <th>الإجمالي</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${
+              (inv.items || [])
+                .map(
+                  (it) => `
+                  <tr>
+                    <td>${it.name}</td>
+                    <td>${it.qty}</td>
+                    <td>${it.price}</td>
+                    <td>${it.qty * it.price}</td>
+                  </tr>`
+                )
+                .join("") || `
+                <tr>
+                  <td colspan="4">لا توجد أصناف</td>
+                </tr>`
+            }
+          </tbody>
+        </table>
+
+        <h3>الإجمالي النهائي: ${inv.total} ر.س</h3>
+
+        <script>
+          window.onload = () => {
+            window.print();
+            setTimeout(() => window.close(), 800);
+          };
+        </script>
+      </body>
+      </html>
+    `;
+
+    const w = window.open("", "_blank", "width=900,height=900");
+    w.document.write(html);
+    w.document.close();
+  };
+
   return (
-    <Layout user={user} title="🧾 نقطة البيع">
-      <div dir="rtl" className="grid grid-cols-1 gap-6 md:grid-cols-2">
+    <Layout user={user} title="نظام الكاشير">
+      <div dir="rtl" className="space-y-6">
 
-        {/* قائمة المنتجات */}
-        <div>
-          <input
-            type="text"
-            placeholder="🔍 بحث عن منتج"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full px-3 py-2 mb-4 border rounded-md"
-          />
-
-          <div className="bg-white border rounded-lg shadow-sm overflow-auto max-h-[500px]">
-            <table className="w-full text-sm text-right">
-              <thead className="text-gray-600 bg-gray-50">
-                <tr>
-                  <th className="px-3 py-2">الاسم</th>
-                  <th className="px-3 py-2">السعر</th>
-                  <th className="px-3 py-2">إضافة</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {filtered.map((item) => (
-                  <tr key={item.id} className="border-t hover:bg-gray-50">
-                    <td className="px-3 py-2">{item.name}</td>
-                    <td className="px-3 py-2">{item.price} ر.س</td>
-                    <td className="px-3 py-2">
-                      <button
-                        onClick={() => addToCart(item)}
-                        className="px-3 py-1 text-white rounded-md bg-sky-600 hover:bg-sky-700"
-                      >
-                        ➕
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-
-            </table>
+        {/* شريط الشِفت */}
+        <div className="flex flex-col gap-3 p-4 bg-white border rounded-lg shadow-sm md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-sm text-gray-600">
+              الكاشير الحالي: <span className="font-semibold">{user.name}</span>
+            </p>
+            <p className="text-xs text-gray-500">
+              حالة الشِفت:{" "}
+              <span className={shiftOpen ? "text-emerald-600" : "text-red-600"}>
+                {shiftOpen ? "مفتوح" : "مغلق"}
+              </span>
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={handleOpenShift}
+              className="px-3 py-1.5 text-xs text-white bg-emerald-600 rounded-md hover:bg-emerald-700"
+            >
+              🟢 فتح شِفت
+            </button>
+            <button
+              onClick={handleCloseShift}
+              className="px-3 py-1.5 text-xs text-white bg-red-500 rounded-md hover:bg-red-600"
+            >
+              🔴 إغلاق شِفت
+            </button>
           </div>
         </div>
 
-        {/* السلة */}
-        <div className="p-4 bg-white border rounded-lg shadow-sm">
-          <h3 className="mb-4 text-lg font-semibold">🛒 السلة</h3>
+        {/* الشبكة الرئيسية: السلة + البحث عن منتج */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {/* السلة */}
+          <div className="p-5 bg-white border rounded-lg shadow-sm md:col-span-2">
+            <h2 className="mb-4 text-lg font-bold">🧾 السلة</h2>
 
-          {cart.length === 0 ? (
-            <p className="text-gray-500">لا توجد عناصر مضافة</p>
+            {/* بيانات العميل وطريقة الدفع */}
+            <div className="grid grid-cols-1 gap-3 mb-4 text-sm md:grid-cols-3">
+              <input
+                type="text"
+                value={customer}
+                onChange={(e) => setCustomer(e.target.value)}
+                className="w-full px-3 py-2 border rounded-md"
+                placeholder="اسم العميل (اختياري)"
+              />
+              <select
+                value={paymentMethod}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+                className="w-full px-3 py-2 border rounded-md"
+              >
+                <option value="cash">نقدًا</option>
+                <option value="card">بطاقة</option>
+                <option value="wallet">محفظة</option>
+              </select>
+              <div className="text-xs text-gray-500 md:text-right">
+                نوع الدفع يؤثر على التقارير لاحقًا فقط (بيانات تجريبية).
+              </div>
+            </div>
+
+            {cart.length === 0 ? (
+              <p className="text-sm text-gray-500">
+                لا يوجد منتجات مضافة بعد. اختر منتجًا من القائمة على اليمين.
+              </p>
+            ) : (
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-gray-600 bg-gray-50">
+                    <th className="p-2">الصنف</th>
+                    <th>الكمية</th>
+                    <th>السعر</th>
+                    <th>الإجمالي</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cart.map((it) => (
+                    <tr key={it.id} className="border-t">
+                      <td className="p-2">{it.name}</td>
+                      <td>{it.qty}</td>
+                      <td>{it.price} ر.س</td>
+                      <td>{it.qty * it.price} ر.س</td>
+                      <td>
+                        <button
+                          className="text-xs text-red-500"
+                          onClick={() => removeItem(it.id)}
+                        >
+                          حذف
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+
+            {/* الإجماليات */}
+            <div className="mt-4 space-y-2 text-sm">
+              <p>
+                المجموع: <strong>{subtotal} ر.س</strong>
+              </p>
+
+              <label>خصم</label>
+              <input
+                type="number"
+                className="w-full p-1 border rounded"
+                value={discount}
+                onChange={(e) => setDiscount(Number(e.target.value) || 0)}
+              />
+
+              <label>ضريبة</label>
+              <input
+                type="number"
+                className="w-full p-1 border rounded"
+                value={tax}
+                onChange={(e) => setTax(Number(e.target.value) || 0)}
+              />
+
+              <p className="mt-2 text-lg font-bold">
+                الإجمالي النهائي:{" "}
+                <span className="text-emerald-600">{total} ر.س</span>
+              </p>
+
+              <button
+                className="w-full py-2 mt-3 text-white rounded bg-emerald-600 hover:bg-emerald-700"
+                onClick={saveInvoice}
+              >
+                💾 حفظ الفاتورة وتحديث النظام
+              </button>
+            </div>
+          </div>
+
+          {/* البحث عن منتج */}
+          <div className="p-5 bg-white border rounded-lg shadow-sm">
+            <h2 className="text-lg font-bold">🔍 البحث عن منتج</h2>
+            <input
+              type="text"
+              placeholder="اسم المنتج..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full px-3 py-2 mt-2 border rounded-md"
+            />
+
+            <div className="mt-4 space-y-2 max-h-[300px] overflow-y-auto">
+              {filteredProducts.map((p) => (
+                <button
+                  key={p.id}
+                  className="w-full p-2 text-right border rounded hover:bg-gray-50"
+                  onClick={() => addToCart(p)}
+                >
+                  {p.name} — {p.price} ر.س
+                </button>
+              ))}
+              {filteredProducts.length === 0 && (
+                <p className="text-xs text-gray-400">
+                  لا توجد نتائج مطابقة لبحثك.
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* سجل الفواتير الأخيرة للكاشير */}
+        <div className="p-5 bg-white border rounded-lg shadow-sm">
+          <h2 className="mb-4 text-lg font-bold">🕒 آخر الفواتير (محليًا)</h2>
+
+          {invoices.length === 0 ? (
+            <p className="text-sm text-gray-500">لا توجد فواتير بعد.</p>
           ) : (
-            <table className="w-full text-sm text-right">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-3 py-2">الصنف</th>
-                  <th className="px-3 py-2">السعر</th>
-                  <th className="px-3 py-2">حذف</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cart.map((item, index) => (
-                  <tr key={index} className="border-t hover:bg-gray-50">
-                    <td className="px-3 py-2">{item.name}</td>
-                    <td className="px-3 py-2">{item.price} ر.س</td>
-                    <td className="px-3 py-2">
-                      <button
-                        onClick={() => removeItem(index)}
-                        className="px-3 py-1 text-red-600 rounded-md hover:bg-red-50"
-                      >
-                        🗑️
-                      </button>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm min-w-[600px]">
+                <thead>
+                  <tr className="text-gray-600 bg-gray-50">
+                    <th className="p-2">رقم</th>
+                    <th>التاريخ</th>
+                    <th>العميل</th>
+                    <th>الإجمالي</th>
+                    <th>إجراءات</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {invoices.map((inv) => (
+                    <tr key={inv.id} className="border-t">
+                      <td className="p-2">{inv.id}</td>
+                      <td>{formatDate(inv.date)}</td>
+                      <td>{inv.customer}</td>
+                      <td>{inv.total} ر.س</td>
+                      <td>
+                        <button
+                          className="text-xs text-sky-600"
+                          onClick={() => printInvoice(inv)}
+                        >
+                          طباعة
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
-
-          <div className="flex justify-between pt-3 mt-4 text-lg font-semibold border-t">
-            <span>الإجمالي:</span>
-            <span>{total} ر.س</span>
-          </div>
-
-          <button
-            onClick={() => alert("✔️ تمت عملية البيع (Mock فقط)")}
-            className="w-full py-2 mt-4 text-white bg-green-600 rounded-md hover:bg-green-700"
-          >
-            ✔️ تأكيد البيع
-          </button>
         </div>
-
       </div>
     </Layout>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+// // pages/cashier.js
+// import { useState } from "react";
+// import Layout from "../components/Layout";
+// import toast from "react-hot-toast";
+
+// export default function Cashier() {
+//   const [user] = useState({ name: "محمد الكاشير", role: "cashier" });
+
+//   // قائمة منتجات وهمية
+//   const PRODUCTS = [
+//     { id: 1, name: "بانادول", price: 12 },
+//     { id: 2, name: "فيتامين سي", price: 25 },
+//     { id: 3, name: "كحولة طبية", price: 10 },
+//     { id: 4, name: "مسكن ألترا", price: 18 },
+//   ];
+
+//   const [search, setSearch] = useState("");
+//   const [cart, setCart] = useState([]);
+//   const [discount, setDiscount] = useState(0);
+//   const [tax, setTax] = useState(0);
+
+//   const [invoices, setInvoices] = useState([]); // فواتير وهمية
+
+//   // البحث
+//   const filteredProducts = PRODUCTS.filter((p) =>
+//     p.name.toLowerCase().includes(search.toLowerCase())
+//   );
+
+//   // إضافة منتج للفاتورة
+//   const addToCart = (p) => {
+//     const exists = cart.find((c) => c.id === p.id);
+//     if (exists) {
+//       setCart(
+//         cart.map((c) =>
+//           c.id === p.id ? { ...c, qty: c.qty + 1 } : c
+//         )
+//       );
+//     } else {
+//       setCart([...cart, { ...p, qty: 1 }]);
+//     }
+//   };
+
+//   // إزالة من السلة
+//   const removeItem = (id) => {
+//     setCart(cart.filter((c) => c.id !== id));
+//   };
+
+//   // حساب الإجمالي
+//   const subtotal = cart.reduce((sum, it) => sum + it.price * it.qty, 0);
+//   const total = subtotal - discount + tax;
+
+//   // حفظ الفاتورة
+//   const saveInvoice = () => {
+//     if (cart.length === 0) return toast.error("لم يتم اختيار أي منتج");
+
+//     const invoice = {
+//       id: Date.now(),
+//       items: cart,
+//       subtotal,
+//       discount,
+//       tax,
+//       total,
+//       cashier: user.name,
+//       date: new Date().toISOString(),
+//     };
+
+//     setInvoices([...invoices, invoice]);
+//     setCart([]);
+//     setDiscount(0);
+//     setTax(0);
+
+//     toast.success("تم حفظ الفاتورة بنجاح (وهمية)");
+//   };
+
+//   // الطباعة
+//   const printInvoice = (inv) => {
+//     const html = `
+//       <html dir="rtl">
+//       <body>
+//         <h2>فاتورة رقم ${inv.id}</h2>
+//         <p>الكاشير: ${inv.cashier}</p>
+
+//         <table border="1" width="100%" style="border-collapse: collapse">
+//           <thead>
+//             <tr>
+//               <th>الصنف</th>
+//               <th>الكمية</th>
+//               <th>السعر</th>
+//               <th>الإجمالي</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             ${inv.items
+//               .map(
+//                 (it) =>
+//                   `<tr>
+//                      <td>${it.name}</td>
+//                      <td>${it.qty}</td>
+//                      <td>${it.price}</td>
+//                      <td>${it.qty * it.price}</td>
+//                    </tr>`
+//               )
+//               .join("")}
+//           </tbody>
+//         </table>
+
+//         <h3>الإجمالي: ${inv.total} ر.س</h3>
+
+//         <script>
+//           window.onload = () => window.print()
+//         </script>
+//       </body>
+//       </html>
+//     `;
+
+//     const win = window.open("", "_blank", "width=600,height=800");
+//     win.document.write(html);
+//     win.document.close();
+//   };
+
+//   return (
+//     <Layout user={user} title="نظام الكاشير">
+//       <div dir="rtl" className="grid grid-cols-1 gap-6 md:grid-cols-3">
+
+//         {/* القسم الأيسر — السلة */}
+//         <div className="p-5 bg-white border rounded-lg shadow-sm md:col-span-2">
+//           <h2 className="mb-4 text-lg font-bold">🧾 السلة</h2>
+
+//           {cart.length === 0 ? (
+//             <p className="text-sm text-gray-500">لا يوجد منتجات مضافة</p>
+//           ) : (
+//             <table className="w-full text-sm">
+//               <thead>
+//                 <tr className="text-gray-600 bg-gray-50">
+//                   <th className="p-2">الصنف</th>
+//                   <th>الكمية</th>
+//                   <th>السعر</th>
+//                   <th>الإجمالي</th>
+//                   <th></th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {cart.map((it) => (
+//                   <tr key={it.id} className="border-t">
+//                     <td className="p-2">{it.name}</td>
+//                     <td>{it.qty}</td>
+//                     <td>{it.price} ر.س</td>
+//                     <td>{it.qty * it.price} ر.س</td>
+//                     <td>
+//                       <button
+//                         className="text-xs text-red-500"
+//                         onClick={() => removeItem(it.id)}
+//                       >
+//                         حذف
+//                       </button>
+//                     </td>
+//                   </tr>
+//                 ))}
+//               </tbody>
+//             </table>
+//           )}
+
+//           {/* الإجماليات */}
+//           <div className="mt-4 space-y-2 text-sm">
+//             <p>المجموع: <strong>{subtotal} ر.س</strong></p>
+
+//             <label>خصم</label>
+//             <input
+//               type="number"
+//               className="w-full p-1 border rounded"
+//               value={discount}
+//               onChange={(e) => setDiscount(Number(e.target.value))}
+//             />
+
+//             <label>ضريبة</label>
+//             <input
+//               type="number"
+//               className="w-full p-1 border rounded"
+//               value={tax}
+//               onChange={(e) => setTax(Number(e.target.value))}
+//             />
+
+//             <p className="mt-2 text-lg font-bold">
+//               الإجمالي النهائي: <span className="text-emerald-600">{total} ر.س</span>
+//             </p>
+
+//             <button
+//               className="w-full py-2 mt-3 text-white rounded bg-emerald-600"
+//               onClick={saveInvoice}
+//             >
+//               💾 حفظ الفاتورة
+//             </button>
+//           </div>
+//         </div>
+
+//         {/* القسم الأيمن — البحث والمنتجات */}
+//         <div className="p-5 bg-white border rounded-lg shadow-sm">
+//           <h2 className="text-lg font-bold">🔍 البحث عن منتج</h2>
+//           <input
+//             type="text"
+//             placeholder="اسم المنتج..."
+//             value={search}
+//             onChange={(e) => setSearch(e.target.value)}
+//             className="w-full p-2 mt-2 border rounded"
+//           />
+
+//           <div className="mt-4 space-y-2 max-h-[300px] overflow-y-auto">
+//             {filteredProducts.map((p) => (
+//               <button
+//                 key={p.id}
+//                 className="w-full p-2 text-right border rounded hover:bg-gray-50"
+//                 onClick={() => addToCart(p)}
+//               >
+//                 {p.name} — {p.price} ر.س
+//               </button>
+//             ))}
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* سجل آخر الفواتير */}
+//       <div className="p-5 mt-8 bg-white border rounded-lg shadow-sm">
+//         <h2 className="mb-4 text-lg font-bold">🕒 آخر الفواتير</h2>
+
+//         {invoices.length === 0 ? (
+//           <p className="text-sm text-gray-500">لا توجد فواتير</p>
+//         ) : (
+//           <table className="w-full text-sm">
+//             <thead>
+//               <tr className="bg-gray-50">
+//                 <th className="p-2">رقم</th>
+//                 <th>التاريخ</th>
+//                 <th>الإجمالي</th>
+//                 <th>إجراءات</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {invoices.map((inv) => (
+//                 <tr key={inv.id} className="border-t">
+//                   <td className="p-2">{inv.id}</td>
+//                   <td>{new Date(inv.date).toLocaleString("ar-EG")}</td>
+//                   <td>{inv.total} ر.س</td>
+//                   <td>
+//                     <button
+//                       className="text-xs text-sky-600"
+//                       onClick={() => printInvoice(inv)}
+//                     >
+//                       طباعة
+//                     </button>
+//                   </td>
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
+//         )}
+//       </div>
+//     </Layout>
+//   );
+// }
+
 
 
 

@@ -5,6 +5,12 @@ self.__BUILD_MANIFEST = {
   "/dashboard": [
     "static/chunks/pages/dashboard.js"
   ],
+  "/inventory": [
+    "static/chunks/pages/inventory.js"
+  ],
+  "/pharmacist": [
+    "static/chunks/pages/pharmacist.js"
+  ],
   "__rewrites": {
     "afterFiles": [],
     "beforeFiles": [],
@@ -18,6 +24,7 @@ self.__BUILD_MANIFEST = {
     "/_error",
     "/accounts",
     "/activity",
+    "/activity-log",
     "/cashier",
     "/dashboard",
     "/inventory",
@@ -26,8 +33,10 @@ self.__BUILD_MANIFEST = {
     "/products/edit/[id]",
     "/profitReport",
     "/reports",
+    "/returns",
     "/sales",
     "/shift",
+    "/shift-report",
     "/users"
   ]
 };self.__BUILD_MANIFEST_CB && self.__BUILD_MANIFEST_CB()

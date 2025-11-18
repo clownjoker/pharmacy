@@ -21,7 +21,7 @@ export default function Login() {
     let role = "admin"
     let redirect = "/dashboard"
 
-    if (username.toLowerCase() === "pharma") {
+    if (username.toLowerCase() === "ph") {
       role = "pharmacist"
       redirect = "/pharmacist"
     }
