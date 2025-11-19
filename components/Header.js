@@ -1,53 +1,70 @@
-import { useState, useEffect } from 'react'
-import { Menu } from 'lucide-react'
+// components/Header.js
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { useAuth } from "../context/AuthContext";
 
 export default function Header() {
-  const [user, setUser] = useState(null)
-  const [menuOpen, setMenuOpen] = useState(false)
+  const router = useRouter();
+  const { user, logout } = useAuth();
+  const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const savedUser = localStorage.getItem('pharmacy_user')
-    if (savedUser) {
-      setUser(JSON.parse(savedUser))
-    }
-  }, [])
-
-  const logout = () => {
-    localStorage.removeItem('pharmacy_token')
-    localStorage.removeItem('pharmacy_user')
-    window.location.href = '/'
-  }
-
-  if (!user) return null
+  if (!user) return null;
 
   return (
-    <header className="flex items-center justify-between px-6 py-3 bg-white border-b border-gray-200 shadow-sm" dir="rtl">
-      <h1 className="text-lg font-bold text-sky-700">💊 نظام إدارة الصيدلية</h1>
+    <header
+      dir="rtl"
+      className="flex items-center justify-between p-4 bg-white border-b shadow-sm"
+    >
+      {/* شعار النظام */}
+      <div
+        onClick={() => router.push("/dashboard")}
+        className="flex items-center gap-2 cursor-pointer"
+      >
+        <div className="flex items-center justify-center w-10 h-10 text-xl text-white rounded-lg shadow bg-sky-600">
+          💊
+        </div>
+        <div>
+          <h1 className="text-lg font-bold text-gray-800">نظام الصيدلية الذكي</h1>
+          <p className="-mt-1 text-xs text-gray-500">Pharmacy Management</p>
+        </div>
+      </div>
 
+      {/* قائمة المستخدم */}
       <div className="relative">
         <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="flex items-center gap-2 px-3 py-1 text-sm font-medium text-gray-700 bg-gray-100 rounded-full hover:bg-gray-200"
+          onClick={() => setOpen(!open)}
+          className="flex items-center gap-2 px-3 py-2 text-sm bg-gray-100 rounded-lg hover:bg-gray-200"
         >
-          <span className="text-gray-800">{user.name}</span>
-          <Menu className="w-4 h-4 text-gray-600" />
+          <span className="text-gray-800">{user.username}</span>
+          <span>👤</span>
         </button>
 
-        {menuOpen && (
-          <div className="absolute left-0 w-48 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
+        {open && (
+          <div className="absolute left-0 z-50 w-48 mt-2 overflow-hidden bg-white border rounded-lg shadow-lg">
             <div className="px-4 py-2 text-sm text-gray-700 border-b bg-gray-50">
-              <p className="font-semibold">{user.name}</p>
+              <p className="font-semibold">{user.username}</p>
               <p className="text-xs text-gray-500">
-                {user.role === 'admin'
-                  ? '👑 المدير'
-                  : user.role === 'pharmacist'
-                  ? '💊 الصيدلي'
-                  : '💵 الكاشير'}
+                {user.role === "admin"
+                  ? "👑 مدير النظام"
+                  : user.role === "pharmacist"
+                  ? "💊 صيدلي"
+                  : "💵 كاشير"}
               </p>
             </div>
 
+            <Link
+              href="/profile"
+              className="block px-4 py-2 text-sm hover:bg-gray-50"
+            >
+              🧑‍⚕️ الملف الشخصي
+            </Link>
+
             <button
-              onClick={logout}
+              onClick={() => {
+                setOpen(false);
+                logout();
+              }}
               className="w-full px-4 py-2 text-sm text-right text-red-600 hover:bg-red-50"
             >
               🚪 تسجيل الخروج
@@ -56,8 +73,78 @@ export default function Header() {
         )}
       </div>
     </header>
-  )
+  );
 }
+
+
+
+
+
+
+
+
+
+
+// import { useState, useEffect } from 'react'
+// import { Menu } from 'lucide-react'
+
+// export default function Header() {
+//   const [user, setUser] = useState(null)
+//   const [menuOpen, setMenuOpen] = useState(false)
+
+//   useEffect(() => {
+//     const savedUser = localStorage.getItem('pharmacy_user')
+//     if (savedUser) {
+//       setUser(JSON.parse(savedUser))
+//     }
+//   }, [])
+
+//   const logout = () => {
+//     localStorage.removeItem('pharmacy_token')
+//     localStorage.removeItem('pharmacy_user')
+//     window.location.href = '/'
+//   }
+
+//   if (!user) return null
+
+//   return (
+//     <header className="flex items-center justify-between px-6 py-3 bg-white border-b border-gray-200 shadow-sm" dir="rtl">
+//       <h1 className="text-lg font-bold text-sky-700">💊 نظام إدارة الصيدلية</h1>
+
+//       <div className="relative">
+//         <button
+//           onClick={() => setMenuOpen(!menuOpen)}
+//           className="flex items-center gap-2 px-3 py-1 text-sm font-medium text-gray-700 bg-gray-100 rounded-full hover:bg-gray-200"
+//         >
+//           <span className="text-gray-800">{user.name}</span>
+//           <Menu className="w-4 h-4 text-gray-600" />
+//         </button>
+
+//         {menuOpen && (
+//           <div className="absolute left-0 w-48 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
+//             <div className="px-4 py-2 text-sm text-gray-700 border-b bg-gray-50">
+//               <p className="font-semibold">{user.name}</p>
+//               <p className="text-xs text-gray-500">
+//                 {user.role === 'admin'
+//                   ? '👑 المدير'
+//                   : user.role === 'pharmacist'
+//                   ? '💊 الصيدلي'
+//                   : '💵 الكاشير'}
+//               </p>
+//             </div>
+
+//             <button
+//               onClick={logout}
+//               className="w-full px-4 py-2 text-sm text-right text-red-600 hover:bg-red-50"
+//             >
+//               🚪 تسجيل الخروج
+//             </button>
+//           </div>
+//         )}
+//       </div>
+//     </header>
+//   )
+// }
 
 
 

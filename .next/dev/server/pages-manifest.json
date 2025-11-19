@@ -2,6 +2,9 @@
   "/": "pages/index.js",
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-  "/pharmacist": "pages/pharmacist.js",
-  "/reports": "pages/reports.js"
+  "/_error": "pages/_error.js",
+  "/cashier": "pages/cashier.js",
+  "/dashboard": "pages/dashboard.js",
+  "/profile": "pages/profile.js",
+  "/users": "pages/users.js"
 }

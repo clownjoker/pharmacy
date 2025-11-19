@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import ConfirmModal from './ConfirmModal'
 import { FaSignOutAlt } from 'react-icons/fa'
 import AuthGuard from "../components/AuthGuard";
-
+import Header from './Header'
 export default function Layout({ user, title, children }) {
   const router = useRouter()
   const [showLogoutModal, setShowLogoutModal] = useState(false)
@@ -20,15 +20,18 @@ export default function Layout({ user, title, children }) {
       { name: '📦 المخزن', path: '/inventory' },
       { name: '📊 التقارير', path: '/reports' },
       { name: '👥 المستخدمون', path: '/users' },
+      { name: '👥 ', path: '/profile' },
     ],
     pharmacist: [
       { name: '💊 الأدوية', path: '/pharmacist' },
       { name: '📦 المخزون', path: '/inventory' },
       { name: '📊 تقارير المبيعات', path: '/reports' },
+      { name: '👥 ', path: '/profile' },
     ],
     cashier: [
       { name: '🧾 نقطة البيع', path: '/cashier' },
       { name: '📄 التقرير اليومي', path: '/shift' },
+      { name: '👥 ', path: '/profile' },
     ],
   }
 

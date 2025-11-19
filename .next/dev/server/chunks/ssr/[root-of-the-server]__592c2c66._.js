@@ -949,8 +949,6 @@ return __turbopack_context__.a(async (__turbopack_handle_async_dependencies__, _
 
 // pages/users.js
 __turbopack_context__.s([
-    "ALL_PERMISSIONS",
-    ()=>ALL_PERMISSIONS,
     "default",
     ()=>UsersPage
 ]);
@@ -959,7 +957,6 @@ var __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Layout$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/Layout.js [ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$theme$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/theme.js [ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__ = __turbopack_context__.i("[externals]/react-hot-toast [external] (react-hot-toast, esm_import)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$AuthGuard$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/AuthGuard.js [ssr] (ecmascript)");
 var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
     __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__
 ]);
@@ -969,239 +966,89 @@ var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
 ;
 ;
 ;
-;
 const ALL_PERMISSIONS = [
-    // تقارير
     {
-        key: "view_reports",
-        label: "عرض كل التقارير"
+        key: 'view_reports',
+        label: 'عرض التقارير'
     },
     {
-        key: "report_sales",
-        label: "تقرير المبيعات"
+        key: 'add_sale',
+        label: 'إضافة عملية بيع'
     },
     {
-        key: "report_profit",
-        label: "تقرير الربحية"
+        key: 'manage_medicines',
+        label: 'إدارة الأدوية'
     },
     {
-        key: "report_inventory",
-        label: "تقرير المخزون"
+        key: 'manage_users',
+        label: 'إدارة المستخدمين'
     },
     {
-        key: "report_shift",
-        label: "تقرير الشِفت"
-    },
-    {
-        key: "print_reports",
-        label: "طباعة التقارير"
-    },
-    // مبيعات
-    {
-        key: "add_sale",
-        label: "إضافة عملية بيع"
-    },
-    {
-        key: "return_sale",
-        label: "إنشاء مرتجع"
-    },
-    {
-        key: "view_sales",
-        label: "عرض المبيعات"
-    },
-    {
-        key: "print_invoice",
-        label: "طباعة الفاتورة"
-    },
-    {
-        key: "edit_invoice",
-        label: "تعديل الفاتورة"
-    },
-    {
-        key: "delete_invoice",
-        label: "حذف الفاتورة"
-    },
-    // منتجات
-    {
-        key: "view_products",
-        label: "عرض المنتجات"
-    },
-    {
-        key: "add_product",
-        label: "إضافة منتج"
-    },
-    {
-        key: "edit_product",
-        label: "تعديل منتج"
-    },
-    {
-        key: "delete_product",
-        label: "حذف منتج"
-    },
-    {
-        key: "manage_categories",
-        label: "إدارة التصنيفات"
-    },
-    {
-        key: "manage_brands",
-        label: "إدارة الشركات المنتجة"
-    },
-    {
-        key: "manage_medicines",
-        label: "إدارة الأدوية"
-    },
-    // مخزون
-    {
-        key: "view_inventory",
-        label: "عرض المخزون"
-    },
-    {
-        key: "adjust_inventory",
-        label: "تعديل المخزون يدويًا"
-    },
-    {
-        key: "add_stock",
-        label: "إضافة كمية للمخزون"
-    },
-    {
-        key: "remove_stock",
-        label: "خصم كمية من المخزون"
-    },
-    {
-        key: "view_expired",
-        label: "عرض المنتهي الصلاحية"
-    },
-    {
-        key: "view_near_expire",
-        label: "عرض القريب من الانتهاء"
-    },
-    {
-        key: "print_inventory_report",
-        label: "طباعة تقرير المخزون"
-    },
-    // حسابات
-    {
-        key: "view_accounts",
-        label: "عرض الحسابات"
-    },
-    {
-        key: "add_income",
-        label: "إضافة إيراد"
-    },
-    {
-        key: "add_expense",
-        label: "إضافة مصروف"
-    },
-    {
-        key: "view_financial_summary",
-        label: "عرض الملخص المالي"
-    },
-    {
-        key: "manage_safe",
-        label: "إدارة الخزنة"
-    },
-    {
-        key: "manage_bank",
-        label: "إدارة الحساب البنكي"
-    },
-    // مستخدمين / نظام
-    {
-        key: "manage_users",
-        label: "إدارة المستخدمين"
-    },
-    {
-        key: "manage_roles",
-        label: "إدارة الأدوار"
-    },
-    {
-        key: "manage_permissions",
-        label: "إدارة الصلاحيات"
-    },
-    {
-        key: "view_activity",
-        label: "عرض سجل النشاط"
+        key: 'view_inventory',
+        label: 'عرض المخزون'
     }
 ];
 const ROLE_LABELS = {
-    admin: "مدير النظام",
-    pharmacist: "صيدلي",
-    cashier: "كاشير"
+    admin: 'مدير النظام',
+    pharmacist: 'صيدلي',
+    cashier: 'كاشير'
 };
-// 🔹 الصلاحيات الافتراضية لكل دور
 const ROLE_DEFAULT_PERMISSIONS = {
     admin: ALL_PERMISSIONS.map((p)=>p.key),
     pharmacist: [
-        "view_products",
-        "add_product",
-        "edit_product",
-        "manage_medicines",
-        "view_inventory",
-        "add_stock",
-        "remove_stock",
-        "view_near_expire",
-        "view_expired",
-        "print_inventory_report",
-        "add_sale",
-        "view_sales",
-        "print_invoice",
-        "view_reports",
-        "report_sales",
-        "report_inventory",
-        "report_profit"
+        'manage_medicines',
+        'view_inventory',
+        'add_sale',
+        'view_reports'
     ],
     cashier: [
-        "add_sale",
-        "return_sale",
-        "view_sales",
-        "print_invoice",
-        "report_shift"
+        'add_sale'
     ]
 };
-// 🔹 بيانات تجريبية للمستخدمين
 const INITIAL_USERS = [
     {
         id: 1,
-        name: "مها علي",
-        username: "admin",
-        email: "admin@pharmacy.com",
-        role: "admin",
+        name: 'مها علي',
+        username: 'admin',
+        email: 'admin@pharmacy.com',
+        role: 'admin',
         active: true,
         permissions: ROLE_DEFAULT_PERMISSIONS.admin
     },
     {
         id: 2,
-        name: "أحمد الصيدلي",
-        username: "pharma",
-        email: "pharma@pharmacy.com",
-        role: "pharmacist",
+        name: 'أحمد الصيدلي',
+        username: 'pharma',
+        email: 'pharma@pharmacy.com',
+        role: 'pharmacist',
         active: true,
         permissions: ROLE_DEFAULT_PERMISSIONS.pharmacist
     },
     {
         id: 3,
-        name: "محمد الكاشير",
-        username: "cashier",
-        email: "cashier@pharmacy.com",
-        role: "cashier",
+        name: 'محمد الكاشير',
+        username: 'cashier',
+        email: 'cashier@pharmacy.com',
+        role: 'cashier',
         active: true,
         permissions: ROLE_DEFAULT_PERMISSIONS.cashier
     }
 ];
 function UsersPage() {
     const [user] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])({
-        name: "المدير أحمد",
-        role: "admin"
+        name: 'المدير أحمد',
+        role: 'admin'
     });
     const [users, setUsers] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(INITIAL_USERS);
-    const [search, setSearch] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])("");
+    const [search, setSearch] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])('');
     const [showAddModal, setShowAddModal] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(false);
     const [showPermModal, setShowPermModal] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(false);
     const [newUser, setNewUser] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])({
-        name: "",
-        username: "",
-        email: "",
-        password: "",
-        role: "cashier",
+        name: '',
+        username: '',
+        email: '',
+        password: '',
+        role: 'cashier',
         active: true
     });
     const [selectedUser, setSelectedUser] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(null);
@@ -1216,18 +1063,18 @@ function UsersPage() {
     ]);
     const openAddModal = ()=>{
         setNewUser({
-            name: "",
-            username: "",
-            email: "",
-            password: "",
-            role: "cashier",
+            name: '',
+            username: '',
+            email: '',
+            password: '',
+            role: 'cashier',
             active: true
         });
         setShowAddModal(true);
     };
     const handleAddUser = ()=>{
         if (!newUser.name || !newUser.username || !newUser.email || !newUser.password) {
-            __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__["default"].error("⚠️ يرجى إدخال جميع الحقول الأساسية");
+            __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__["default"].error('⚠️ يرجى إدخال جميع الحقول الأساسية');
             return;
         }
         const nextId = users.length ? Math.max(...users.map((u)=>u.id)) + 1 : 1;
@@ -1245,19 +1092,19 @@ function UsersPage() {
                 userToAdd
             ]);
         setShowAddModal(false);
-        __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__["default"].success("✅ تم إضافة المستخدم (بيانات تجريبية)");
+        __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__["default"].success('تمت إضافة المستخدم بنجاح');
     };
     const toggleActive = (id)=>{
         setUsers((prev)=>prev.map((u)=>u.id === id ? {
                     ...u,
                     active: !u.active
                 } : u));
-        __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__["default"].success("🔁 تم تحديث حالة الحساب");
+        __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__["default"].success('تم تحديث حالة الحساب');
     };
     const deleteUser = (id)=>{
-        if (!confirm("هل تريد حذف هذا المستخدم نهائيًا؟")) return;
+        if (!confirm('هل تريد حذف هذا المستخدم؟')) return;
         setUsers((prev)=>prev.filter((u)=>u.id !== id));
-        __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__["default"].success("🗑️ تم حذف المستخدم");
+        __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__["default"].success('تم حذف المستخدم');
     };
     const openPermModal = (u)=>{
         setSelectedUser(u);
@@ -1277,559 +1124,454 @@ function UsersPage() {
                     permissions: permDraft
                 } : u));
         setShowPermModal(false);
-        __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__["default"].success("🔐 تم تحديث صلاحيات المستخدم");
+        __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__["default"].success('تم تحديث صلاحيات المستخدم');
     };
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$AuthGuard$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
-        allowedRoles: [
-            "admin"
-        ],
-        requiredPermissions: [
-            "manage_users",
-            "manage_permissions"
-        ],
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Layout$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
-            user: user,
-            title: "👥 إدارة المستخدمين والصلاحيات",
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Layout$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
+        user: user,
+        title: "إدارة المستخدمين والصلاحيات",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+            dir: "rtl",
+            className: "space-y-6",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                    dir: "rtl",
-                    className: "space-y-6",
+                    className: "flex flex-col gap-3 p-4 bg-white border rounded-lg shadow-sm md:flex-row md:items-center md:justify-between",
                     children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                            className: "flex flex-col gap-3 p-4 bg-white border rounded-lg shadow-sm md:flex-row md:items-center md:justify-between",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
-                                    type: "text",
-                                    placeholder: "🔍 بحث بالاسم / اسم المستخدم / البريد",
-                                    value: search,
-                                    onChange: (e)=>setSearch(e.target.value),
-                                    className: "w-full px-3 py-2 text-sm border rounded-md md:w-1/2"
-                                }, void 0, false, {
-                                    fileName: "[project]/pages/users.js",
-                                    lineNumber: 244,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
-                                    onClick: openAddModal,
-                                    className: "px-4 py-2 text-sm text-white rounded-md shadow",
-                                    style: {
-                                        background: __TURBOPACK__imported__module__$5b$project$5d2f$theme$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"].colors.success
-                                    },
-                                    children: "➕ إضافة مستخدم"
-                                }, void 0, false, {
-                                    fileName: "[project]/pages/users.js",
-                                    lineNumber: 251,
-                                    columnNumber: 13
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/pages/users.js",
-                            lineNumber: 243,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                            className: "overflow-x-auto bg-white border rounded-lg shadow-sm",
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("table", {
-                                className: "w-full text-sm text-right min-w-[900px]",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("thead", {
-                                        className: "text-xs text-gray-600 bg-gray-50",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tr", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
-                                                    className: "px-3 py-2",
-                                                    children: "#"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/pages/users.js",
-                                                    lineNumber: 265,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
-                                                    className: "px-3 py-2",
-                                                    children: "الاسم"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/pages/users.js",
-                                                    lineNumber: 266,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
-                                                    className: "px-3 py-2",
-                                                    children: "اسم المستخدم"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/pages/users.js",
-                                                    lineNumber: 267,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
-                                                    className: "px-3 py-2",
-                                                    children: "البريد"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/pages/users.js",
-                                                    lineNumber: 268,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
-                                                    className: "px-3 py-2",
-                                                    children: "الدور"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/pages/users.js",
-                                                    lineNumber: 269,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
-                                                    className: "px-3 py-2",
-                                                    children: "الحالة"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/pages/users.js",
-                                                    lineNumber: 270,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
-                                                    className: "px-3 py-2",
-                                                    children: "الصلاحيات الأساسية"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/pages/users.js",
-                                                    lineNumber: 271,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
-                                                    className: "px-3 py-2",
-                                                    children: "إجراءات"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/pages/users.js",
-                                                    lineNumber: 272,
-                                                    columnNumber: 19
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/pages/users.js",
-                                            lineNumber: 264,
-                                            columnNumber: 17
-                                        }, this)
-                                    }, void 0, false, {
-                                        fileName: "[project]/pages/users.js",
-                                        lineNumber: 263,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tbody", {
-                                        children: filteredUsers.length ? filteredUsers.map((u, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tr", {
-                                                className: "border-t hover:bg-gray-50",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
-                                                        className: "px-3 py-2",
-                                                        children: i + 1
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/pages/users.js",
-                                                        lineNumber: 279,
-                                                        columnNumber: 23
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
-                                                        className: "px-3 py-2 font-medium text-gray-800",
-                                                        children: u.name
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/pages/users.js",
-                                                        lineNumber: 280,
-                                                        columnNumber: 23
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
-                                                        className: "px-3 py-2 text-gray-700",
-                                                        children: u.username
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/pages/users.js",
-                                                        lineNumber: 283,
-                                                        columnNumber: 23
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
-                                                        className: "px-3 py-2 text-gray-600",
-                                                        children: u.email
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/pages/users.js",
-                                                        lineNumber: 284,
-                                                        columnNumber: 23
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
-                                                        className: "px-3 py-2",
-                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
-                                                            className: `inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${u.role === "admin" ? "bg-purple-100 text-purple-700" : u.role === "pharmacist" ? "bg-blue-100 text-blue-700" : "bg-emerald-100 text-emerald-700"}`,
-                                                            children: ROLE_LABELS[u.role] || u.role
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/pages/users.js",
-                                                            lineNumber: 286,
-                                                            columnNumber: 25
-                                                        }, this)
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/pages/users.js",
-                                                        lineNumber: 285,
-                                                        columnNumber: 23
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
-                                                        className: "px-3 py-2",
-                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
-                                                            className: `inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-full ${u.active ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"}`,
-                                                            children: u.active ? "مفعل" : "موقوف"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/pages/users.js",
-                                                            lineNumber: 299,
-                                                            columnNumber: 25
-                                                        }, this)
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/pages/users.js",
-                                                        lineNumber: 298,
-                                                        columnNumber: 23
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
-                                                        className: "px-3 py-2",
-                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                                                            className: "flex flex-wrap gap-1 text-[11px]",
-                                                            children: [
-                                                                (u.permissions || []).slice(0, 3).map((p)=>{
-                                                                    const perm = ALL_PERMISSIONS.find((x)=>x.key === p);
-                                                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
-                                                                        className: "px-2 py-0.5 rounded-full bg-sky-50 text-sky-700",
-                                                                        children: perm?.label || p
-                                                                    }, p, false, {
-                                                                        fileName: "[project]/pages/users.js",
-                                                                        lineNumber: 316,
-                                                                        columnNumber: 31
-                                                                    }, this);
-                                                                }),
-                                                                u.permissions && u.permissions.length > 3 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
-                                                                    className: "px-2 py-0.5 rounded-full bg-gray-100 text-gray-500",
-                                                                    children: [
-                                                                        "+",
-                                                                        u.permissions.length - 3,
-                                                                        " أخرى"
-                                                                    ]
-                                                                }, void 0, true, {
-                                                                    fileName: "[project]/pages/users.js",
-                                                                    lineNumber: 325,
-                                                                    columnNumber: 29
-                                                                }, this)
-                                                            ]
-                                                        }, void 0, true, {
-                                                            fileName: "[project]/pages/users.js",
-                                                            lineNumber: 310,
-                                                            columnNumber: 25
-                                                        }, this)
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/pages/users.js",
-                                                        lineNumber: 309,
-                                                        columnNumber: 23
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
-                                                        className: "px-3 py-2",
-                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                                                            className: "flex flex-wrap justify-center gap-2",
-                                                            children: [
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
-                                                                    onClick: ()=>openPermModal(u),
-                                                                    className: "px-3 py-1 text-xs text-indigo-700 rounded-md bg-indigo-50 hover:bg-indigo-100",
-                                                                    children: "🔐 الصلاحيات"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/pages/users.js",
-                                                                    lineNumber: 333,
-                                                                    columnNumber: 27
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
-                                                                    onClick: ()=>toggleActive(u.id),
-                                                                    className: `px-3 py-1 text-xs rounded-md ${u.active ? "bg-red-50 text-red-600 hover:bg-red-100" : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"}`,
-                                                                    children: u.active ? "🔒 تعطيل" : "🔓 تفعيل"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/pages/users.js",
-                                                                    lineNumber: 339,
-                                                                    columnNumber: 27
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
-                                                                    onClick: ()=>deleteUser(u.id),
-                                                                    className: "px-3 py-1 text-xs text-red-600 bg-white border border-red-200 rounded-md hover:bg-red-50",
-                                                                    children: "🗑️ حذف"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/pages/users.js",
-                                                                    lineNumber: 349,
-                                                                    columnNumber: 27
-                                                                }, this)
-                                                            ]
-                                                        }, void 0, true, {
-                                                            fileName: "[project]/pages/users.js",
-                                                            lineNumber: 332,
-                                                            columnNumber: 25
-                                                        }, this)
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/pages/users.js",
-                                                        lineNumber: 331,
-                                                        columnNumber: 23
-                                                    }, this)
-                                                ]
-                                            }, u.id, true, {
-                                                fileName: "[project]/pages/users.js",
-                                                lineNumber: 278,
-                                                columnNumber: 21
-                                            }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tr", {
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
-                                                colSpan: 8,
-                                                className: "px-3 py-6 text-sm text-center text-gray-500",
-                                                children: "لا توجد نتائج"
-                                            }, void 0, false, {
-                                                fileName: "[project]/pages/users.js",
-                                                lineNumber: 361,
-                                                columnNumber: 21
-                                            }, this)
-                                        }, void 0, false, {
-                                            fileName: "[project]/pages/users.js",
-                                            lineNumber: 360,
-                                            columnNumber: 19
-                                        }, this)
-                                    }, void 0, false, {
-                                        fileName: "[project]/pages/users.js",
-                                        lineNumber: 275,
-                                        columnNumber: 15
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/pages/users.js",
-                                lineNumber: 262,
-                                columnNumber: 13
-                            }, this)
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
+                            type: "text",
+                            placeholder: "بحث بالاسم / اسم المستخدم / البريد",
+                            value: search,
+                            onChange: (e)=>setSearch(e.target.value),
+                            className: "w-full p-2 border rounded md:w-1/2"
                         }, void 0, false, {
                             fileName: "[project]/pages/users.js",
-                            lineNumber: 261,
+                            lineNumber: 162,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                            onClick: openAddModal,
+                            className: "px-4 py-2 text-white bg-green-600 rounded",
+                            children: "إضافة مستخدم"
+                        }, void 0, false, {
+                            fileName: "[project]/pages/users.js",
+                            lineNumber: 169,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/users.js",
-                    lineNumber: 241,
+                    lineNumber: 161,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                    className: "overflow-x-auto bg-white border rounded-lg shadow-sm",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("table", {
+                        className: "w-full text-sm text-right min-w-[900px]",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("thead", {
+                                className: "text-xs bg-gray-50",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tr", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
+                                            children: "#"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/users.js",
+                                            lineNumber: 182,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
+                                            children: "الاسم"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/users.js",
+                                            lineNumber: 183,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
+                                            children: "المستخدم"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/users.js",
+                                            lineNumber: 184,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
+                                            children: "البريد"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/users.js",
+                                            lineNumber: 185,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
+                                            children: "الدور"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/users.js",
+                                            lineNumber: 186,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
+                                            children: "الحالة"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/users.js",
+                                            lineNumber: 187,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
+                                            children: "الصلاحيات"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/users.js",
+                                            lineNumber: 188,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
+                                            children: "إجراءات"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/users.js",
+                                            lineNumber: 189,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/pages/users.js",
+                                    lineNumber: 181,
+                                    columnNumber: 15
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/pages/users.js",
+                                lineNumber: 180,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tbody", {
+                                children: filteredUsers.map((u, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tr", {
+                                        className: "border-t hover:bg-gray-50",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
+                                                className: "p-2",
+                                                children: i + 1
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/users.js",
+                                                lineNumber: 196,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
+                                                className: "p-2",
+                                                children: u.name
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/users.js",
+                                                lineNumber: 197,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
+                                                className: "p-2",
+                                                children: u.username
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/users.js",
+                                                lineNumber: 198,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
+                                                className: "p-2",
+                                                children: u.email
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/users.js",
+                                                lineNumber: 199,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
+                                                className: "p-2",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
+                                                    className: "px-3 py-1 text-xs text-blue-700 bg-blue-100 rounded-full",
+                                                    children: ROLE_LABELS[u.role]
+                                                }, void 0, false, {
+                                                    fileName: "[project]/pages/users.js",
+                                                    lineNumber: 201,
+                                                    columnNumber: 21
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/users.js",
+                                                lineNumber: 200,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
+                                                className: "p-2",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
+                                                    className: `px-3 py-1 rounded-full text-xs ${u.active ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`,
+                                                    children: u.active ? 'مفعل' : 'موقوف'
+                                                }, void 0, false, {
+                                                    fileName: "[project]/pages/users.js",
+                                                    lineNumber: 206,
+                                                    columnNumber: 21
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/users.js",
+                                                lineNumber: 205,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
+                                                className: "p-2 text-xs",
+                                                children: u.permissions.map((p)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
+                                                        className: "bg-sky-50 text-sky-700 px-2 py-0.5 rounded mx-1",
+                                                        children: ALL_PERMISSIONS.find((x)=>x.key === p)?.label
+                                                    }, p, false, {
+                                                        fileName: "[project]/pages/users.js",
+                                                        lineNumber: 216,
+                                                        columnNumber: 23
+                                                    }, this))
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/users.js",
+                                                lineNumber: 214,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
+                                                className: "flex flex-wrap justify-center gap-2 p-2",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                                        onClick: ()=>openPermModal(u),
+                                                        className: "px-3 py-1 text-xs text-indigo-700 rounded bg-indigo-50",
+                                                        children: "صلاحيات"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/pages/users.js",
+                                                        lineNumber: 222,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                                        onClick: ()=>toggleActive(u.id),
+                                                        className: "px-3 py-1 text-xs text-yellow-700 rounded bg-yellow-50",
+                                                        children: "حالة"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/pages/users.js",
+                                                        lineNumber: 228,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                                        onClick: ()=>deleteUser(u.id),
+                                                        className: "px-3 py-1 text-xs text-red-700 bg-red-100 rounded",
+                                                        children: "حذف"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/pages/users.js",
+                                                        lineNumber: 234,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/pages/users.js",
+                                                lineNumber: 221,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, u.id, true, {
+                                        fileName: "[project]/pages/users.js",
+                                        lineNumber: 195,
+                                        columnNumber: 17
+                                    }, this))
+                            }, void 0, false, {
+                                fileName: "[project]/pages/users.js",
+                                lineNumber: 193,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/pages/users.js",
+                        lineNumber: 179,
+                        columnNumber: 11
+                    }, this)
+                }, void 0, false, {
+                    fileName: "[project]/pages/users.js",
+                    lineNumber: 178,
                     columnNumber: 9
                 }, this),
                 showAddModal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                     className: "fixed inset-0 z-50 flex items-center justify-center bg-black/40",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                        className: "w-full max-w-md p-6 bg-white rounded-lg shadow-lg",
+                        className: "w-full max-w-md p-6 bg-white rounded",
                         dir: "rtl",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h2", {
-                                className: "mb-4 text-lg font-bold text-center text-gray-800",
-                                children: "➕ إضافة مستخدم جديد"
+                                className: "mb-3 font-bold",
+                                children: "إضافة مستخدم"
                             }, void 0, false, {
                                 fileName: "[project]/pages/users.js",
-                                lineNumber: 381,
+                                lineNumber: 251,
                                 columnNumber: 15
                             }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                                className: "space-y-3 text-sm",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Field, {
-                                        label: "الاسم الكامل",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
-                                            type: "text",
-                                            value: newUser.name,
-                                            onChange: (e)=>setNewUser({
-                                                    ...newUser,
-                                                    name: e.target.value
-                                                }),
-                                            className: "w-full px-3 py-2 border rounded-md"
-                                        }, void 0, false, {
-                                            fileName: "[project]/pages/users.js",
-                                            lineNumber: 387,
-                                            columnNumber: 19
-                                        }, this)
-                                    }, void 0, false, {
-                                        fileName: "[project]/pages/users.js",
-                                        lineNumber: 386,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Field, {
-                                        label: "اسم المستخدم",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
-                                            type: "text",
-                                            value: newUser.username,
-                                            onChange: (e)=>setNewUser({
-                                                    ...newUser,
-                                                    username: e.target.value
-                                                }),
-                                            className: "w-full px-3 py-2 border rounded-md"
-                                        }, void 0, false, {
-                                            fileName: "[project]/pages/users.js",
-                                            lineNumber: 398,
-                                            columnNumber: 19
-                                        }, this)
-                                    }, void 0, false, {
-                                        fileName: "[project]/pages/users.js",
-                                        lineNumber: 397,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Field, {
-                                        label: "البريد الإلكتروني",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
-                                            type: "email",
-                                            value: newUser.email,
-                                            onChange: (e)=>setNewUser({
-                                                    ...newUser,
-                                                    email: e.target.value
-                                                }),
-                                            className: "w-full px-3 py-2 border rounded-md"
-                                        }, void 0, false, {
-                                            fileName: "[project]/pages/users.js",
-                                            lineNumber: 409,
-                                            columnNumber: 19
-                                        }, this)
-                                    }, void 0, false, {
-                                        fileName: "[project]/pages/users.js",
-                                        lineNumber: 408,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Field, {
-                                        label: "كلمة المرور",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
-                                            type: "password",
-                                            value: newUser.password,
-                                            onChange: (e)=>setNewUser({
-                                                    ...newUser,
-                                                    password: e.target.value
-                                                }),
-                                            className: "w-full px-3 py-2 border rounded-md"
-                                        }, void 0, false, {
-                                            fileName: "[project]/pages/users.js",
-                                            lineNumber: 420,
-                                            columnNumber: 19
-                                        }, this)
-                                    }, void 0, false, {
-                                        fileName: "[project]/pages/users.js",
-                                        lineNumber: 419,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Field, {
-                                        label: "الدور",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("select", {
-                                            value: newUser.role,
-                                            onChange: (e)=>setNewUser({
-                                                    ...newUser,
-                                                    role: e.target.value
-                                                }),
-                                            className: "w-full px-3 py-2 border rounded-md",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("option", {
-                                                    value: "admin",
-                                                    children: "مدير"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/pages/users.js",
-                                                    lineNumber: 438,
-                                                    columnNumber: 21
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("option", {
-                                                    value: "pharmacist",
-                                                    children: "صيدلي"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/pages/users.js",
-                                                    lineNumber: 439,
-                                                    columnNumber: 21
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("option", {
-                                                    value: "cashier",
-                                                    children: "كاشير"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/pages/users.js",
-                                                    lineNumber: 440,
-                                                    columnNumber: 21
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/pages/users.js",
-                                            lineNumber: 431,
-                                            columnNumber: 19
-                                        }, this)
-                                    }, void 0, false, {
-                                        fileName: "[project]/pages/users.js",
-                                        lineNumber: 430,
-                                        columnNumber: 17
-                                    }, this)
-                                ]
-                            }, void 0, true, {
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Field, {
+                                label: "الاسم الكامل",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
+                                    className: "w-full p-2 border rounded",
+                                    value: newUser.name,
+                                    onChange: (e)=>setNewUser({
+                                            ...newUser,
+                                            name: e.target.value
+                                        })
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/users.js",
+                                    lineNumber: 254,
+                                    columnNumber: 17
+                                }, this)
+                            }, void 0, false, {
                                 fileName: "[project]/pages/users.js",
-                                lineNumber: 385,
+                                lineNumber: 253,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Field, {
+                                label: "اسم المستخدم",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
+                                    className: "w-full p-2 border rounded",
+                                    value: newUser.username,
+                                    onChange: (e)=>setNewUser({
+                                            ...newUser,
+                                            username: e.target.value
+                                        })
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/users.js",
+                                    lineNumber: 262,
+                                    columnNumber: 17
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/pages/users.js",
+                                lineNumber: 261,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Field, {
+                                label: "البريد الإلكتروني",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
+                                    className: "w-full p-2 border rounded",
+                                    value: newUser.email,
+                                    onChange: (e)=>setNewUser({
+                                            ...newUser,
+                                            email: e.target.value
+                                        })
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/users.js",
+                                    lineNumber: 270,
+                                    columnNumber: 17
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/pages/users.js",
+                                lineNumber: 269,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Field, {
+                                label: "كلمة المرور",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
+                                    type: "password",
+                                    className: "w-full p-2 border rounded",
+                                    value: newUser.password,
+                                    onChange: (e)=>setNewUser({
+                                            ...newUser,
+                                            password: e.target.value
+                                        })
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/users.js",
+                                    lineNumber: 278,
+                                    columnNumber: 17
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/pages/users.js",
+                                lineNumber: 277,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Field, {
+                                label: "الدور",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("select", {
+                                    className: "w-full p-2 border rounded",
+                                    value: newUser.role,
+                                    onChange: (e)=>setNewUser({
+                                            ...newUser,
+                                            role: e.target.value
+                                        }),
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("option", {
+                                            value: "admin",
+                                            children: "مدير"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/users.js",
+                                            lineNumber: 292,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("option", {
+                                            value: "pharmacist",
+                                            children: "صيدلي"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/users.js",
+                                            lineNumber: 293,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("option", {
+                                            value: "cashier",
+                                            children: "كاشير"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/users.js",
+                                            lineNumber: 294,
+                                            columnNumber: 19
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/pages/users.js",
+                                    lineNumber: 287,
+                                    columnNumber: 17
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/pages/users.js",
+                                lineNumber: 286,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                                className: "flex justify-end gap-2 mt-5",
+                                className: "flex justify-end gap-2 mt-4",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                        className: "px-4 py-2 bg-gray-200 rounded",
                                         onClick: ()=>setShowAddModal(false),
-                                        className: "px-4 py-2 text-sm bg-gray-100 rounded-md hover:bg-gray-200",
                                         children: "إلغاء"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/users.js",
-                                        lineNumber: 446,
+                                        lineNumber: 299,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                        className: "px-4 py-2 text-white bg-green-600 rounded",
                                         onClick: handleAddUser,
-                                        className: "px-4 py-2 text-sm text-white rounded-md shadow",
-                                        style: {
-                                            background: __TURBOPACK__imported__module__$5b$project$5d2f$theme$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"].colors.primary
-                                        },
-                                        children: "💾 حفظ"
+                                        children: "حفظ"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/users.js",
-                                        lineNumber: 452,
+                                        lineNumber: 305,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/users.js",
-                                lineNumber: 445,
+                                lineNumber: 298,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/pages/users.js",
-                        lineNumber: 377,
+                        lineNumber: 250,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/pages/users.js",
-                    lineNumber: 376,
+                    lineNumber: 249,
                     columnNumber: 11
                 }, this),
                 showPermModal && selectedUser && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                     className: "fixed inset-0 z-50 flex items-center justify-center bg-black/40",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                        className: "w-full max-w-lg p-6 bg-white rounded-lg shadow-lg",
+                        className: "w-full max-w-lg p-6 bg-white rounded",
                         dir: "rtl",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h2", {
-                                className: "mb-2 text-lg font-bold text-gray-800",
+                                className: "mb-3 font-bold",
                                 children: [
-                                    "🔐 صلاحيات المستخدم: ",
+                                    "صلاحيات: ",
                                     selectedUser.name
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/users.js",
-                                lineNumber: 471,
-                                columnNumber: 15
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
-                                className: "mb-4 text-xs text-gray-500",
-                                children: [
-                                    "الدور الحالي:",
-                                    " ",
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("strong", {
-                                        children: ROLE_LABELS[selectedUser.role]
-                                    }, void 0, false, {
-                                        fileName: "[project]/pages/users.js",
-                                        lineNumber: 476,
-                                        columnNumber: 17
-                                    }, this),
-                                    " — يمكنك تخصيص الصلاحيات يدويًا حسب الحاجة."
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/pages/users.js",
-                                lineNumber: 474,
+                                lineNumber: 320,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                                className: "grid grid-cols-1 gap-2 text-sm sm:grid-cols-2 max-h-[320px] overflow-auto",
+                                className: "grid grid-cols-1 gap-2 sm:grid-cols-2",
                                 children: ALL_PERMISSIONS.map((perm)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("label", {
-                                        className: "flex items-center gap-2 px-2 py-1 border rounded-md cursor-pointer hover:bg-gray-50",
+                                        className: "flex items-center gap-2 p-2 border rounded",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
                                                 type: "checkbox",
@@ -1837,96 +1579,88 @@ function UsersPage() {
                                                 onChange: ()=>togglePermission(perm.key)
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/users.js",
-                                                lineNumber: 486,
+                                                lineNumber: 328,
                                                 columnNumber: 21
                                             }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
-                                                children: perm.label
-                                            }, void 0, false, {
-                                                fileName: "[project]/pages/users.js",
-                                                lineNumber: 491,
-                                                columnNumber: 21
-                                            }, this)
+                                            perm.label
                                         ]
                                     }, perm.key, true, {
                                         fileName: "[project]/pages/users.js",
-                                        lineNumber: 482,
+                                        lineNumber: 324,
                                         columnNumber: 19
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/pages/users.js",
-                                lineNumber: 480,
+                                lineNumber: 322,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                                className: "flex justify-end gap-2 mt-5",
+                                className: "flex justify-end gap-2 mt-4",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                        className: "px-4 py-2 bg-gray-200 rounded",
                                         onClick: ()=>setShowPermModal(false),
-                                        className: "px-4 py-2 text-sm bg-gray-100 rounded-md hover:bg-gray-200",
                                         children: "إلغاء"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/users.js",
-                                        lineNumber: 497,
+                                        lineNumber: 339,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                        className: "px-4 py-2 text-white bg-blue-600 rounded",
                                         onClick: savePermissions,
-                                        className: "px-4 py-2 text-sm text-white rounded-md shadow",
-                                        style: {
-                                            background: __TURBOPACK__imported__module__$5b$project$5d2f$theme$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"].colors.primary
-                                        },
-                                        children: "💾 حفظ الصلاحيات"
+                                        children: "حفظ"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/users.js",
-                                        lineNumber: 503,
+                                        lineNumber: 345,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/users.js",
-                                lineNumber: 496,
+                                lineNumber: 338,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/pages/users.js",
-                        lineNumber: 467,
+                        lineNumber: 319,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/pages/users.js",
-                    lineNumber: 466,
+                    lineNumber: 318,
                     columnNumber: 11
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/pages/users.js",
-            lineNumber: 240,
+            lineNumber: 158,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/pages/users.js",
-        lineNumber: 236,
+        lineNumber: 157,
         columnNumber: 5
     }, this);
 }
 function Field({ label, children }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+        className: "mb-3",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("label", {
-                className: "block mb-1 text-xs font-semibold text-gray-600",
+                className: "block mb-1 text-xs text-gray-600",
                 children: label
             }, void 0, false, {
                 fileName: "[project]/pages/users.js",
-                lineNumber: 522,
+                lineNumber: 364,
                 columnNumber: 7
             }, this),
             children
         ]
     }, void 0, true, {
         fileName: "[project]/pages/users.js",
-        lineNumber: 521,
+        lineNumber: 363,
         columnNumber: 5
     }, this);
 } // import { useState, useEffect } from 'react'
