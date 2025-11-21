@@ -2427,8 +2427,11 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$context$2f$AuthContext$2e$js
 var __TURBOPACK__imported__module__$5b$project$5d2f$context$2f$InventoryContext$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/context/InventoryContext.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$WarningIndicator$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/WarningIndicator.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Modal$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/Modal.js [client] (ecmascript)");
+// import api from "../utils/api";
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-hot-toast/dist/index.mjs [client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
+;
 ;
 ;
 ;
@@ -2440,7 +2443,9 @@ function ProductsPage() {
     _s();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"])();
     const { user, hasPermission } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$context$2f$AuthContext$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useAuth"])();
-    const { products, setProducts, getWarnings, printInventoryReport } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$context$2f$InventoryContext$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useInventory"])();
+    const { getWarnings, printInventoryReport } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$context$2f$InventoryContext$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useInventory"])();
+    // المنتجات الآن تأتي من الباك-إند
+    const [products, setProducts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])([]);
     // بحث وفلترة وترتيب
     const [search, setSearch] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
     const [categoryFilter, setCategoryFilter] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("all");
@@ -2465,6 +2470,21 @@ function ProductsPage() {
         minQty: 5,
         expiryDate: ""
     });
+    // تحميل المنتجات من الباك-إند
+    const loadProducts = async ()=>{
+        try {
+            const res = await api.get("/products");
+            setProducts(res.data);
+        } catch (err) {
+            console.error("loadProducts error:", err);
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].error("⚠️ خطأ في تحميل المنتجات");
+        }
+    };
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "ProductsPage.useEffect": ()=>{
+            loadProducts();
+        }
+    }["ProductsPage.useEffect"], []);
     if (!hasPermission([
         "admin",
         "pharmacist"
@@ -2477,12 +2497,12 @@ function ProductsPage() {
                 children: "⚠️ لا يمكنك دخول هذه الصفحة. الرجاء التواصل مع مدير النظام لتحديث صلاحياتك."
             }, void 0, false, {
                 fileName: "[project]/pages/products.js",
-                lineNumber: 50,
+                lineNumber: 65,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/pages/products.js",
-            lineNumber: 49,
+            lineNumber: 64,
             columnNumber: 7
         }, this);
     }
@@ -2495,6 +2515,9 @@ function ProductsPage() {
         "all",
         ...new Set(products.map((p)=>p.company).filter(Boolean))
     ];
+    const api = axios.create({
+        baseURL: "http://127.0.0.1:5000/api"
+    });
     // إحصائيات سريعة للـ Dashboard
     const stats = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "ProductsPage.useMemo[stats]": ()=>{
@@ -2522,7 +2545,7 @@ function ProductsPage() {
             ];
             if (search.trim() !== "") {
                 result = result.filter({
-                    "ProductsPage.useMemo[filteredProducts]": (p)=>p.name.toLowerCase().includes(search.toLowerCase())
+                    "ProductsPage.useMemo[filteredProducts]": (p)=>(p.name || "").toLowerCase().includes(search.toLowerCase())
                 }["ProductsPage.useMemo[filteredProducts]"]);
             }
             if (categoryFilter !== "all") {
@@ -2537,7 +2560,7 @@ function ProductsPage() {
             }
             if (filterLowStock) {
                 result = result.filter({
-                    "ProductsPage.useMemo[filteredProducts]": (p)=>p.quantity <= p.minQty
+                    "ProductsPage.useMemo[filteredProducts]": (p)=>(p.quantity || 0) <= (p.minQty || 0)
                 }["ProductsPage.useMemo[filteredProducts]"]);
             }
             if (filterNearExpiry) {
@@ -2560,8 +2583,10 @@ function ProductsPage() {
             }
             result.sort({
                 "ProductsPage.useMemo[filteredProducts]": (a, b)=>{
-                    if (sortByName === "asc") return a.name.localeCompare(b.name);
-                    return b.name.localeCompare(a.name);
+                    const aName = a.name || "";
+                    const bName = b.name || "";
+                    if (sortByName === "asc") return aName.localeCompare(bName);
+                    return bName.localeCompare(aName);
                 }
             }["ProductsPage.useMemo[filteredProducts]"]);
             return result;
@@ -2580,40 +2605,60 @@ function ProductsPage() {
         setSelectedProduct(p);
         setShowDetails(true);
     };
-    const deleteProduct = (id)=>{
+    // حذف منتج من الباك-إند
+    const deleteProduct = async (id)=>{
         const ok = confirm("هل أنت متأكد من حذف المنتج؟");
         if (!ok) return;
-        setProducts((prev)=>prev.filter((p)=>p.id !== id));
+        try {
+            await api.delete(`/products/${id}`);
+            setProducts((prev)=>prev.filter((p)=>p.id !== id));
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].success("تم حذف المنتج");
+        } catch (err) {
+            console.error("deleteProduct error:", err);
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].error("خطأ في حذف المنتج");
+        }
     };
-    const handleAddProduct = ()=>{
+    // إضافة منتج جديد للباك-إند
+    const handleAddProduct = async ()=>{
         if (!newProduct.name || !newProduct.price) {
-            alert("الاسم والسعر مطلوبان على الأقل");
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].error("الاسم والسعر مطلوبان على الأقل");
             return;
         }
-        const id = Date.now();
-        setProducts((prev)=>[
-                ...prev,
-                {
-                    id,
-                    ...newProduct,
-                    purchasePrice: Number(newProduct.purchasePrice) || 0,
-                    price: Number(newProduct.price) || 0,
-                    quantity: Number(newProduct.quantity) || 0,
-                    minQty: Number(newProduct.minQty) || 0
-                }
-            ]);
-        setShowAddModal(false);
-        setNewProduct({
-            name: "",
-            sku: "",
-            category: "",
-            company: "",
-            purchasePrice: "",
-            price: "",
-            quantity: "",
-            minQty: 5,
-            expiryDate: ""
-        });
+        try {
+            const payload = {
+                name: newProduct.name,
+                sku: newProduct.sku,
+                category: newProduct.category,
+                company: newProduct.company,
+                purchasePrice: Number(newProduct.purchasePrice) || 0,
+                price: Number(newProduct.price) || 0,
+                quantity: Number(newProduct.quantity) || 0,
+                minQty: Number(newProduct.minQty) || 0,
+                expiryDate: newProduct.expiryDate || null
+            };
+            const res = await api.post("/products", payload);
+            setProducts((prev)=>[
+                    ...prev,
+                    res.data
+                ]);
+            setShowAddModal(false);
+            setNewProduct({
+                name: "",
+                sku: "",
+                category: "",
+                company: "",
+                purchasePrice: "",
+                price: "",
+                quantity: "",
+                minQty: 5,
+                expiryDate: ""
+            });
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].success("تم إضافة المنتج بنجاح");
+        } catch (err) {
+            console.error("handleAddProduct error:", err);
+            const msg = err.response?.data?.message || "فشل إضافة المنتج";
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].error(msg);
+        }
     };
     const printProducts = ()=>{
         const w = window.open("", "", "width=900,height=700");
@@ -2654,7 +2699,7 @@ function ProductsPage() {
             const totalProfit = unitProfit * (p.quantity || 0);
             return `
                   <tr>
-                    <td>${p.name}</td>
+                    <td>${p.name || ""}</td>
                     <td>${p.sku || ""}</td>
                     <td>${p.category || ""}</td>
                     <td>${p.company || ""}</td>
@@ -2693,7 +2738,7 @@ function ProductsPage() {
                                     children: "💊 إدارة المنتجات"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 265,
+                                    lineNumber: 308,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2701,13 +2746,13 @@ function ProductsPage() {
                                     children: "متابعة مخزون الأدوية، هوامش الربح، وتحذيرات الصلاحية من واجهة واحدة."
                                 }, void 0, false, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 268,
+                                    lineNumber: 311,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/products.js",
-                            lineNumber: 264,
+                            lineNumber: 307,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2721,20 +2766,20 @@ function ProductsPage() {
                                             children: "➕"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 278,
+                                            lineNumber: 321,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "إضافة منتج"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 279,
+                                            lineNumber: 322,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 274,
+                                    lineNumber: 317,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2745,20 +2790,20 @@ function ProductsPage() {
                                             children: "🖨️"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 286,
+                                            lineNumber: 329,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "طباعة تقرير"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 287,
+                                            lineNumber: 330,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 282,
+                                    lineNumber: 325,
                                     columnNumber: 13
                                 }, this),
                                 printInventoryReport && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2769,32 +2814,32 @@ function ProductsPage() {
                                             children: "📥"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 295,
+                                            lineNumber: 338,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "تقرير الجرد (PDF)"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 296,
+                                            lineNumber: 339,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 291,
+                                    lineNumber: 334,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/products.js",
-                            lineNumber: 273,
+                            lineNumber: 316,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/products.js",
-                    lineNumber: 263,
+                    lineNumber: 306,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2807,7 +2852,7 @@ function ProductsPage() {
                             color: "bg-sky-50 text-sky-700 border-sky-100"
                         }, void 0, false, {
                             fileName: "[project]/pages/products.js",
-                            lineNumber: 304,
+                            lineNumber: 347,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StatCard, {
@@ -2817,7 +2862,7 @@ function ProductsPage() {
                             color: "bg-emerald-50 text-emerald-700 border-emerald-100"
                         }, void 0, false, {
                             fileName: "[project]/pages/products.js",
-                            lineNumber: 310,
+                            lineNumber: 353,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StatCard, {
@@ -2827,13 +2872,13 @@ function ProductsPage() {
                             color: "bg-amber-50 text-amber-700 border-amber-100"
                         }, void 0, false, {
                             fileName: "[project]/pages/products.js",
-                            lineNumber: 316,
+                            lineNumber: 359,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/products.js",
-                    lineNumber: 303,
+                    lineNumber: 346,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2847,7 +2892,7 @@ function ProductsPage() {
                                     children: "🔎"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 327,
+                                    lineNumber: 370,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2858,13 +2903,13 @@ function ProductsPage() {
                                     onChange: (e)=>setSearch(e.target.value)
                                 }, void 0, false, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 328,
+                                    lineNumber: 371,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/products.js",
-                            lineNumber: 326,
+                            lineNumber: 369,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2878,7 +2923,7 @@ function ProductsPage() {
                                             children: "الفئة:"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 339,
+                                            lineNumber: 382,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -2890,18 +2935,18 @@ function ProductsPage() {
                                                     children: cat === "all" ? "كل الفئات" : cat
                                                 }, cat, false, {
                                                     fileName: "[project]/pages/products.js",
-                                                    lineNumber: 346,
+                                                    lineNumber: 389,
                                                     columnNumber: 19
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 340,
+                                            lineNumber: 383,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 338,
+                                    lineNumber: 381,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2912,7 +2957,7 @@ function ProductsPage() {
                                             children: "الشركة:"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 354,
+                                            lineNumber: 397,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -2924,18 +2969,18 @@ function ProductsPage() {
                                                     children: c === "all" ? "كل الشركات" : c
                                                 }, c, false, {
                                                     fileName: "[project]/pages/products.js",
-                                                    lineNumber: 361,
+                                                    lineNumber: 404,
                                                     columnNumber: 19
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 355,
+                                            lineNumber: 398,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 353,
+                                    lineNumber: 396,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2946,7 +2991,7 @@ function ProductsPage() {
                                             children: "ترتيب:"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 369,
+                                            lineNumber: 412,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -2959,7 +3004,7 @@ function ProductsPage() {
                                                     children: "اسم المنتج (تصاعدي)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/products.js",
-                                                    lineNumber: 375,
+                                                    lineNumber: 418,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2967,19 +3012,19 @@ function ProductsPage() {
                                                     children: "اسم المنتج (تنازلي)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/products.js",
-                                                    lineNumber: 376,
+                                                    lineNumber: 419,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 370,
+                                            lineNumber: 413,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 368,
+                                    lineNumber: 411,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2991,7 +3036,7 @@ function ProductsPage() {
                                             label: "كمية منخفضة"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 382,
+                                            lineNumber: 425,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FilterChip, {
@@ -3000,7 +3045,7 @@ function ProductsPage() {
                                             label: "قرب انتهاء الصلاحية"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 387,
+                                            lineNumber: 430,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FilterChip, {
@@ -3009,25 +3054,25 @@ function ProductsPage() {
                                             label: "منتهي الصلاحية"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 392,
+                                            lineNumber: 435,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 381,
+                                    lineNumber: 424,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/products.js",
-                            lineNumber: 337,
+                            lineNumber: 380,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/products.js",
-                    lineNumber: 325,
+                    lineNumber: 368,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3044,7 +3089,7 @@ function ProductsPage() {
                                             children: "الاسم"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 406,
+                                            lineNumber: 449,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -3052,7 +3097,7 @@ function ProductsPage() {
                                             children: "الكود"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 407,
+                                            lineNumber: 450,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -3060,7 +3105,7 @@ function ProductsPage() {
                                             children: "الفئة"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 408,
+                                            lineNumber: 451,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -3068,7 +3113,7 @@ function ProductsPage() {
                                             children: "الشركة"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 409,
+                                            lineNumber: 452,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -3076,7 +3121,7 @@ function ProductsPage() {
                                             children: "سعر الشراء"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 410,
+                                            lineNumber: 453,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -3084,7 +3129,7 @@ function ProductsPage() {
                                             children: "سعر البيع"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 411,
+                                            lineNumber: 454,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -3092,7 +3137,7 @@ function ProductsPage() {
                                             children: "المخزون"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 412,
+                                            lineNumber: 455,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -3100,7 +3145,7 @@ function ProductsPage() {
                                             children: "ربح/وحدة"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 413,
+                                            lineNumber: 456,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -3108,7 +3153,7 @@ function ProductsPage() {
                                             children: "إجمالي الربح"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 414,
+                                            lineNumber: 457,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -3116,7 +3161,7 @@ function ProductsPage() {
                                             children: "الصلاحية"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 415,
+                                            lineNumber: 458,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -3124,7 +3169,7 @@ function ProductsPage() {
                                             children: "تحذيرات"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 416,
+                                            lineNumber: 459,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -3132,18 +3177,18 @@ function ProductsPage() {
                                             children: "إجراءات"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 417,
+                                            lineNumber: 460,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 405,
+                                    lineNumber: 448,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/pages/products.js",
-                                lineNumber: 404,
+                                lineNumber: 447,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -3164,7 +3209,7 @@ function ProductsPage() {
                                                     children: p.name
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/products.js",
-                                                    lineNumber: 438,
+                                                    lineNumber: 481,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3172,7 +3217,7 @@ function ProductsPage() {
                                                     children: p.sku
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/products.js",
-                                                    lineNumber: 441,
+                                                    lineNumber: 484,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3180,7 +3225,7 @@ function ProductsPage() {
                                                     children: p.category
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/products.js",
-                                                    lineNumber: 442,
+                                                    lineNumber: 485,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3188,7 +3233,7 @@ function ProductsPage() {
                                                     children: p.company
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/products.js",
-                                                    lineNumber: 443,
+                                                    lineNumber: 486,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3199,7 +3244,7 @@ function ProductsPage() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/pages/products.js",
-                                                    lineNumber: 444,
+                                                    lineNumber: 487,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3210,15 +3255,15 @@ function ProductsPage() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/pages/products.js",
-                                                    lineNumber: 447,
+                                                    lineNumber: 490,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                    className: `p-3 ${p.quantity <= p.minQty ? "text-red-600 font-bold" : "text-slate-800"}`,
+                                                    className: `p-3 ${(p.quantity || 0) <= (p.minQty || 0) ? "text-red-600 font-bold" : "text-slate-800"}`,
                                                     children: p.quantity
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/products.js",
-                                                    lineNumber: 450,
+                                                    lineNumber: 493,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3229,7 +3274,7 @@ function ProductsPage() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/pages/products.js",
-                                                    lineNumber: 459,
+                                                    lineNumber: 502,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3240,7 +3285,7 @@ function ProductsPage() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/pages/products.js",
-                                                    lineNumber: 462,
+                                                    lineNumber: 505,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3248,7 +3293,7 @@ function ProductsPage() {
                                                     children: expiryText
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/products.js",
-                                                    lineNumber: 465,
+                                                    lineNumber: 508,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3257,12 +3302,12 @@ function ProductsPage() {
                                                         warnings: warnings
                                                     }, void 0, false, {
                                                         fileName: "[project]/pages/products.js",
-                                                        lineNumber: 468,
+                                                        lineNumber: 511,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/products.js",
-                                                    lineNumber: 467,
+                                                    lineNumber: 510,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3276,7 +3321,7 @@ function ProductsPage() {
                                                                 children: "🔍 عرض"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/pages/products.js",
-                                                                lineNumber: 473,
+                                                                lineNumber: 516,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3285,8 +3330,8 @@ function ProductsPage() {
                                                                 children: "📦 مخزون"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/pages/products.js",
-                                                                lineNumber: 480,
-                                                                columnNumber: 27
+                                                                lineNumber: 523,
+                                                                columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                                 onClick: ()=>router.push(`/products/edit/${p.id}`),
@@ -3294,7 +3339,7 @@ function ProductsPage() {
                                                                 children: "✏️ تعديل"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/pages/products.js",
-                                                                lineNumber: 489,
+                                                                lineNumber: 532,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3303,24 +3348,24 @@ function ProductsPage() {
                                                                 children: "🗑️ حذف"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/pages/products.js",
-                                                                lineNumber: 498,
+                                                                lineNumber: 541,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/pages/products.js",
-                                                        lineNumber: 472,
+                                                        lineNumber: 515,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/products.js",
-                                                    lineNumber: 471,
+                                                    lineNumber: 514,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, p.id, true, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 434,
+                                            lineNumber: 477,
                                             columnNumber: 19
                                         }, this);
                                     }),
@@ -3331,29 +3376,29 @@ function ProductsPage() {
                                             children: "لا توجد نتائج مطابقة للبحث / الفلاتر الحالية…"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/products.js",
-                                            lineNumber: 512,
+                                            lineNumber: 555,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/pages/products.js",
-                                        lineNumber: 511,
+                                        lineNumber: 554,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/products.js",
-                                lineNumber: 421,
+                                lineNumber: 464,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/pages/products.js",
-                        lineNumber: 403,
+                        lineNumber: 446,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/pages/products.js",
-                    lineNumber: 402,
+                    lineNumber: 445,
                     columnNumber: 9
                 }, this),
                 showDetails && selectedProduct && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Modal$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
@@ -3371,7 +3416,7 @@ function ProductsPage() {
                                         children: "الاسم:"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/products.js",
-                                        lineNumber: 530,
+                                        lineNumber: 573,
                                         columnNumber: 18
                                     }, this),
                                     " ",
@@ -3379,7 +3424,7 @@ function ProductsPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/products.js",
-                                lineNumber: 530,
+                                lineNumber: 573,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3388,7 +3433,7 @@ function ProductsPage() {
                                         children: "الكود:"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/products.js",
-                                        lineNumber: 531,
+                                        lineNumber: 574,
                                         columnNumber: 18
                                     }, this),
                                     " ",
@@ -3396,7 +3441,7 @@ function ProductsPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/products.js",
-                                lineNumber: 531,
+                                lineNumber: 574,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3405,7 +3450,7 @@ function ProductsPage() {
                                         children: "الفئة:"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/products.js",
-                                        lineNumber: 532,
+                                        lineNumber: 575,
                                         columnNumber: 18
                                     }, this),
                                     " ",
@@ -3413,7 +3458,7 @@ function ProductsPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/products.js",
-                                lineNumber: 532,
+                                lineNumber: 575,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3422,7 +3467,7 @@ function ProductsPage() {
                                         children: "الشركة:"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/products.js",
-                                        lineNumber: 533,
+                                        lineNumber: 576,
                                         columnNumber: 18
                                     }, this),
                                     " ",
@@ -3430,7 +3475,7 @@ function ProductsPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/products.js",
-                                lineNumber: 533,
+                                lineNumber: 576,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3439,7 +3484,7 @@ function ProductsPage() {
                                         children: "سعر الشراء:"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/products.js",
-                                        lineNumber: 534,
+                                        lineNumber: 577,
                                         columnNumber: 18
                                     }, this),
                                     " ",
@@ -3448,7 +3493,7 @@ function ProductsPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/products.js",
-                                lineNumber: 534,
+                                lineNumber: 577,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3457,7 +3502,7 @@ function ProductsPage() {
                                         children: "سعر البيع:"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/products.js",
-                                        lineNumber: 535,
+                                        lineNumber: 578,
                                         columnNumber: 18
                                     }, this),
                                     " ",
@@ -3466,7 +3511,7 @@ function ProductsPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/products.js",
-                                lineNumber: 535,
+                                lineNumber: 578,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3475,7 +3520,7 @@ function ProductsPage() {
                                         children: "الكمية:"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/products.js",
-                                        lineNumber: 536,
+                                        lineNumber: 579,
                                         columnNumber: 18
                                     }, this),
                                     " ",
@@ -3483,7 +3528,7 @@ function ProductsPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/products.js",
-                                lineNumber: 536,
+                                lineNumber: 579,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3492,7 +3537,7 @@ function ProductsPage() {
                                         children: "الحد الأدنى:"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/products.js",
-                                        lineNumber: 537,
+                                        lineNumber: 580,
                                         columnNumber: 18
                                     }, this),
                                     " ",
@@ -3500,7 +3545,7 @@ function ProductsPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/products.js",
-                                lineNumber: 537,
+                                lineNumber: 580,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3509,7 +3554,7 @@ function ProductsPage() {
                                         children: "تاريخ الانتهاء:"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/products.js",
-                                        lineNumber: 538,
+                                        lineNumber: 581,
                                         columnNumber: 18
                                     }, this),
                                     " ",
@@ -3517,7 +3562,7 @@ function ProductsPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/products.js",
-                                lineNumber: 538,
+                                lineNumber: 581,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3527,7 +3572,7 @@ function ProductsPage() {
                                         children: "التحذيرات:"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/products.js",
-                                        lineNumber: 541,
+                                        lineNumber: 584,
                                         columnNumber: 17
                                     }, this),
                                     getWarnings(selectedProduct).length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -3536,36 +3581,36 @@ function ProductsPage() {
                                                 children: w
                                             }, i, false, {
                                                 fileName: "[project]/pages/products.js",
-                                                lineNumber: 545,
+                                                lineNumber: 588,
                                                 columnNumber: 23
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/pages/products.js",
-                                        lineNumber: 543,
+                                        lineNumber: 586,
                                         columnNumber: 19
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                         className: "mt-1 text-xs text-emerald-600",
                                         children: "لا توجد تحذيرات على هذا المنتج."
                                     }, void 0, false, {
                                         fileName: "[project]/pages/products.js",
-                                        lineNumber: 549,
+                                        lineNumber: 592,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/products.js",
-                                lineNumber: 540,
+                                lineNumber: 583,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/pages/products.js",
-                        lineNumber: 529,
+                        lineNumber: 572,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/pages/products.js",
-                    lineNumber: 523,
+                    lineNumber: 566,
                     columnNumber: 11
                 }, this),
                 showAddModal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Modal$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
@@ -3589,7 +3634,7 @@ function ProductsPage() {
                                         })
                                 }, void 0, false, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 567,
+                                    lineNumber: 610,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3603,7 +3648,7 @@ function ProductsPage() {
                                         })
                                 }, void 0, false, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 576,
+                                    lineNumber: 619,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3617,7 +3662,7 @@ function ProductsPage() {
                                         })
                                 }, void 0, false, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 585,
+                                    lineNumber: 628,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3631,7 +3676,7 @@ function ProductsPage() {
                                         })
                                 }, void 0, false, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 594,
+                                    lineNumber: 637,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3645,7 +3690,7 @@ function ProductsPage() {
                                         })
                                 }, void 0, false, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 603,
+                                    lineNumber: 646,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3659,7 +3704,7 @@ function ProductsPage() {
                                         })
                                 }, void 0, false, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 615,
+                                    lineNumber: 658,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3673,7 +3718,7 @@ function ProductsPage() {
                                         })
                                 }, void 0, false, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 624,
+                                    lineNumber: 667,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -3687,7 +3732,7 @@ function ProductsPage() {
                                         })
                                 }, void 0, false, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 633,
+                                    lineNumber: 676,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3702,18 +3747,18 @@ function ProductsPage() {
                                             })
                                     }, void 0, false, {
                                         fileName: "[project]/pages/products.js",
-                                        lineNumber: 643,
+                                        lineNumber: 686,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/pages/products.js",
-                                    lineNumber: 642,
+                                    lineNumber: 685,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/products.js",
-                            lineNumber: 566,
+                            lineNumber: 609,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3722,28 +3767,28 @@ function ProductsPage() {
                             children: "الحقول المعلمة بـ * مطلوبة. يمكن تعديل باقي التفاصيل لاحقًا من شاشة تعديل المنتج."
                         }, void 0, false, {
                             fileName: "[project]/pages/products.js",
-                            lineNumber: 653,
+                            lineNumber: 696,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/products.js",
-                    lineNumber: 560,
+                    lineNumber: 603,
                     columnNumber: 11
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/pages/products.js",
-            lineNumber: 260,
+            lineNumber: 303,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/pages/products.js",
-        lineNumber: 259,
+        lineNumber: 302,
         columnNumber: 5
     }, this);
 }
-_s(ProductsPage, "+BnEYP6xgB8lhe/la68w8ltJh4Q=", false, function() {
+_s(ProductsPage, "LzQhYCvpJVD49X2i1avHU9Nc6cc=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$context$2f$AuthContext$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useAuth"],
@@ -3764,7 +3809,7 @@ function StatCard({ label, value, icon, color }) {
                         children: label
                     }, void 0, false, {
                         fileName: "[project]/pages/products.js",
-                        lineNumber: 668,
+                        lineNumber: 711,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3772,13 +3817,13 @@ function StatCard({ label, value, icon, color }) {
                         children: value
                     }, void 0, false, {
                         fileName: "[project]/pages/products.js",
-                        lineNumber: 669,
+                        lineNumber: 712,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pages/products.js",
-                lineNumber: 667,
+                lineNumber: 710,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3786,13 +3831,13 @@ function StatCard({ label, value, icon, color }) {
                 children: icon
             }, void 0, false, {
                 fileName: "[project]/pages/products.js",
-                lineNumber: 671,
+                lineNumber: 714,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/pages/products.js",
-        lineNumber: 666,
+        lineNumber: 709,
         columnNumber: 5
     }, this);
 }
@@ -3806,10 +3851,651 @@ function FilterChip({ active, onClick, label }) {
         children: label
     }, void 0, false, {
         fileName: "[project]/pages/products.js",
-        lineNumber: 681,
+        lineNumber: 724,
         columnNumber: 5
     }, this);
 } // // pages/products.js
+ // import { useState, useMemo } from "react";
+ // import { useRouter } from "next/router";
+ // import Layout from "../components/Layout";
+ // import { useAuth } from "../context/AuthContext";
+ // import { useInventory } from "../context/InventoryContext";
+ // import WarningIndicator from "../components/WarningIndicator";
+ // import Modal from "../components/Modal";
+ // export default function ProductsPage() {
+ //   const router = useRouter();
+ //   const { user, hasPermission } = useAuth();
+ //   const {
+ //     products,
+ //     setProducts,
+ //     getWarnings,
+ //     printInventoryReport,
+ //   } = useInventory();
+ //   // بحث وفلترة وترتيب
+ //   const [search, setSearch] = useState("");
+ //   const [categoryFilter, setCategoryFilter] = useState("all");
+ //   const [companyFilter, setCompanyFilter] = useState("all");
+ //   const [sortByName, setSortByName] = useState("asc");
+ //   const [filterLowStock, setFilterLowStock] = useState(false);
+ //   const [filterNearExpiry, setFilterNearExpiry] = useState(false);
+ //   const [filterExpired, setFilterExpired] = useState(false);
+ //   // عرض تفاصيل
+ //   const [showDetails, setShowDetails] = useState(false);
+ //   const [selectedProduct, setSelectedProduct] = useState(null);
+ //   // إضافة منتج
+ //   const [showAddModal, setShowAddModal] = useState(false);
+ //   const [newProduct, setNewProduct] = useState({
+ //     name: "",
+ //     sku: "",
+ //     category: "",
+ //     company: "",
+ //     purchasePrice: "",
+ //     price: "",
+ //     quantity: "",
+ //     minQty: 5,
+ //     expiryDate: "",
+ //   });
+ //   if (!hasPermission(["admin", "pharmacist"])) {
+ //     return (
+ //       <div dir="rtl" className="flex items-center justify-center min-h-screen p-6 bg-slate-50">
+ //         <div className="px-6 py-4 text-sm font-medium text-red-700 border border-red-200 bg-red-50 rounded-xl">
+ //           ⚠️ لا يمكنك دخول هذه الصفحة. الرجاء التواصل مع مدير النظام لتحديث صلاحياتك.
+ //         </div>
+ //       </div>
+ //     );
+ //   }
+ //   // الفئات والشركات المتاحة للفلاتر
+ //   const categories = [
+ //     "all",
+ //     ...new Set(products.map((p) => p.category).filter(Boolean)),
+ //   ];
+ //   const companies = [
+ //     "all",
+ //     ...new Set(products.map((p) => p.company).filter(Boolean)),
+ //   ];
+ //   // إحصائيات سريعة للـ Dashboard
+ //   const stats = useMemo(() => {
+ //     const totalProducts = products.length;
+ //     const totalQty = products.reduce(
+ //       (sum, p) => sum + (Number(p.quantity) || 0),
+ //       0
+ //     );
+ //     const stockValue = products.reduce(
+ //       (sum, p) =>
+ //         sum +
+ //         (Number(p.price) || 0) * (Number(p.quantity) || 0),
+ //       0
+ //     );
+ //     return {
+ //       totalProducts,
+ //       totalQty,
+ //       stockValue,
+ //     };
+ //   }, [products]);
+ //   // فلترة المنتجات
+ //   const filteredProducts = useMemo(() => {
+ //     let result = [...products];
+ //     if (search.trim() !== "") {
+ //       result = result.filter((p) =>
+ //         p.name.toLowerCase().includes(search.toLowerCase())
+ //       );
+ //     }
+ //     if (categoryFilter !== "all") {
+ //       result = result.filter((p) => p.category === categoryFilter);
+ //     }
+ //     if (companyFilter !== "all") {
+ //       result = result.filter((p) => p.company === companyFilter);
+ //     }
+ //     if (filterLowStock) {
+ //       result = result.filter((p) => p.quantity <= p.minQty);
+ //     }
+ //     if (filterNearExpiry) {
+ //       result = result.filter((p) => {
+ //         if (!p.expiryDate) return false;
+ //         const days =
+ //           (new Date(p.expiryDate) - new Date()) /
+ //           (1000 * 60 * 60 * 24);
+ //         return days > 0 && days <= 30;
+ //       });
+ //     }
+ //     if (filterExpired) {
+ //       result = result.filter((p) => {
+ //         if (!p.expiryDate) return false;
+ //         const days =
+ //           (new Date(p.expiryDate) - new Date()) /
+ //           (1000 * 60 * 60 * 24);
+ //         return days < 0;
+ //       });
+ //     }
+ //     result.sort((a, b) => {
+ //       if (sortByName === "asc") return a.name.localeCompare(b.name);
+ //       return b.name.localeCompare(a.name);
+ //     });
+ //     return result;
+ //   }, [
+ //     search,
+ //     categoryFilter,
+ //     companyFilter,
+ //     sortByName,
+ //     filterLowStock,
+ //     filterNearExpiry,
+ //     filterExpired,
+ //     products,
+ //   ]);
+ //   const openDetails = (p) => {
+ //     setSelectedProduct(p);
+ //     setShowDetails(true);
+ //   };
+ //   const deleteProduct = (id) => {
+ //     const ok = confirm("هل أنت متأكد من حذف المنتج؟");
+ //     if (!ok) return;
+ //     setProducts((prev) => prev.filter((p) => p.id !== id));
+ //   };
+ //   const handleAddProduct = () => {
+ //     if (!newProduct.name || !newProduct.price) {
+ //       alert("الاسم والسعر مطلوبان على الأقل");
+ //       return;
+ //     }
+ //     const id = Date.now();
+ //     setProducts((prev) => [
+ //       ...prev,
+ //       {
+ //         id,
+ //         ...newProduct,
+ //         purchasePrice: Number(newProduct.purchasePrice) || 0,
+ //         price: Number(newProduct.price) || 0,
+ //         quantity: Number(newProduct.quantity) || 0,
+ //         minQty: Number(newProduct.minQty) || 0,
+ //       },
+ //     ]);
+ //     setShowAddModal(false);
+ //     setNewProduct({
+ //       name: "",
+ //       sku: "",
+ //       category: "",
+ //       company: "",
+ //       purchasePrice: "",
+ //       price: "",
+ //       quantity: "",
+ //       minQty: 5,
+ //       expiryDate: "",
+ //     });
+ //   };
+ //   const printProducts = () => {
+ //     const w = window.open("", "", "width=900,height=700");
+ //     w.document.write(`
+ //       <html dir="rtl" lang="ar">
+ //       <head>
+ //         <title>تقرير المنتجات</title>
+ //         <style>
+ //           body { font-family:'Tajawal',sans-serif; padding:20px; }
+ //           h2 { text-align:center; margin-bottom: 10px; }
+ //           p.info { text-align:center; font-size: 12px; color:#64748b; margin:0; }
+ //           table { width:100%; border-collapse:collapse; margin-top:20px; }
+ //           th, td { border:1px solid #ddd; padding:6px; font-size:12px; text-align:right; }
+ //           th { background:#f1f5f9; }
+ //         </style>
+ //       </head>
+ //       <body>
+ //         <h2>📄 تقرير المنتجات</h2>
+ //         <p class="info">عدد المنتجات: ${products.length} | تم التوليد في: ${new Date().toLocaleString("ar-EG")}</p>
+ //         <table>
+ //           <thead>
+ //             <tr>
+ //               <th>الاسم</th>
+ //               <th>الكود</th>
+ //               <th>الفئة</th>
+ //               <th>الشركة</th>
+ //               <th>سعر الشراء</th>
+ //               <th>سعر البيع</th>
+ //               <th>الكمية</th>
+ //               <th>ربح/وحدة</th>
+ //               <th>إجمالي الربح</th>
+ //               <th>الصلاحية</th>
+ //             </tr>
+ //           </thead>
+ //           <tbody>
+ //             ${products
+ //               .map((p) => {
+ //                 const unitProfit =
+ //                   (p.price || 0) - (p.purchasePrice || 0);
+ //                 const totalProfit = unitProfit * (p.quantity || 0);
+ //                 return `
+ //                   <tr>
+ //                     <td>${p.name}</td>
+ //                     <td>${p.sku || ""}</td>
+ //                     <td>${p.category || ""}</td>
+ //                     <td>${p.company || ""}</td>
+ //                     <td>${p.purchasePrice || 0}</td>
+ //                     <td>${p.price || 0}</td>
+ //                     <td>${p.quantity || 0}</td>
+ //                     <td>${unitProfit.toFixed(2)}</td>
+ //                     <td>${totalProfit.toFixed(2)}</td>
+ //                     <td>${p.expiryDate || ""}</td>
+ //                   </tr>
+ //                 `;
+ //               })
+ //               .join("")}
+ //           </tbody>
+ //         </table>
+ //         <script>window.print()</script>
+ //       </body>
+ //       </html>
+ //     `);
+ //     w.document.close();
+ //   };
+ //   return (
+ //     <Layout user={user} title="إدارة المنتجات">
+ //       <div dir="rtl" className="space-y-6">
+ //         {/* رأس الصفحة + الإحصائيات + الأزرار */}
+ //         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+ //           <div className="space-y-1">
+ //             <h1 className="flex items-center gap-2 text-2xl font-bold text-slate-800">
+ //               💊 إدارة المنتجات
+ //             </h1>
+ //             <p className="text-sm text-slate-500">
+ //               متابعة مخزون الأدوية، هوامش الربح، وتحذيرات الصلاحية من واجهة واحدة.
+ //             </p>
+ //           </div>
+ //           <div className="flex flex-wrap gap-2">
+ //             <button
+ //               onClick={() => setShowAddModal(true)}
+ //               className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-lg shadow-sm bg-emerald-600 hover:bg-emerald-700"
+ //             >
+ //               <span>➕</span>
+ //               <span>إضافة منتج</span>
+ //             </button>
+ //             <button
+ //               onClick={printProducts}
+ //               className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg shadow-sm hover:bg-indigo-700"
+ //             >
+ //               <span>🖨️</span>
+ //               <span>طباعة تقرير</span>
+ //             </button>
+ //             {printInventoryReport && (
+ //               <button
+ //                 onClick={printInventoryReport}
+ //                 className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-indigo-700 border border-indigo-100 rounded-lg bg-indigo-50 hover:bg-indigo-100"
+ //               >
+ //                 <span>📥</span>
+ //                 <span>تقرير الجرد (PDF)</span>
+ //               </button>
+ //             )}
+ //           </div>
+ //         </div>
+ //         {/* كروت الإحصائيات */}
+ //         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+ //           <StatCard
+ //             label="إجمالي المنتجات"
+ //             value={stats.totalProducts.toLocaleString("ar-EG")}
+ //             icon="📦"
+ //             color="bg-sky-50 text-sky-700 border-sky-100"
+ //           />
+ //           <StatCard
+ //             label="إجمالي الكمية بالمخزون"
+ //             value={stats.totalQty.toLocaleString("ar-EG")}
+ //             icon="📊"
+ //             color="bg-emerald-50 text-emerald-700 border-emerald-100"
+ //           />
+ //           <StatCard
+ //             label="قيمة المخزون (تقريبية)"
+ //             value={`${stats.stockValue.toFixed(2).toLocaleString("en-US")} ر.س`}
+ //             icon="💰"
+ //             color="bg-amber-50 text-amber-700 border-amber-100"
+ //           />
+ //         </div>
+ //         {/* الفلاتر والبحث */}
+ //         <div className="p-4 space-y-4 bg-white border shadow-sm rounded-2xl">
+ //           <div className="relative">
+ //             <span className="absolute text-slate-400 left-3 top-2.5">🔎</span>
+ //             <input
+ //               type="text"
+ //               placeholder="ابحث عن منتج بالاسم، الكود، أو الشركة…"
+ //               className="w-full p-3 pr-3 text-sm border rounded-xl pl-9 border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/60 focus:border-emerald-500"
+ //               value={search}
+ //               onChange={(e) => setSearch(e.target.value)}
+ //             />
+ //           </div>
+ //           <div className="flex flex-wrap items-center gap-3 text-sm">
+ //             <div className="flex flex-wrap items-center gap-2">
+ //               <span className="text-xs text-slate-500">الفئة:</span>
+ //               <select
+ //                 className="p-2 text-xs border rounded-lg border-slate-200 bg-slate-50"
+ //                 value={categoryFilter}
+ //                 onChange={(e) => setCategoryFilter(e.target.value)}
+ //               >
+ //                 {categories.map((cat) => (
+ //                   <option key={cat} value={cat}>
+ //                     {cat === "all" ? "كل الفئات" : cat}
+ //                   </option>
+ //                 ))}
+ //               </select>
+ //             </div>
+ //             <div className="flex flex-wrap items-center gap-2">
+ //               <span className="text-xs text-slate-500">الشركة:</span>
+ //               <select
+ //                 className="p-2 text-xs border rounded-lg border-slate-200 bg-slate-50"
+ //                 value={companyFilter}
+ //                 onChange={(e) => setCompanyFilter(e.target.value)}
+ //               >
+ //                 {companies.map((c) => (
+ //                   <option key={c} value={c}>
+ //                     {c === "all" ? "كل الشركات" : c}
+ //                   </option>
+ //                 ))}
+ //               </select>
+ //             </div>
+ //             <div className="flex flex-wrap items-center gap-2">
+ //               <span className="text-xs text-slate-500">ترتيب:</span>
+ //               <select
+ //                 className="p-2 text-xs border rounded-lg border-slate-200 bg-slate-50"
+ //                 value={sortByName}
+ //                 onChange={(e) => setSortByName(e.target.value)}
+ //               >
+ //                 <option value="asc">اسم المنتج (تصاعدي)</option>
+ //                 <option value="desc">اسم المنتج (تنازلي)</option>
+ //               </select>
+ //             </div>
+ //             {/* فلاتر حالة المخزون والصلاحية */}
+ //             <div className="flex flex-wrap items-center gap-2 mt-2 md:mt-0">
+ //               <FilterChip
+ //                 active={filterLowStock}
+ //                 onClick={() => setFilterLowStock(!filterLowStock)}
+ //                 label="كمية منخفضة"
+ //               />
+ //               <FilterChip
+ //                 active={filterNearExpiry}
+ //                 onClick={() => setFilterNearExpiry(!filterNearExpiry)}
+ //                 label="قرب انتهاء الصلاحية"
+ //               />
+ //               <FilterChip
+ //                 active={filterExpired}
+ //                 onClick={() => setFilterExpired(!filterExpired)}
+ //                 label="منتهي الصلاحية"
+ //               />
+ //             </div>
+ //           </div>
+ //         </div>
+ //         {/* جدول المنتجات */}
+ //         <div className="overflow-x-auto bg-white border shadow-sm rounded-2xl">
+ //           <table className="w-full text-sm text-right min-w-[980px]">
+ //             <thead className="text-xs uppercase border-b bg-slate-50 text-slate-500">
+ //               <tr>
+ //                 <th className="p-3 font-medium">الاسم</th>
+ //                 <th className="p-3 font-medium">الكود</th>
+ //                 <th className="p-3 font-medium">الفئة</th>
+ //                 <th className="p-3 font-medium">الشركة</th>
+ //                 <th className="p-3 font-medium">سعر الشراء</th>
+ //                 <th className="p-3 font-medium">سعر البيع</th>
+ //                 <th className="p-3 font-medium">المخزون</th>
+ //                 <th className="p-3 font-medium">ربح/وحدة</th>
+ //                 <th className="p-3 font-medium">إجمالي الربح</th>
+ //                 <th className="p-3 font-medium">الصلاحية</th>
+ //                 <th className="p-3 font-medium text-center">تحذيرات</th>
+ //                 <th className="p-3 font-medium text-center">إجراءات</th>
+ //               </tr>
+ //             </thead>
+ //             <tbody>
+ //               {filteredProducts.map((p) => {
+ //                 const warnings = getWarnings(p);
+ //                 const unitProfit =
+ //                   (p.price || 0) - (p.purchasePrice || 0);
+ //                 const totalProfit = unitProfit * (p.quantity || 0);
+ //                 let expiryText = p.expiryDate || "-";
+ //                 if (warnings.includes("❌ المنتج منتهي الصلاحية!")) {
+ //                   expiryText = "منتهي";
+ //                 }
+ //                 return (
+ //                   <tr
+ //                     key={p.id}
+ //                     className="transition-colors border-t border-slate-100 even:bg-slate-50/40 hover:bg-slate-100/60"
+ //                   >
+ //                     <td className="p-3 font-medium text-slate-800">
+ //                       {p.name}
+ //                     </td>
+ //                     <td className="p-3 text-slate-600">{p.sku}</td>
+ //                     <td className="p-3 text-slate-600">{p.category}</td>
+ //                     <td className="p-3 text-slate-600">{p.company}</td>
+ //                     <td className="p-3 text-slate-700">
+ //                       {p.purchasePrice || 0} ر.س
+ //                     </td>
+ //                     <td className="p-3 text-slate-700">
+ //                       {p.price || 0} ر.س
+ //                     </td>
+ //                     <td
+ //                       className={`p-3 ${
+ //                         p.quantity <= p.minQty
+ //                           ? "text-red-600 font-bold"
+ //                           : "text-slate-800"
+ //                       }`}
+ //                     >
+ //                       {p.quantity}
+ //                     </td>
+ //                     <td className="p-3 text-slate-700">
+ //                       {unitProfit.toFixed(2)} ر.س
+ //                     </td>
+ //                     <td className="p-3 text-slate-700">
+ //                       {totalProfit.toFixed(2)} ر.س
+ //                     </td>
+ //                     <td className="p-3 text-slate-700">{expiryText}</td>
+ //                     <td className="p-3 text-center">
+ //                       <WarningIndicator warnings={warnings} />
+ //                     </td>
+ //                     <td className="p-3 text-center">
+ //                       <div className="flex flex-wrap justify-center gap-1">
+ //                         <button
+ //                           onClick={() => openDetails(p)}
+ //                           className="px-3 py-1 text-xs font-medium text-indigo-700 rounded-lg bg-indigo-50 hover:bg-indigo-100"
+ //                         >
+ //                           🔍 عرض
+ //                         </button>
+ //                           <button
+ //                             onClick={() =>
+ //                               router.push(`/inventory?product=${p.id}`)
+ //                             }
+ //                             className="px-3 py-1 text-xs font-medium text-blue-700 rounded-lg bg-blue-50 hover:bg-blue-100"
+ //                           >
+ //                           📦 مخزون
+ //                         </button>
+ //                         <button
+ //                           onClick={() =>
+ //                             router.push(`/products/edit/${p.id}`)
+ //                           }
+ //                           className="px-3 py-1 text-xs font-medium rounded-lg text-amber-700 bg-amber-50 hover:bg-amber-100"
+ //                         >
+ //                           ✏️ تعديل
+ //                         </button>
+ //                         <button
+ //                           onClick={() => deleteProduct(p.id)}
+ //                           className="px-3 py-1 text-xs font-medium text-red-700 rounded-lg bg-red-50 hover:bg-red-100"
+ //                         >
+ //                           🗑️ حذف
+ //                         </button>
+ //                       </div>
+ //                     </td>
+ //                   </tr>
+ //                 );
+ //               })}
+ //               {!filteredProducts.length && (
+ //                 <tr>
+ //                   <td colSpan={12} className="p-6 text-sm text-center text-slate-400">
+ //                     لا توجد نتائج مطابقة للبحث / الفلاتر الحالية…
+ //                   </td>
+ //                 </tr>
+ //               )}
+ //             </tbody>
+ //           </table>
+ //         </div>
+ //         {/* تفاصيل المنتج */}
+ //         {showDetails && selectedProduct && (
+ //           <Modal
+ //             title="تفاصيل المنتج"
+ //             onClose={() => setShowDetails(false)}
+ //             onConfirm={() => setShowDetails(false)}
+ //             confirmLabel="إغلاق"
+ //           >
+ //             <div className="space-y-2 text-sm" dir="rtl">
+ //               <p><strong>الاسم:</strong> {selectedProduct.name}</p>
+ //               <p><strong>الكود:</strong> {selectedProduct.sku}</p>
+ //               <p><strong>الفئة:</strong> {selectedProduct.category}</p>
+ //               <p><strong>الشركة:</strong> {selectedProduct.company}</p>
+ //               <p><strong>سعر الشراء:</strong> {selectedProduct.purchasePrice || 0} ر.س</p>
+ //               <p><strong>سعر البيع:</strong> {selectedProduct.price || 0} ر.س</p>
+ //               <p><strong>الكمية:</strong> {selectedProduct.quantity}</p>
+ //               <p><strong>الحد الأدنى:</strong> {selectedProduct.minQty}</p>
+ //               <p><strong>تاريخ الانتهاء:</strong> {selectedProduct.expiryDate || "-"}</p>
+ //               <div className="mt-3">
+ //                 <strong>التحذيرات:</strong>
+ //                 {getWarnings(selectedProduct).length ? (
+ //                   <ul className="pr-4 mt-1 text-xs text-red-600 list-disc">
+ //                     {getWarnings(selectedProduct).map((w, i) => (
+ //                       <li key={i}>{w}</li>
+ //                     ))}
+ //                   </ul>
+ //                 ) : (
+ //                   <p className="mt-1 text-xs text-emerald-600">
+ //                     لا توجد تحذيرات على هذا المنتج.
+ //                   </p>
+ //                 )}
+ //               </div>
+ //             </div>
+ //           </Modal>
+ //         )}
+ //         {/* إضافة منتج */}
+ //         {showAddModal && (
+ //           <Modal
+ //             title="إضافة منتج جديد"
+ //             onClose={() => setShowAddModal(false)}
+ //             onConfirm={handleAddProduct}
+ //             confirmLabel="إضافة"
+ //           >
+ //             <div className="grid grid-cols-1 gap-3 text-sm md:grid-cols-2" dir="rtl">
+ //               <input
+ //                 type="text"
+ //                 className="w-full p-2 border rounded-lg border-slate-200"
+ //                 placeholder="اسم المنتج *"
+ //                 value={newProduct.name}
+ //                 onChange={(e) =>
+ //                   setNewProduct({ ...newProduct, name: e.target.value })
+ //                 }
+ //               />
+ //               <input
+ //                 type="text"
+ //                 className="w-full p-2 border rounded-lg border-slate-200"
+ //                 placeholder="الكود SKU"
+ //                 value={newProduct.sku}
+ //                 onChange={(e) =>
+ //                   setNewProduct({ ...newProduct, sku: e.target.value })
+ //                 }
+ //               />
+ //               <input
+ //                 type="text"
+ //                 className="w-full p-2 border rounded-lg border-slate-200"
+ //                 placeholder="الفئة"
+ //                 value={newProduct.category}
+ //                 onChange={(e) =>
+ //                   setNewProduct({ ...newProduct, category: e.target.value })
+ //                 }
+ //               />
+ //               <input
+ //                 type="text"
+ //                 className="w-full p-2 border rounded-lg border-slate-200"
+ //                 placeholder="الشركة"
+ //                 value={newProduct.company}
+ //                 onChange={(e) =>
+ //                   setNewProduct({ ...newProduct, company: e.target.value })
+ //                 }
+ //               />
+ //               <input
+ //                 type="number"
+ //                 className="w-full p-2 border rounded-lg border-slate-200"
+ //                 placeholder="سعر الشراء"
+ //                 value={newProduct.purchasePrice}
+ //                 onChange={(e) =>
+ //                   setNewProduct({
+ //                     ...newProduct,
+ //                     purchasePrice: e.target.value,
+ //                   })
+ //                 }
+ //               />
+ //               <input
+ //                 type="number"
+ //                 className="w-full p-2 border rounded-lg border-slate-200"
+ //                 placeholder="سعر البيع *"
+ //                 value={newProduct.price}
+ //                 onChange={(e) =>
+ //                   setNewProduct({ ...newProduct, price: e.target.value })
+ //                 }
+ //               />
+ //               <input
+ //                 type="number"
+ //                 className="w-full p-2 border rounded-lg border-slate-200"
+ //                 placeholder="الكمية"
+ //                 value={newProduct.quantity}
+ //                 onChange={(e) =>
+ //                   setNewProduct({ ...newProduct, quantity: e.target.value })
+ //                 }
+ //               />
+ //               <input
+ //                 type="number"
+ //                 className="w-full p-2 border rounded-lg border-slate-200"
+ //                 placeholder="الحد الأدنى للتنبيه"
+ //                 value={newProduct.minQty}
+ //                 onChange={(e) =>
+ //                   setNewProduct({ ...newProduct, minQty: e.target.value })
+ //                 }
+ //               />
+ //               <div className="md:col-span-2">
+ //                 <input
+ //                   type="date"
+ //                   className="w-full p-2 border rounded-lg border-slate-200"
+ //                   value={newProduct.expiryDate}
+ //                   onChange={(e) =>
+ //                     setNewProduct({ ...newProduct, expiryDate: e.target.value })
+ //                   }
+ //                 />
+ //               </div>
+ //             </div>
+ //             <p className="mt-2 text-xs text-slate-400" dir="rtl">
+ //               الحقول المعلمة بـ * مطلوبة. يمكن تعديل باقي التفاصيل لاحقًا من شاشة تعديل المنتج.
+ //             </p>
+ //           </Modal>
+ //         )}
+ //       </div>
+ //     </Layout>
+ //   );
+ // }
+ // // بطاقة إحصائية بسيطة
+ // function StatCard({ label, value, icon, color }) {
+ //   return (
+ //     <div className={`flex items-center justify-between p-4 border rounded-2xl ${color}`}>
+ //       <div className="space-y-1">
+ //         <p className="text-xs font-medium text-slate-500">{label}</p>
+ //         <p className="text-lg font-bold">{value}</p>
+ //       </div>
+ //       <div className="flex items-center justify-center w-10 h-10 text-lg rounded-full bg-white/70">
+ //         {icon}
+ //       </div>
+ //     </div>
+ //   );
+ // }
+ // // فلتر كـ "Chip" احترافي
+ // function FilterChip({ active, onClick, label }) {
+ //   return (
+ //     <button
+ //       type="button"
+ //       onClick={onClick}
+ //       className={`px-3 py-1 text-xs rounded-full border transition ${
+ //         active
+ //           ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+ //           : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+ //       }`}
+ //     >
+ //       {label}
+ //     </button>
+ //   );
+ // }
+ // // pages/products.js
  // import { useState, useMemo } from "react";
  // import { useRouter } from "next/router";
  // import Layout from "../components/Layout";
