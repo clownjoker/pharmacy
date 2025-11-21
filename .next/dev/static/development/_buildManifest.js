@@ -1,18 +1,12 @@
 self.__BUILD_MANIFEST = {
-  "/": [
-    "static/chunks/pages/index.js"
-  ],
   "/_error": [
     "static/chunks/pages/_error.js"
-  ],
-  "/cashier": [
-    "static/chunks/pages/cashier.js"
   ],
   "/dashboard": [
     "static/chunks/pages/dashboard.js"
   ],
-  "/profile": [
-    "static/chunks/pages/profile.js"
+  "/products": [
+    "static/chunks/pages/products.js"
   ],
   "/users": [
     "static/chunks/pages/users.js"
