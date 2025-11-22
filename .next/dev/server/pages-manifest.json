@@ -1,8 +1,8 @@
 {
+  "/": "pages/index.js",
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-  "/_error": "pages/_error.js",
-  "/inventory": "pages/inventory.js",
+  "/dashboard": "pages/dashboard.js",
   "/products": "pages/products.js",
-  "/products/edit/[id]": "pages/products/edit/[id].js"
+  "/sales": "pages/sales.js"
 }

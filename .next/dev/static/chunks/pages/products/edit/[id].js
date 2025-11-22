@@ -1,5 +1,5 @@
 __turbopack_load_page_chunks__("/products/edit/[id]", [
-  "static/chunks/node_modules_next_dist_compiled_c629999b._.js",
+  "static/chunks/node_modules_next_dist_compiled_44618872._.js",
   "static/chunks/node_modules_next_dist_shared_lib_4025f6b7._.js",
   "static/chunks/node_modules_next_dist_client_3ede7da4._.js",
   "static/chunks/node_modules_next_dist_6024eba3._.js",
@@ -7,8 +7,9 @@ __turbopack_load_page_chunks__("/products/edit/[id]", [
   "static/chunks/node_modules_react-dom_4411d9bd._.js",
   "static/chunks/node_modules_react-icons_fa_index_mjs_c19690bf._.js",
   "static/chunks/node_modules_react-icons_lib_7cd2a28b._.js",
-  "static/chunks/node_modules_f1be3ba2._.js",
-  "static/chunks/[root-of-the-server]__70a13041._.js",
+  "static/chunks/node_modules_axios_lib_2c8bf6cb._.js",
+  "static/chunks/node_modules_26250cbb._.js",
+  "static/chunks/[root-of-the-server]__c68a7acd._.js",
   "static/chunks/pages_products_edit_[id]_2da965e7.js",
-  "static/chunks/turbopack-pages_products_edit_[id]_e97eeea8.js"
+  "static/chunks/turbopack-pages_products_edit_[id]_de8e9f8e.js"
 ])

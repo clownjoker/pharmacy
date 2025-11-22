@@ -1,6 +1,5 @@
-(globalThis.TURBOPACK_CHUNK_LISTS || (globalThis.TURBOPACK_CHUNK_LISTS = [])).push({
-    script: typeof document === "object" ? document.currentScript : undefined,
-    chunks: [
+__turbopack_load_page_chunks__("/sales", [
+  "static/chunks/[root-of-the-server]__5c8494a5._.js",
   "static/chunks/node_modules_next_dist_compiled_44618872._.js",
   "static/chunks/node_modules_next_dist_shared_lib_4025f6b7._.js",
   "static/chunks/node_modules_next_dist_client_3ede7da4._.js",
@@ -11,7 +10,6 @@
   "static/chunks/node_modules_react-icons_lib_7cd2a28b._.js",
   "static/chunks/node_modules_axios_lib_2c8bf6cb._.js",
   "static/chunks/node_modules_26250cbb._.js",
-  "static/chunks/[root-of-the-server]__c68a7acd._.js"
-],
-    source: "entry"
-});
+  "static/chunks/pages_sales_2da965e7._.js",
+  "static/chunks/turbopack-pages_sales_d7f065a7._.js"
+])
