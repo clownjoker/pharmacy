@@ -1278,7 +1278,531 @@ function Layout({ user, title, children }) {
 "[project]/pages/reports.js [ssr] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
-// pages/reports.js
+// import { useState, useEffect, useMemo } from "react";
+// import Layout from "../components/Layout";
+// import api from "../utils/api";
+// export default function ReportsPage() {
+//   const [activeTab, setActiveTab] = useState("overview");
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState("");
+//   const [overview, setOverview] = useState(null);
+//   const [sales, setSales] = useState([]);
+//   const [stock, setStock] = useState([]);
+//   const [profit, setProfit] = useState([]);
+//   const [alerts, setAlerts] = useState({
+//     expired: [],
+//     lowStock: [],
+//     nearExpiry: []
+//   });
+//   useEffect(() => {
+//     loadReports();
+//   }, []);
+//   const loadReports = async () => {
+//     try {
+//       setLoading(true);
+//       setError("");
+//       const [ov, sa, st, pr, al] = await Promise.all([
+//         api.get("/reports/overview"),
+//         api.get("/reports/sales"),
+//         api.get("/reports/stock"),
+//         api.get("/reports/profit"),
+//         api.get("/reports/alerts"),
+//       ]);
+//       setOverview(ov.data);
+//       setSales(sa.data);
+//       setStock(st.data);
+//       setProfit(pr.data);
+//       setAlerts(al.data);
+//     } catch (err) {
+//       console.error("loadReports error:", err);
+//       setError("فشل تحميل بيانات التقرير");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+//   const format = (n) => Number(n || 0).toLocaleString("ar-SA") + " ر.س";
+//   return (
+//     <Layout title="التقارير">
+//       <div dir="rtl" className="space-y-6">
+//         {/* التبويبات */}
+//         <div className="flex gap-2 p-2 bg-white border rounded-lg shadow-sm">
+//           <Tab id="overview" label="نظرة عامة" active={activeTab} setActive={setActiveTab} />
+//           <Tab id="sales" label="المبيعات" active={activeTab} setActive={setActiveTab} />
+//           <Tab id="stock" label="المخزون" active={activeTab} setActive={setActiveTab} />
+//           <Tab id="profit" label="ربحية المنتجات" active={activeTab} setActive={setActiveTab} />
+//           <Tab id="alerts" label="التنبيهات" active={activeTab} setActive={setActiveTab} />
+//         </div>
+//         {loading && <p className="p-4 text-center">⏳ جاري التحميل…</p>}
+//         {error && (
+//           <div className="p-3 text-center text-red-700 border border-red-200 rounded-md bg-red-50">
+//             {error}
+//           </div>
+//         )}
+//         {!loading && !error && (
+//           <>
+//             {activeTab === "overview" && <OverviewTab overview={overview} format={format} />}
+//             {activeTab === "sales" && <SalesTab rows={sales} format={format} />}
+//             {activeTab === "stock" && <StockTab rows={stock} format={format} />}
+//             {activeTab === "profit" && <ProfitTab rows={profit} format={format} />}
+//             {activeTab === "alerts" && (
+//               <AlertsTab
+//                 expired={alerts.expired}
+//                 lowStock={alerts.lowStock}
+//                 nearExpiry={alerts.nearExpiry}
+//               />
+//             )}
+//           </>
+//         )}
+//       </div>
+//     </Layout>
+//   );
+// }
+// /* ----------------- COMPONENTS ----------------- */
+// function Tab({ id, label, active, setActive }) {
+//   const isActive = id === active;
+//   return (
+//     <button
+//       onClick={() => setActive(id)}
+//       className={`px-3 py-1.5 text-sm rounded-lg border ${
+//         isActive
+//           ? "bg-sky-600 text-white border-sky-600"
+//           : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
+//       }`}
+//     >
+//       {label}
+//     </button>
+//   );
+// }
+// /* ----------------- نظرة عامة ----------------- */
+// function OverviewTab({ overview, format }) {
+//   if (!overview) return null;
+//   return (
+//     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+//       <Card title="إجمالي المبيعات" value={format(overview.invoices.total_sales)} />
+//       <Card title="عدد الفواتير" value={overview.invoices.total_invoices} />
+//       <Card title="مبيعات اليوم" value={format(overview.invoices.today_sales)} />
+//     </div>
+//   );
+// }
+// /* ----------------- المبيعات ----------------- */
+// function SalesTab({ rows, format }) {
+//   return (
+//     <div className="p-4 overflow-x-auto bg-white border rounded-lg shadow-sm">
+//       <table className="w-full min-w-[850px] text-sm">
+//         <thead className="bg-gray-50">
+//           <tr>
+//             <Th>رقم</Th>
+//             <Th>العميل</Th>
+//             <Th>الكاشير</Th>
+//             <Th>الدفع</Th>
+//             <Th>القيمة</Th>
+//             <Th>التاريخ</Th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {rows.map((r) => (
+//             <tr key={r.id} className="border-t hover:bg-gray-50">
+//               <Td>{r.id}</Td>
+//               <Td>{r.customer}</Td>
+//               <Td>{r.cashier}</Td>
+//               <Td>{r.payment}</Td>
+//               <Td className="font-bold text-emerald-700">{format(r.total)}</Td>
+//               <Td>{r.date?.slice(0, 16)}</Td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// }
+// /* ----------------- المخزون ----------------- */
+// function StockTab({ rows, format }) {
+//   return (
+//     <div className="p-4 overflow-x-auto bg-white border rounded-lg shadow-sm">
+//       <table className="w-full min-w-[900px] text-sm">
+//         <thead className="bg-gray-50">
+//           <tr>
+//             <Th>كود</Th>
+//             <Th>اسم</Th>
+//             <Th>الشركة</Th>
+//             <Th>كمية</Th>
+//             <Th>حد أدنى</Th>
+//             <Th>انتهاء</Th>
+//             <Th>سعر</Th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {rows.map((p) => (
+//             <tr key={p.id} className="border-t hover:bg-gray-50">
+//               <Td>{p.id}</Td>
+//               <Td>{p.name}</Td>
+//               <Td>{p.company}</Td>
+//               <Td>{p.quantity}</Td>
+//               <Td>{p.minQty}</Td>
+//               <Td>{p.expiryDate || "--"}</Td>
+//               <Td>{format(p.price)}</Td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// }
+// /* ----------------- الربحية ----------------- */
+// function ProfitTab({ rows, format }) {
+//   return (
+//     <div className="p-4 overflow-x-auto bg-white border rounded-lg shadow-sm">
+//       <table className="w-full min-w-[950px] text-sm">
+//         <thead className="bg-gray-50">
+//           <tr>
+//             <Th>اسم</Th>
+//             <Th>تكلفة</Th>
+//             <Th>سعر بيع</Th>
+//             <Th>كمية</Th>
+//             <Th>الربح</Th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {rows.map((p) => (
+//             <tr key={p.id} className="border-t hover:bg-gray-50">
+//               <Td>{p.name}</Td>
+//               <Td>{format(p.costPrice)}</Td>
+//               <Td>{format(p.price)}</Td>
+//               <Td>{p.quantity}</Td>
+//               <Td className="font-bold text-emerald-700">
+//                 {format(p.profit)}
+//               </Td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// }
+// /* ----------------- التنبيهات ----------------- */
+// function AlertsTab({ expired, lowStock, nearExpiry }) {
+//   return (
+//     <div className="space-y-6">
+//       <AlertSection title="❌ منتهية الصلاحية" rows={expired} />
+//       <AlertSection title="⚠️ كمية منخفضة" rows={lowStock} />
+//       <AlertSection title="⏳ تنتهي قريبًا" rows={nearExpiry} />
+//     </div>
+//   );
+// }
+// function AlertSection({ title, rows }) {
+//   return (
+//     <div className="p-4 overflow-x-auto bg-white border rounded-lg shadow-sm">
+//       <h3 className="mb-2 font-semibold text-red-700">{title}</h3>
+//       <table className="w-full min-w-[750px] text-sm">
+//         <thead className="bg-gray-50">
+//           <tr>
+//             <Th>اسم</Th>
+//             <Th>كمية</Th>
+//             <Th>حد أدنى</Th>
+//             <Th>انتهاء</Th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {rows.length ? (
+//             rows.map((p, i) => (
+//               <tr key={i} className="border-t hover:bg-gray-50">
+//                 <Td>{p.name}</Td>
+//                 <Td>{p.quantity}</Td>
+//                 <Td>{p.minQty}</Td>
+//                 <Td>{p.expiryDate || "--"}</Td>
+//               </tr>
+//             ))
+//           ) : (
+//             <tr>
+//               <td colSpan={4} className="py-3 text-center text-gray-500">
+//                 لا توجد بيانات…
+//               </td>
+//             </tr>
+//           )}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// }
+// /* Helpers */
+// const Th = ({ children }) => (
+//   <th className="px-3 py-2 font-semibold text-gray-700">{children}</th>
+// );
+// const Td = ({ children }) => (
+//   <td className="px-3 py-2 text-gray-700">{children}</td>
+// );
+// const Card = ({ title, value }) => (
+//   <div className="p-4 text-center bg-white border rounded-lg shadow-sm">
+//     <p className="text-xs text-gray-500">{title}</p>
+//     <p className="text-xl font-bold">{value}</p>
+//   </div>
+// );
+// // pages/reports.js
+// import { useState, useEffect } from "react";
+// import Layout from "../components/Layout";
+// import api from "../utils/api";
+// export default function ReportsPage() {
+//   const [activeTab, setActiveTab] = useState("overview");
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState("");
+//   const [overview, setOverview] = useState(null);
+//   const [sales, setSales] = useState([]);
+//   const [stock, setStock] = useState([]);
+//   const [profit, setProfit] = useState([]);
+//   const [alerts, setAlerts] = useState([]);
+//   useEffect(() => {
+//     loadReports();
+//   }, []);
+//   const loadReports = async () => {
+//     try {
+//       setLoading(true);
+//       setError("");
+//       const [ov, sa, st, pr, al] = await Promise.all([
+//         api.get("/reports/overview"),
+//         api.get("/reports/sales"),
+//         api.get("/reports/stock"),
+//         api.get("/reports/profit"),
+//         api.get("/reports/alerts"),
+//       ]);
+//       setOverview(ov.data);
+//       setSales(sa.data);
+//       setStock(st.data);
+//       setProfit(pr.data);
+//       setAlerts(al.data);
+//     } catch (err) {
+//       console.error("loadReports error:", err);
+//       setError("فشل تحميل بيانات التقرير");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+//   const format = (n) =>
+//     Number(n || 0).toLocaleString("ar-SA") + " ر.س";
+//   return (
+//     <Layout title="التقارير">
+//       <div dir="rtl" className="space-y-6">
+//         {/* التبويبات */}
+//         <div className="flex gap-2 p-2 bg-white border rounded-lg shadow-sm">
+//           <Tab id="overview" label="نظرة عامة" active={activeTab} setActive={setActiveTab} />
+//           <Tab id="sales" label="المبيعات" active={activeTab} setActive={setActiveTab} />
+//           <Tab id="stock" label="المخزون" active={activeTab} setActive={setActiveTab} />
+//           <Tab id="profit" label="ربحية المنتجات" active={activeTab} setActive={setActiveTab} />
+//           <Tab id="alerts" label="التنبيهات" active={activeTab} setActive={setActiveTab} />
+//         </div>
+//         {loading && <p className="p-4 text-center">⏳ جاري التحميل…</p>}
+//         {error && (
+//           <div className="p-3 text-center text-red-700 border border-red-200 rounded-md bg-red-50">
+//             {error}
+//           </div>
+//         )}
+//         {!loading && !error && (
+//           <>
+//             {activeTab === "overview" && (
+//               <OverviewTab overview={overview} format={format} />
+//             )}
+//             {activeTab === "sales" && (
+//               <SalesTab rows={sales} format={format} />
+//             )}
+//             {activeTab === "stock" && (
+//               <StockTab rows={stock} format={format} />
+//             )}
+//             {activeTab === "profit" && (
+//               <ProfitTab rows={profit} format={format} />
+//             )}
+//             {activeTab === "alerts" && (
+//               <AlertsTab rows={alerts} />
+//             )}
+//           </>
+//         )}
+//       </div>
+//     </Layout>
+//   );
+// }
+// /* ----------------- COMPONENTS ----------------- */
+// function Tab({ id, label, active, setActive }) {
+//   const isActive = id === active;
+//   return (
+//     <button
+//       onClick={() => setActive(id)}
+//       className={`px-3 py-1.5 text-sm rounded-lg border ${
+//         isActive
+//           ? "bg-sky-600 text-white border-sky-600"
+//           : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
+//       }`}
+//     >
+//       {label}
+//     </button>
+//   );
+// }
+// /* ----------------- نظرة عامة ----------------- */
+// function OverviewTab({ overview, format }) {
+//   if (!overview) return null;
+//   return (
+//     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+//       <Card title="إجمالي المبيعات" value={format(overview.invoices.total_sales)} />
+//       <Card title="عدد الفواتير" value={overview.invoices.total_invoices} />
+//       <Card title="مبيعات اليوم" value={format(overview.invoices.today_sales)} />
+//     </div>
+//   );
+// }
+// /* ----------------- المبيعات ----------------- */
+// function SalesTab({ rows, format }) {
+//   return (
+//     <div className="p-4 overflow-x-auto bg-white border rounded-lg shadow-sm">
+//       <table className="w-full text-sm min-w-[850px]">
+//         <thead className="bg-gray-50">
+//           <tr>
+//             <Th>رقم</Th>
+//             <Th>العميل</Th>
+//             <Th>الكاشير</Th>
+//             <Th>الدفع</Th>
+//             <Th>القيمة</Th>
+//             <Th>التاريخ</Th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {rows.map((r) => (
+//             <tr key={r.id} className="border-t hover:bg-gray-50">
+//               <Td>{r.id}</Td>
+//               <Td>{r.customer}</Td>
+//               <Td>{r.cashier}</Td>
+//               <Td>{r.payment}</Td>
+//               <Td className="font-bold text-emerald-700">{format(r.total)}</Td>
+//               <Td>{r.created_at?.toString().slice(0, 16)}</Td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// }
+// /* ----------------- المخزون ----------------- */
+// function StockTab({ rows, format }) {
+//   return (
+//     <div className="p-4 overflow-x-auto bg-white border rounded-lg shadow-sm">
+//       <table className="w-full min-w-[900px] text-sm">
+//         <thead className="bg-gray-50">
+//           <tr>
+//             <Th>كود</Th>
+//             <Th>اسم</Th>
+//             <Th>الشركة</Th>
+//             <Th>كمية</Th>
+//             <Th>حد أدنى</Th>
+//             <Th>انتهاء</Th>
+//             <Th>سعر</Th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {rows.map((p) => (
+//             <tr key={p.id} className="border-t hover:bg-gray-50">
+//               <Td>{p.id}</Td>
+//               <Td>{p.name}</Td>
+//               <Td>{p.company}</Td>
+//               <Td>{p.quantity}</Td>
+//               <Td>{p.minQty}</Td>
+//               <Td>{p.expiryDate}</Td>
+//               <Td>{format(p.price)}</Td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// }
+// /* ----------------- الربحية ----------------- */
+// function ProfitTab({ rows, format }) {
+//   return (
+//     <div className="p-4 overflow-x-auto bg-white border rounded-lg shadow-sm">
+//       <table className="w-full min-w-[950px] text-sm">
+//         <thead className="bg-gray-50">
+//           <tr>
+//             <Th>اسم</Th>
+//             <Th>تكلفة</Th>
+//             <Th>سعر بيع</Th>
+//             <Th>كمية</Th>
+//             <Th>الربح</Th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {rows.map((p) => {
+//             const profit = (p.price - p.costPrice) * p.quantity;
+//             return (
+//               <tr key={p.id} className="border-t hover:bg-gray-50">
+//                 <Td>{p.name}</Td>
+//                 <Td>{format(p.costPrice)}</Td>
+//                 <Td>{format(p.price)}</Td>
+//                 <Td>{p.quantity}</Td>
+//                 <Td className="font-bold text-emerald-700">
+//                   {format(profit)}
+//                 </Td>
+//               </tr>
+//             );
+//           })}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// }
+// /* ----------------- التنبيهات ----------------- */
+// function AlertsTab({ rows }) {
+//   const expired = rows.filter((p) => p.expiryDate && new Date(p.expiryDate) < new Date());
+//   const low = rows.filter((p) => p.quantity <= p.minQty);
+//   return (
+//     <div className="space-y-6">
+//       <AlertSection title="❌ منتهية الصلاحية" rows={expired} />
+//       <AlertSection title="⚠️ كمية منخفضة" rows={low} />
+//     </div>
+//   );
+// }
+// function AlertSection({ title, rows }) {
+//   return (
+//     <div className="p-4 overflow-x-auto bg-white border rounded-lg shadow-sm">
+//       <h3 className="mb-2 font-semibold text-red-700">{title}</h3>
+//       <table className="w-full min-w-[750px] text-sm">
+//         <thead className="bg-gray-50">
+//           <tr>
+//             <Th>اسم</Th>
+//             <Th>كمية</Th>
+//             <Th>حد أدنى</Th>
+//             <Th>انتهاء</Th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {rows.length ? (
+//             rows.map((p, i) => (
+//               <tr key={i} className="border-t hover:bg-gray-50">
+//                 <Td>{p.name}</Td>
+//                 <Td>{p.quantity}</Td>
+//                 <Td>{p.minQty}</Td>
+//                 <Td>{p.expiryDate}</Td>
+//               </tr>
+//             ))
+//           ) : (
+//             <tr>
+//               <td colSpan={4} className="py-3 text-center text-gray-500">
+//                 لا توجد بيانات لعرضها…
+//               </td>
+//             </tr>
+//           )}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// }
+// /* -------------- Helpers --------------- */
+// const Th = ({ children }) => (
+//   <th className="px-3 py-2 font-semibold text-gray-700">{children}</th>
+// );
+// const Td = ({ children }) => (
+//   <td className="px-3 py-2 text-gray-700">{children}</td>
+// );
+// const Card = ({ title, value }) => (
+//   <div className="p-4 text-center bg-white border rounded-lg shadow-sm">
+//     <p className="text-xs text-gray-500">{title}</p>
+//     <p className="text-xl font-bold">{value}</p>
+//   </div>
+// );
+// // pages/reports.js
 __turbopack_context__.s([
     "default",
     ()=>Reports
@@ -1586,7 +2110,7 @@ function Reports() {
                             setActiveTab: setActiveTab
                         }, void 0, false, {
                             fileName: "[project]/pages/reports.js",
-                            lineNumber: 329,
+                            lineNumber: 935,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TabButton, {
@@ -1596,7 +2120,7 @@ function Reports() {
                             setActiveTab: setActiveTab
                         }, void 0, false, {
                             fileName: "[project]/pages/reports.js",
-                            lineNumber: 335,
+                            lineNumber: 941,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TabButton, {
@@ -1606,7 +2130,7 @@ function Reports() {
                             setActiveTab: setActiveTab
                         }, void 0, false, {
                             fileName: "[project]/pages/reports.js",
-                            lineNumber: 341,
+                            lineNumber: 947,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TabButton, {
@@ -1616,7 +2140,7 @@ function Reports() {
                             setActiveTab: setActiveTab
                         }, void 0, false, {
                             fileName: "[project]/pages/reports.js",
-                            lineNumber: 347,
+                            lineNumber: 953,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TabButton, {
@@ -1626,7 +2150,7 @@ function Reports() {
                             setActiveTab: setActiveTab
                         }, void 0, false, {
                             fileName: "[project]/pages/reports.js",
-                            lineNumber: 353,
+                            lineNumber: 959,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TabButton, {
@@ -1636,13 +2160,13 @@ function Reports() {
                             setActiveTab: setActiveTab
                         }, void 0, false, {
                             fileName: "[project]/pages/reports.js",
-                            lineNumber: 359,
+                            lineNumber: 965,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/reports.js",
-                    lineNumber: 328,
+                    lineNumber: 934,
                     columnNumber: 9
                 }, this),
                 activeTab === "overview" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(OverviewTab, {
@@ -1652,7 +2176,7 @@ function Reports() {
                     formatCurrency: formatCurrency
                 }, void 0, false, {
                     fileName: "[project]/pages/reports.js",
-                    lineNumber: 368,
+                    lineNumber: 974,
                     columnNumber: 11
                 }, this),
                 activeTab === "sales" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(SalesTab, {
@@ -1661,7 +2185,7 @@ function Reports() {
                     formatCurrency: formatCurrency
                 }, void 0, false, {
                     fileName: "[project]/pages/reports.js",
-                    lineNumber: 377,
+                    lineNumber: 983,
                     columnNumber: 11
                 }, this),
                 activeTab === "stock" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(StockTab, {
@@ -1670,7 +2194,7 @@ function Reports() {
                     formatCurrency: formatCurrency
                 }, void 0, false, {
                     fileName: "[project]/pages/reports.js",
-                    lineNumber: 385,
+                    lineNumber: 991,
                     columnNumber: 11
                 }, this),
                 activeTab === "profit" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(ProfitTab, {
@@ -1678,7 +2202,7 @@ function Reports() {
                     formatCurrency: formatCurrency
                 }, void 0, false, {
                     fileName: "[project]/pages/reports.js",
-                    lineNumber: 393,
+                    lineNumber: 999,
                     columnNumber: 11
                 }, this),
                 activeTab === "alerts" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(AlertsTab, {
@@ -1687,25 +2211,25 @@ function Reports() {
                     nearExpiry: nearExpiryProducts
                 }, void 0, false, {
                     fileName: "[project]/pages/reports.js",
-                    lineNumber: 397,
+                    lineNumber: 1003,
                     columnNumber: 11
                 }, this),
                 activeTab === "shifts" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(ShiftsTab, {
                     shifts: demoShifts
                 }, void 0, false, {
                     fileName: "[project]/pages/reports.js",
-                    lineNumber: 404,
+                    lineNumber: 1010,
                     columnNumber: 36
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/pages/reports.js",
-            lineNumber: 326,
+            lineNumber: 932,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/pages/reports.js",
-        lineNumber: 325,
+        lineNumber: 931,
         columnNumber: 5
     }, this);
 }
@@ -1717,7 +2241,7 @@ function Reports() {
         children: label
     }, void 0, false, {
         fileName: "[project]/pages/reports.js",
-        lineNumber: 415,
+        lineNumber: 1021,
         columnNumber: 5
     }, this);
 }
@@ -1734,7 +2258,7 @@ function Reports() {
                         color: "text-emerald-600"
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 434,
+                        lineNumber: 1040,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(SummaryCard, {
@@ -1743,7 +2267,7 @@ function Reports() {
                         color: "text-sky-600"
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 439,
+                        lineNumber: 1045,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(SummaryCard, {
@@ -1752,7 +2276,7 @@ function Reports() {
                         color: "text-amber-600"
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 444,
+                        lineNumber: 1050,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(SummaryCard, {
@@ -1761,13 +2285,13 @@ function Reports() {
                         color: "text-purple-600"
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 449,
+                        lineNumber: 1055,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 433,
+                lineNumber: 1039,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -1778,7 +2302,7 @@ function Reports() {
                         children: "📈 المبيعات الشهرية"
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 458,
+                        lineNumber: 1064,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -1793,24 +2317,24 @@ function Reports() {
                                         strokeDasharray: "3 3"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 464,
+                                        lineNumber: 1070,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$XAxis$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["XAxis"], {
                                         dataKey: "month"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 465,
+                                        lineNumber: 1071,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$YAxis$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["YAxis"], {}, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 466,
+                                        lineNumber: 1072,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Tooltip$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["Tooltip"], {}, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 467,
+                                        lineNumber: 1073,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Line$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["Line"], {
@@ -1820,29 +2344,29 @@ function Reports() {
                                         strokeWidth: 2
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 468,
+                                        lineNumber: 1074,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 463,
+                                lineNumber: 1069,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/pages/reports.js",
-                            lineNumber: 462,
+                            lineNumber: 1068,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 461,
+                        lineNumber: 1067,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 457,
+                lineNumber: 1063,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -1853,7 +2377,7 @@ function Reports() {
                         children: "🧾 آخر الفواتير"
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 481,
+                        lineNumber: 1087,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("table", {
@@ -1868,7 +2392,7 @@ function Reports() {
                                             children: "رقم"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 485,
+                                            lineNumber: 1091,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -1876,7 +2400,7 @@ function Reports() {
                                             children: "النوع"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 486,
+                                            lineNumber: 1092,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -1884,7 +2408,7 @@ function Reports() {
                                             children: "العميل"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 487,
+                                            lineNumber: 1093,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -1892,7 +2416,7 @@ function Reports() {
                                             children: "الكاشير"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 488,
+                                            lineNumber: 1094,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -1900,7 +2424,7 @@ function Reports() {
                                             children: "الدفع"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 489,
+                                            lineNumber: 1095,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -1908,18 +2432,18 @@ function Reports() {
                                             children: "القيمة"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 490,
+                                            lineNumber: 1096,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/reports.js",
-                                    lineNumber: 484,
+                                    lineNumber: 1090,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 483,
+                                lineNumber: 1089,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tbody", {
@@ -1931,7 +2455,7 @@ function Reports() {
                                                 children: i.id
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/reports.js",
-                                                lineNumber: 496,
+                                                lineNumber: 1102,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -1939,7 +2463,7 @@ function Reports() {
                                                 children: i.type === "sale" ? "بيع" : "مرتجع"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/reports.js",
-                                                lineNumber: 497,
+                                                lineNumber: 1103,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -1947,7 +2471,7 @@ function Reports() {
                                                 children: i.customer
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/reports.js",
-                                                lineNumber: 500,
+                                                lineNumber: 1106,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -1955,7 +2479,7 @@ function Reports() {
                                                 children: i.cashier
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/reports.js",
-                                                lineNumber: 501,
+                                                lineNumber: 1107,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -1963,7 +2487,7 @@ function Reports() {
                                                 children: i.payment
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/reports.js",
-                                                lineNumber: 502,
+                                                lineNumber: 1108,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -1971,36 +2495,36 @@ function Reports() {
                                                 children: formatCurrency(i.total)
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/reports.js",
-                                                lineNumber: 503,
+                                                lineNumber: 1109,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, i.id, true, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 495,
+                                        lineNumber: 1101,
                                         columnNumber: 15
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 493,
+                                lineNumber: 1099,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 482,
+                        lineNumber: 1088,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 480,
+                lineNumber: 1086,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/pages/reports.js",
-        lineNumber: 431,
+        lineNumber: 1037,
         columnNumber: 5
     }, this);
 }
@@ -2042,7 +2566,7 @@ function Reports() {
                         children: "🧾 تقرير المبيعات"
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 553,
+                        lineNumber: 1159,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
@@ -2051,13 +2575,13 @@ function Reports() {
                         children: "🖨️ طباعة كل المبيعات"
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 554,
+                        lineNumber: 1160,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 552,
+                lineNumber: 1158,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -2071,7 +2595,7 @@ function Reports() {
                         onChange: (e)=>setSearch(e.target.value)
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 564,
+                        lineNumber: 1170,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("select", {
@@ -2084,7 +2608,7 @@ function Reports() {
                                 children: "كل الكاشير"
                             }, void 0, false, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 577,
+                                lineNumber: 1183,
                                 columnNumber: 11
                             }, this),
                             Array.from(new Set(invoices.map((i)=>i.cashier))).map((c)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("option", {
@@ -2092,13 +2616,13 @@ function Reports() {
                                     children: c
                                 }, c, false, {
                                     fileName: "[project]/pages/reports.js",
-                                    lineNumber: 579,
+                                    lineNumber: 1185,
                                     columnNumber: 13
                                 }, this))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 572,
+                        lineNumber: 1178,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("select", {
@@ -2111,7 +2635,7 @@ function Reports() {
                                 children: "كل طرق الدفع"
                             }, void 0, false, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 590,
+                                lineNumber: 1196,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("option", {
@@ -2119,7 +2643,7 @@ function Reports() {
                                 children: "نقداً"
                             }, void 0, false, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 591,
+                                lineNumber: 1197,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("option", {
@@ -2127,7 +2651,7 @@ function Reports() {
                                 children: "بطاقة"
                             }, void 0, false, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 592,
+                                lineNumber: 1198,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("option", {
@@ -2135,13 +2659,13 @@ function Reports() {
                                 children: "محفظة"
                             }, void 0, false, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 593,
+                                lineNumber: 1199,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 585,
+                        lineNumber: 1191,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("select", {
@@ -2154,7 +2678,7 @@ function Reports() {
                                 children: "بيع + مرتجع"
                             }, void 0, false, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 601,
+                                lineNumber: 1207,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("option", {
@@ -2162,7 +2686,7 @@ function Reports() {
                                 children: "بيع فقط"
                             }, void 0, false, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 602,
+                                lineNumber: 1208,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("option", {
@@ -2170,13 +2694,13 @@ function Reports() {
                                 children: "مرتجع فقط"
                             }, void 0, false, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 603,
+                                lineNumber: 1209,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 596,
+                        lineNumber: 1202,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
@@ -2186,7 +2710,7 @@ function Reports() {
                         className: "px-3 py-2 text-sm border rounded-md"
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 606,
+                        lineNumber: 1212,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
@@ -2196,13 +2720,13 @@ function Reports() {
                         className: "px-3 py-2 text-sm border rounded-md"
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 612,
+                        lineNumber: 1218,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 563,
+                lineNumber: 1169,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -2219,7 +2743,7 @@ function Reports() {
                                         children: "رقم"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 624,
+                                        lineNumber: 1230,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2227,7 +2751,7 @@ function Reports() {
                                         children: "نوع"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 625,
+                                        lineNumber: 1231,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2235,7 +2759,7 @@ function Reports() {
                                         children: "عميل"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 626,
+                                        lineNumber: 1232,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2243,7 +2767,7 @@ function Reports() {
                                         children: "كاشير"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 627,
+                                        lineNumber: 1233,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2251,7 +2775,7 @@ function Reports() {
                                         children: "دفع"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 628,
+                                        lineNumber: 1234,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2259,18 +2783,18 @@ function Reports() {
                                         children: "إجمالي"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 629,
+                                        lineNumber: 1235,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 623,
+                                lineNumber: 1229,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/pages/reports.js",
-                            lineNumber: 622,
+                            lineNumber: 1228,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tbody", {
@@ -2283,7 +2807,7 @@ function Reports() {
                                                 children: i.id
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/reports.js",
-                                                lineNumber: 635,
+                                                lineNumber: 1241,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2291,7 +2815,7 @@ function Reports() {
                                                 children: i.type === "sale" ? "بيع" : "مرتجع"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/reports.js",
-                                                lineNumber: 636,
+                                                lineNumber: 1242,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2299,7 +2823,7 @@ function Reports() {
                                                 children: i.customer
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/reports.js",
-                                                lineNumber: 639,
+                                                lineNumber: 1245,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2307,7 +2831,7 @@ function Reports() {
                                                 children: i.cashier
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/reports.js",
-                                                lineNumber: 640,
+                                                lineNumber: 1246,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2315,7 +2839,7 @@ function Reports() {
                                                 children: i.payment
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/reports.js",
-                                                lineNumber: 641,
+                                                lineNumber: 1247,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2323,13 +2847,13 @@ function Reports() {
                                                 children: formatCurrency(i.total)
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/reports.js",
-                                                lineNumber: 642,
+                                                lineNumber: 1248,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, i.id, true, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 634,
+                                        lineNumber: 1240,
                                         columnNumber: 15
                                     }, this)),
                                 !filteredInvoices.length && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tr", {
@@ -2339,35 +2863,35 @@ function Reports() {
                                         children: "لا توجد نتائج حسب الفلاتر الحالية…"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 649,
+                                        lineNumber: 1255,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/pages/reports.js",
-                                    lineNumber: 648,
+                                    lineNumber: 1254,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/reports.js",
-                            lineNumber: 632,
+                            lineNumber: 1238,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/reports.js",
-                    lineNumber: 621,
+                    lineNumber: 1227,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 620,
+                lineNumber: 1226,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/pages/reports.js",
-        lineNumber: 551,
+        lineNumber: 1157,
         columnNumber: 5
     }, this);
 }
@@ -2383,7 +2907,7 @@ function Reports() {
                         children: "🏬 تقرير المخزون"
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 669,
+                        lineNumber: 1275,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
@@ -2392,13 +2916,13 @@ function Reports() {
                         children: "🖨️ طباعة تقرير المخزون"
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 670,
+                        lineNumber: 1276,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 668,
+                lineNumber: 1274,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -2415,7 +2939,7 @@ function Reports() {
                                         children: "كود"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 682,
+                                        lineNumber: 1288,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2423,7 +2947,7 @@ function Reports() {
                                         children: "اسم"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 683,
+                                        lineNumber: 1289,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2431,7 +2955,7 @@ function Reports() {
                                         children: "التصنيف"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 684,
+                                        lineNumber: 1290,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2439,7 +2963,7 @@ function Reports() {
                                         children: "الشركة"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 685,
+                                        lineNumber: 1291,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2447,7 +2971,7 @@ function Reports() {
                                         children: "كمية"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 686,
+                                        lineNumber: 1292,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2455,7 +2979,7 @@ function Reports() {
                                         children: "حد أدنى"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 687,
+                                        lineNumber: 1293,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2463,7 +2987,7 @@ function Reports() {
                                         children: "انتهاء"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 688,
+                                        lineNumber: 1294,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2471,7 +2995,7 @@ function Reports() {
                                         children: "سعر"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 689,
+                                        lineNumber: 1295,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2479,18 +3003,18 @@ function Reports() {
                                         children: "هامش الربح"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 690,
+                                        lineNumber: 1296,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 681,
+                                lineNumber: 1287,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/pages/reports.js",
-                            lineNumber: 680,
+                            lineNumber: 1286,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tbody", {
@@ -2502,7 +3026,7 @@ function Reports() {
                                             children: p.id
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 696,
+                                            lineNumber: 1302,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2510,7 +3034,7 @@ function Reports() {
                                             children: p.name
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 697,
+                                            lineNumber: 1303,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2518,7 +3042,7 @@ function Reports() {
                                             children: p.category
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 698,
+                                            lineNumber: 1304,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2526,7 +3050,7 @@ function Reports() {
                                             children: p.company
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 699,
+                                            lineNumber: 1305,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2534,7 +3058,7 @@ function Reports() {
                                             children: p.quantity
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 700,
+                                            lineNumber: 1306,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2542,7 +3066,7 @@ function Reports() {
                                             children: p.minQty
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 701,
+                                            lineNumber: 1307,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2550,7 +3074,7 @@ function Reports() {
                                             children: p.expiryDate
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 702,
+                                            lineNumber: 1308,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2558,7 +3082,7 @@ function Reports() {
                                             children: formatCurrency(p.price)
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 703,
+                                            lineNumber: 1309,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2566,35 +3090,35 @@ function Reports() {
                                             children: formatCurrency(p.margin)
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 704,
+                                            lineNumber: 1310,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, p.id, true, {
                                     fileName: "[project]/pages/reports.js",
-                                    lineNumber: 695,
+                                    lineNumber: 1301,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/pages/reports.js",
-                            lineNumber: 693,
+                            lineNumber: 1299,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/reports.js",
-                    lineNumber: 679,
+                    lineNumber: 1285,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 678,
+                lineNumber: 1284,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/pages/reports.js",
-        lineNumber: 667,
+        lineNumber: 1273,
         columnNumber: 5
     }, this);
 }
@@ -2620,7 +3144,7 @@ function Reports() {
                 children: "📊 تقرير ربحية المنتجات"
             }, void 0, false, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 740,
+                lineNumber: 1346,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("table", {
@@ -2635,7 +3159,7 @@ function Reports() {
                                     children: "المنتج"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/reports.js",
-                                    lineNumber: 747,
+                                    lineNumber: 1353,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2643,7 +3167,7 @@ function Reports() {
                                     children: "تكلفة الوحدة"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/reports.js",
-                                    lineNumber: 748,
+                                    lineNumber: 1354,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2651,7 +3175,7 @@ function Reports() {
                                     children: "سعر البيع"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/reports.js",
-                                    lineNumber: 749,
+                                    lineNumber: 1355,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2659,7 +3183,7 @@ function Reports() {
                                     children: "الكمية"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/reports.js",
-                                    lineNumber: 750,
+                                    lineNumber: 1356,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2667,7 +3191,7 @@ function Reports() {
                                     children: "إجمالي التكلفة"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/reports.js",
-                                    lineNumber: 751,
+                                    lineNumber: 1357,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2675,7 +3199,7 @@ function Reports() {
                                     children: "إجمالي البيع"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/reports.js",
-                                    lineNumber: 752,
+                                    lineNumber: 1358,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2683,7 +3207,7 @@ function Reports() {
                                     children: "الربح"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/reports.js",
-                                    lineNumber: 753,
+                                    lineNumber: 1359,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2691,18 +3215,18 @@ function Reports() {
                                     children: "نسبة الربحية"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/reports.js",
-                                    lineNumber: 754,
+                                    lineNumber: 1360,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/reports.js",
-                            lineNumber: 746,
+                            lineNumber: 1352,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 745,
+                        lineNumber: 1351,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tbody", {
@@ -2714,7 +3238,7 @@ function Reports() {
                                         children: r.name
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 760,
+                                        lineNumber: 1366,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2722,7 +3246,7 @@ function Reports() {
                                         children: formatCurrency(r.costPrice)
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 761,
+                                        lineNumber: 1367,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2730,7 +3254,7 @@ function Reports() {
                                         children: formatCurrency(r.price)
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 762,
+                                        lineNumber: 1368,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2738,7 +3262,7 @@ function Reports() {
                                         children: r.quantity
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 763,
+                                        lineNumber: 1369,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2746,7 +3270,7 @@ function Reports() {
                                         children: formatCurrency(Number(r.totalCost.toFixed(2)))
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 764,
+                                        lineNumber: 1370,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2754,7 +3278,7 @@ function Reports() {
                                         children: formatCurrency(Number(r.totalSell.toFixed(2)))
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 767,
+                                        lineNumber: 1373,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2762,7 +3286,7 @@ function Reports() {
                                         children: formatCurrency(Number(r.profit.toFixed(2)))
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 770,
+                                        lineNumber: 1376,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2773,30 +3297,30 @@ function Reports() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 777,
+                                        lineNumber: 1383,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, r.id, true, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 759,
+                                lineNumber: 1365,
                                 columnNumber: 13
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 757,
+                        lineNumber: 1363,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 744,
+                lineNumber: 1350,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/pages/reports.js",
-        lineNumber: 739,
+        lineNumber: 1345,
         columnNumber: 5
     }, this);
 }
@@ -2822,7 +3346,7 @@ function Reports() {
                     ]
             }, void 0, false, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 790,
+                lineNumber: 1396,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(AlertSection, {
@@ -2843,7 +3367,7 @@ function Reports() {
                     ]
             }, void 0, false, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 798,
+                lineNumber: 1404,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(AlertSection, {
@@ -2864,13 +3388,13 @@ function Reports() {
                     ]
             }, void 0, false, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 806,
+                lineNumber: 1412,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/pages/reports.js",
-        lineNumber: 789,
+        lineNumber: 1395,
         columnNumber: 5
     }, this);
 }
@@ -2883,7 +3407,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                 children: title
             }, void 0, false, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 820,
+                lineNumber: 1426,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("table", {
@@ -2897,17 +3421,17 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                     children: h
                                 }, h, false, {
                                     fileName: "[project]/pages/reports.js",
-                                    lineNumber: 825,
+                                    lineNumber: 1431,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/pages/reports.js",
-                            lineNumber: 823,
+                            lineNumber: 1429,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 822,
+                        lineNumber: 1428,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tbody", {
@@ -2918,12 +3442,12 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                         children: cell
                                     }, i, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 836,
+                                        lineNumber: 1442,
                                         columnNumber: 19
                                     }, this))
                             }, idx, false, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 834,
+                                lineNumber: 1440,
                                 columnNumber: 15
                             }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tr", {
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -2932,29 +3456,29 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                 children: "لا توجد بيانات لعرضها…"
                             }, void 0, false, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 844,
+                                lineNumber: 1450,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/pages/reports.js",
-                            lineNumber: 843,
+                            lineNumber: 1449,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/pages/reports.js",
-                        lineNumber: 831,
+                        lineNumber: 1437,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 821,
+                lineNumber: 1427,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/pages/reports.js",
-        lineNumber: 819,
+        lineNumber: 1425,
         columnNumber: 5
     }, this);
 }
@@ -2971,7 +3495,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                 children: "🕒 تقرير الشفتات"
             }, void 0, false, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 867,
+                lineNumber: 1473,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -2988,7 +3512,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                         children: "رقم"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 872,
+                                        lineNumber: 1478,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -2996,7 +3520,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                         children: "كاشير"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 873,
+                                        lineNumber: 1479,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -3004,7 +3528,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                         children: "افتتاح"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 874,
+                                        lineNumber: 1480,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -3012,7 +3536,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                         children: "إغلاق"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 875,
+                                        lineNumber: 1481,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -3020,7 +3544,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                         children: "إجمالي"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 876,
+                                        lineNumber: 1482,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -3028,7 +3552,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                         children: "نقدًا"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 877,
+                                        lineNumber: 1483,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -3036,7 +3560,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                         children: "بطاقة"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 878,
+                                        lineNumber: 1484,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -3044,7 +3568,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                         children: "محفظة"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 879,
+                                        lineNumber: 1485,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -3052,18 +3576,18 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                         children: "عدد فواتير"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/reports.js",
-                                        lineNumber: 880,
+                                        lineNumber: 1486,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/reports.js",
-                                lineNumber: 871,
+                                lineNumber: 1477,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/pages/reports.js",
-                            lineNumber: 870,
+                            lineNumber: 1476,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tbody", {
@@ -3075,7 +3599,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                             children: s.id
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 886,
+                                            lineNumber: 1492,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -3083,7 +3607,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                             children: s.cashier
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 887,
+                                            lineNumber: 1493,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -3091,7 +3615,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                             children: formatDate(s.openedAt)
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 888,
+                                            lineNumber: 1494,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -3099,7 +3623,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                             children: s.closedAt ? formatDate(s.closedAt) : "مفتوح"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 889,
+                                            lineNumber: 1495,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -3107,7 +3631,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                             children: s.totals.totalSales
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 892,
+                                            lineNumber: 1498,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -3115,7 +3639,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                             children: s.totals.totalCash
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 893,
+                                            lineNumber: 1499,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -3123,7 +3647,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                             children: s.totals.totalCard
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 894,
+                                            lineNumber: 1500,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -3131,7 +3655,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                             children: s.totals.totalWallet
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 895,
+                                            lineNumber: 1501,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -3139,35 +3663,35 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                                             children: s.totals.invoiceCount
                                         }, void 0, false, {
                                             fileName: "[project]/pages/reports.js",
-                                            lineNumber: 896,
+                                            lineNumber: 1502,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, s.id, true, {
                                     fileName: "[project]/pages/reports.js",
-                                    lineNumber: 885,
+                                    lineNumber: 1491,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/pages/reports.js",
-                            lineNumber: 883,
+                            lineNumber: 1489,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/reports.js",
-                    lineNumber: 869,
+                    lineNumber: 1475,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 868,
+                lineNumber: 1474,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/pages/reports.js",
-        lineNumber: 866,
+        lineNumber: 1472,
         columnNumber: 5
     }, this);
 }
@@ -3180,7 +3704,7 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                 children: title
             }, void 0, false, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 910,
+                lineNumber: 1516,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
@@ -3188,13 +3712,13 @@ function AlertSection({ title, color, rows, headers, mapper }) {
                 children: value
             }, void 0, false, {
                 fileName: "[project]/pages/reports.js",
-                lineNumber: 911,
+                lineNumber: 1517,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/pages/reports.js",
-        lineNumber: 909,
+        lineNumber: 1515,
         columnNumber: 5
     }, this);
 } // // pages/reports.js

@@ -1275,1248 +1275,1091 @@ function Layout({ user, title, children }) {
  //   )
  // }
 }),
-"[project]/pages/dashboard.js [ssr] (ecmascript)", ((__turbopack_context__) => {
+"[externals]/axios [external] (axios, esm_import)", ((__turbopack_context__) => {
 "use strict";
 
-// pages/dashboard.js
+return __turbopack_context__.a(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
+
+const mod = await __turbopack_context__.y("axios");
+
+__turbopack_context__.n(mod);
+__turbopack_async_result__();
+} catch(e) { __turbopack_async_result__(e); } }, true);}),
+"[project]/utils/api.js [ssr] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+return __turbopack_context__.a(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
+
 __turbopack_context__.s([
     "default",
-    ()=>Dashboard
+    ()=>__TURBOPACK__default__export__
+]);
+var __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__ = __turbopack_context__.i("[externals]/axios [external] (axios, esm_import)");
+var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
+    __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__
+]);
+[__TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__;
+;
+const api = __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__["default"].create({
+    baseURL: "http://127.0.0.1:5000/api"
+});
+const __TURBOPACK__default__export__ = api;
+__turbopack_async_result__();
+} catch(e) { __turbopack_async_result__(e); } }, false);}),
+"[project]/pages/shifts.js [ssr] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+return __turbopack_context__.a(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
+
+// pages/shifts.js
+__turbopack_context__.s([
+    "default",
+    ()=>ShiftsPage
 ]);
 var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react/jsx-dev-runtime [external] (react/jsx-dev-runtime, cjs)");
 var __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react [external] (react, cjs)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/router.js [ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Layout$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/Layout.js [ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$theme$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/theme.js [ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$chart$2f$LineChart$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/chart/LineChart.js [ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Line$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/cartesian/Line.js [ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$XAxis$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/cartesian/XAxis.js [ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$YAxis$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/cartesian/YAxis.js [ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$CartesianGrid$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/cartesian/CartesianGrid.js [ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Tooltip$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/component/Tooltip.js [ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$ResponsiveContainer$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/component/ResponsiveContainer.js [ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-icons/fa/index.mjs [ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/utils/api.js [ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__ = __turbopack_context__.i("[externals]/react-hot-toast [external] (react-hot-toast, esm_import)");
+var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
+    __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__,
+    __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__
+]);
+[__TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__;
 ;
 ;
 ;
 ;
 ;
-;
-;
-function Dashboard() {
-    const [user] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])({
-        name: "المدير أحمد",
-        role: "admin"
-    });
-    const [users, setUsers] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])([]);
-    const [salesData, setSalesData] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])([]);
-    const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
-    (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
-        setUsers([
-            {
-                id: 1,
-                name: "محمد الصيدلي",
-                role: "pharmacist"
-            },
-            {
-                id: 2,
-                name: "أحمد الكاشير",
-                role: "cashier"
-            },
-            {
-                id: 3,
-                name: "مها الإدارية",
-                role: "admin"
-            }
-        ]);
-        setSalesData([
-            {
-                month: "يناير",
-                total: 3200
-            },
-            {
-                month: "فبراير",
-                total: 4100
-            },
-            {
-                month: "مارس",
-                total: 3800
-            },
-            {
-                month: "أبريل",
-                total: 5200
-            },
-            {
-                month: "مايو",
-                total: 6100
-            },
-            {
-                month: "يونيو",
-                total: 5700
-            }
-        ]);
-    }, []);
-    const totalSales = salesData.reduce((s, m)=>s + m.total, 0);
-    // روابط الوصول السريع — محسّنة بصرياً
-    const quickLinks = [
-        {
-            title: "المنتجات",
-            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$ssr$5d$__$28$ecmascript$29$__["FaPills"], {}, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 55,
-                columnNumber: 13
-            }, this),
-            path: "/products",
-            color: "from-green-500 to-emerald-600"
-        },
-        {
-            title: "المبيعات",
-            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$ssr$5d$__$28$ecmascript$29$__["FaCashRegister"], {}, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 61,
-                columnNumber: 13
-            }, this),
-            path: "/sales",
-            color: "from-sky-500 to-blue-600"
-        },
-        {
-            title: "التقارير",
-            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$ssr$5d$__$28$ecmascript$29$__["FaChartLine"], {}, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 67,
-                columnNumber: 13
-            }, this),
-            path: "/reports",
-            color: "from-purple-500 to-indigo-600"
-        },
-        {
-            title: "الحسابات",
-            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$ssr$5d$__$28$ecmascript$29$__["FaMoneyBillWave"], {}, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 73,
-                columnNumber: 13
-            }, this),
-            path: "/accounts",
-            color: "from-amber-500 to-yellow-600"
-        },
-        {
-            title: "المستخدمون",
-            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$ssr$5d$__$28$ecmascript$29$__["FaUsers"], {}, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 79,
-                columnNumber: 13
-            }, this),
-            path: "/users",
-            color: "from-teal-500 to-cyan-600"
-        },
-        {
-            title: "الشفت",
-            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$ssr$5d$__$28$ecmascript$29$__["FaClock"], {}, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 85,
-                columnNumber: 13
-            }, this),
-            path: "/shifts",
-            color: "from-pink-500 to-rose-600"
+function ShiftsPage() {
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(true);
+    const [currentShift, setCurrentShift] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(null);
+    const [shifts, setShifts] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])([]);
+    const userId = 1; // 🔹 لاحقاً اجلبها من السياق AuthContext
+    const loadData = async ()=>{
+        try {
+            setLoading(true);
+            const [cur, list] = await Promise.all([
+                __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"].get("/api/shifts/current"),
+                __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"].get("/api/shifts")
+            ]);
+            setCurrentShift(cur.data || null);
+            setShifts(list.data || []);
+        } catch (err) {
+            console.error("loadData error:", err);
+            __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__["default"].error("خطأ في تحميل بيانات الشفت");
+        } finally{
+            setLoading(false);
         }
-    ];
+    };
+    (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
+        loadData();
+    }, []);
+    const startShift = async ()=>{
+        try {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"].post("/api/shifts/start", {
+                userId
+            });
+            __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__["default"].success("تم بدء الشفت");
+            await loadData();
+        } catch (err) {
+            console.error(err);
+            __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__["default"].error("تعذر بدء الشفت");
+        }
+    };
+    const closeShift = async ()=>{
+        try {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"].post("/api/shifts/close", {
+                userId
+            });
+            __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__["default"].success("تم إغلاق الشفت");
+            await loadData();
+        } catch (err) {
+            console.error(err);
+            __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$hot$2d$toast__$5b$external$5d$__$28$react$2d$hot$2d$toast$2c$__esm_import$29$__["default"].error("تعذر إغلاق الشفت");
+        }
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Layout$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
-        user: user,
-        title: "لوحة التحكم",
+        title: "إدارة الشفتات",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+            className: "p-5 space-y-6",
             dir: "rtl",
-            className: "space-y-10",
             children: [
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("section", {
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h1", {
+                    className: "text-2xl font-bold text-slate-800",
+                    children: "🕒 إدارة الشفت"
+                }, void 0, false, {
+                    fileName: "[project]/pages/shifts.js",
+                    lineNumber: 62,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                    className: "p-4 bg-white border shadow-sm rounded-xl",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h2", {
-                            className: "mb-4 text-2xl font-bold text-gray-800",
-                            children: "الوصول السريع"
+                            className: "mb-3 text-lg font-semibold text-slate-700",
+                            children: "الشفت الحالي"
                         }, void 0, false, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 97,
+                            fileName: "[project]/pages/shifts.js",
+                            lineNumber: 66,
                             columnNumber: 11
                         }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                            className: "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6",
-                            children: quickLinks.map((link, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>router.push(link.path),
-                                    className: `
-                  relative flex flex-col items-center justify-center p-5 
-                  rounded-2xl shadow-md bg-gradient-to-br ${link.color}
-                  text-white transition-all duration-200 
-                  hover:scale-[1.05] hover:shadow-xl
-                `,
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                                            className: "absolute inset-0 transition bg-black/10 rounded-2xl group-hover:bg-black/20"
-                                        }, void 0, false, {
-                                            fileName: "[project]/pages/dashboard.js",
-                                            lineNumber: 111,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                                            className: "relative mb-2 text-4xl",
-                                            children: link.icon
-                                        }, void 0, false, {
-                                            fileName: "[project]/pages/dashboard.js",
-                                            lineNumber: 112,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h3", {
-                                            className: "relative text-sm font-semibold",
-                                            children: link.title
-                                        }, void 0, false, {
-                                            fileName: "[project]/pages/dashboard.js",
-                                            lineNumber: 113,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, index, true, {
-                                    fileName: "[project]/pages/dashboard.js",
-                                    lineNumber: 101,
-                                    columnNumber: 15
-                                }, this))
+                        loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
+                            className: "text-gray-500",
+                            children: "جارٍ التحميل…"
                         }, void 0, false, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 99,
-                            columnNumber: 11
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/pages/dashboard.js",
-                    lineNumber: 96,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                    className: "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(SummaryCard, {
-                            title: "إجمالي المبيعات",
-                            value: `${totalSales.toLocaleString()} ر.س`,
-                            color: "text-sky-600"
-                        }, void 0, false, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 121,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(SummaryCard, {
-                            title: "عدد الفواتير",
-                            value: "248",
-                            color: "text-blue-600"
-                        }, void 0, false, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 126,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(SummaryCard, {
-                            title: "عدد الأدوية",
-                            value: "126",
-                            color: "text-green-600"
-                        }, void 0, false, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 127,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(SummaryCard, {
-                            title: "عدد المستخدمين",
-                            value: users.length,
-                            color: "text-amber-600"
-                        }, void 0, false, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 128,
-                            columnNumber: 11
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/pages/dashboard.js",
-                    lineNumber: 120,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                    className: "p-5 bg-white border shadow-lg rounded-xl",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h3", {
-                            className: "mb-3 text-lg font-bold text-gray-800",
-                            children: "المبيعات الشهرية"
-                        }, void 0, false, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 137,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$ResponsiveContainer$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["ResponsiveContainer"], {
-                            width: "100%",
-                            height: 260,
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$chart$2f$LineChart$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["LineChart"], {
-                                data: salesData,
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$CartesianGrid$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["CartesianGrid"], {
-                                        strokeDasharray: "4 4",
-                                        stroke: "#e5e7eb"
-                                    }, void 0, false, {
-                                        fileName: "[project]/pages/dashboard.js",
-                                        lineNumber: 143,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$XAxis$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["XAxis"], {
-                                        dataKey: "month",
-                                        stroke: "#6b7280"
-                                    }, void 0, false, {
-                                        fileName: "[project]/pages/dashboard.js",
-                                        lineNumber: 144,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$YAxis$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["YAxis"], {
-                                        stroke: "#6b7280"
-                                    }, void 0, false, {
-                                        fileName: "[project]/pages/dashboard.js",
-                                        lineNumber: 145,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Tooltip$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["Tooltip"], {}, void 0, false, {
-                                        fileName: "[project]/pages/dashboard.js",
-                                        lineNumber: 146,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Line$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["Line"], {
-                                        type: "monotone",
-                                        dataKey: "total",
-                                        stroke: __TURBOPACK__imported__module__$5b$project$5d2f$theme$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"].colors.primary,
-                                        strokeWidth: 3,
-                                        dot: {
-                                            r: 5
-                                        }
-                                    }, void 0, false, {
-                                        fileName: "[project]/pages/dashboard.js",
-                                        lineNumber: 147,
-                                        columnNumber: 15
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/pages/dashboard.js",
-                                lineNumber: 142,
-                                columnNumber: 13
-                            }, this)
-                        }, void 0, false, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 141,
-                            columnNumber: 11
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/pages/dashboard.js",
-                    lineNumber: 136,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                    className: "grid grid-cols-1 gap-6 lg:grid-cols-3",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                            className: "p-5 bg-white border shadow-lg rounded-xl lg:col-span-2",
+                            fileName: "[project]/pages/shifts.js",
+                            lineNumber: 71,
+                            columnNumber: 13
+                        }, this) : currentShift ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                            className: "space-y-2 text-sm",
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h3", {
-                                    className: "mb-4 text-lg font-bold text-gray-800",
-                                    children: "آخر العمليات"
-                                }, void 0, false, {
-                                    fileName: "[project]/pages/dashboard.js",
-                                    lineNumber: 162,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("ul", {
-                                    className: "space-y-3 text-sm",
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
                                     children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(ActivityCard, {
-                                            icon: "💰",
-                                            text: "تم إنشاء فاتورة بقيمة 245 ر.س بواسطة أحمد."
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("strong", {
+                                            children: "وقت الفتح:"
                                         }, void 0, false, {
-                                            fileName: "[project]/pages/dashboard.js",
-                                            lineNumber: 164,
-                                            columnNumber: 15
+                                            fileName: "[project]/pages/shifts.js",
+                                            lineNumber: 74,
+                                            columnNumber: 18
                                         }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(ActivityCard, {
-                                            icon: "📦",
-                                            text: "تم تحديث مخزون دواء “فيتامين سي”."
-                                        }, void 0, false, {
-                                            fileName: "[project]/pages/dashboard.js",
-                                            lineNumber: 168,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(ActivityCard, {
-                                            icon: "📊",
-                                            text: "تم عرض تقرير المبيعات اليومية."
-                                        }, void 0, false, {
-                                            fileName: "[project]/pages/dashboard.js",
-                                            lineNumber: 172,
-                                            columnNumber: 15
-                                        }, this)
+                                        " ",
+                                        currentShift.open_time
                                     ]
                                 }, void 0, true, {
-                                    fileName: "[project]/pages/dashboard.js",
-                                    lineNumber: 163,
-                                    columnNumber: 13
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 161,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                            className: "p-5 border border-green-300 shadow-lg rounded-xl bg-gradient-to-br from-green-50 to-green-100",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h3", {
-                                    className: "mb-3 text-lg font-bold text-green-800",
-                                    children: "📈 تحليل الأداء"
-                                }, void 0, false, {
-                                    fileName: "[project]/pages/dashboard.js",
-                                    lineNumber: 181,
-                                    columnNumber: 13
+                                    fileName: "[project]/pages/shifts.js",
+                                    lineNumber: 74,
+                                    columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
-                                    className: "text-sm leading-relaxed text-green-700",
                                     children: [
-                                        "أداء المبيعات ارتفع بنسبة ",
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("strong", {
-                                            children: "+12%"
+                                            children: "بواسطة:"
                                         }, void 0, false, {
-                                            fileName: "[project]/pages/dashboard.js",
-                                            lineNumber: 183,
-                                            columnNumber: 41
+                                            fileName: "[project]/pages/shifts.js",
+                                            lineNumber: 75,
+                                            columnNumber: 18
                                         }, this),
-                                        " الأسبوع الماضي، مع زيادة في عدد الطلبات ",
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("strong", {
-                                            children: "+8%"
-                                        }, void 0, false, {
-                                            fileName: "[project]/pages/dashboard.js",
-                                            lineNumber: 184,
-                                            columnNumber: 39
-                                        }, this),
-                                        ". استمر بتحسين العروض والسرعة لزيادة الأرباح."
+                                        " المستخدم #",
+                                        currentShift.opened_by
                                     ]
                                 }, void 0, true, {
-                                    fileName: "[project]/pages/dashboard.js",
-                                    lineNumber: 182,
-                                    columnNumber: 13
+                                    fileName: "[project]/pages/shifts.js",
+                                    lineNumber: 75,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("strong", {
+                                            children: "إجمالي المبيعات:"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/shifts.js",
+                                            lineNumber: 76,
+                                            columnNumber: 18
+                                        }, this),
+                                        " ",
+                                        currentShift.total_sales,
+                                        " ر.س"
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/pages/shifts.js",
+                                    lineNumber: 76,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("strong", {
+                                            children: "فواتير:"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/shifts.js",
+                                            lineNumber: 77,
+                                            columnNumber: 18
+                                        }, this),
+                                        " ",
+                                        currentShift.invoices_count
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/pages/shifts.js",
+                                    lineNumber: 77,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("strong", {
+                                            children: "نقد:"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/shifts.js",
+                                            lineNumber: 78,
+                                            columnNumber: 18
+                                        }, this),
+                                        " ",
+                                        currentShift.total_cash
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/pages/shifts.js",
+                                    lineNumber: 78,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("strong", {
+                                            children: "بطاقة:"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/shifts.js",
+                                            lineNumber: 79,
+                                            columnNumber: 18
+                                        }, this),
+                                        " ",
+                                        currentShift.total_card
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/pages/shifts.js",
+                                    lineNumber: 79,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("strong", {
+                                            children: "محفظة:"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/shifts.js",
+                                            lineNumber: 80,
+                                            columnNumber: 18
+                                        }, this),
+                                        " ",
+                                        currentShift.total_wallet
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/pages/shifts.js",
+                                    lineNumber: 80,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                    onClick: closeShift,
+                                    className: "px-4 py-2 mt-3 text-white bg-red-600 rounded-lg hover:bg-red-700",
+                                    children: "🔴 إغلاق الشفت"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/shifts.js",
+                                    lineNumber: 82,
+                                    columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 180,
-                            columnNumber: 11
+                            fileName: "[project]/pages/shifts.js",
+                            lineNumber: 73,
+                            columnNumber: 13
+                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
+                                    className: "mb-3 text-gray-500",
+                                    children: "لا يوجد شفت مفتوح حالياً."
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/shifts.js",
+                                    lineNumber: 91,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                    onClick: startShift,
+                                    className: "px-4 py-2 text-white rounded-lg bg-emerald-600 hover:bg-emerald-700",
+                                    children: "🟢 بدء شفت جديد"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/shifts.js",
+                                    lineNumber: 92,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/pages/shifts.js",
+                            lineNumber: 90,
+                            columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
-                    fileName: "[project]/pages/dashboard.js",
-                    lineNumber: 159,
+                    fileName: "[project]/pages/shifts.js",
+                    lineNumber: 65,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                    className: "p-4 bg-white border shadow-sm rounded-xl",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h2", {
+                            className: "mb-3 text-lg font-semibold text-slate-700",
+                            children: "📝 السجل الكامل للشفتات"
+                        }, void 0, false, {
+                            fileName: "[project]/pages/shifts.js",
+                            lineNumber: 104,
+                            columnNumber: 11
+                        }, this),
+                        loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
+                            className: "text-gray-500",
+                            children: "جارٍ التحميل…"
+                        }, void 0, false, {
+                            fileName: "[project]/pages/shifts.js",
+                            lineNumber: 109,
+                            columnNumber: 13
+                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("table", {
+                            className: "w-full text-sm border",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("thead", {
+                                    className: "bg-slate-100 text-slate-600",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tr", {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
+                                                className: "p-2 border",
+                                                children: "رقم الشفت"
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/shifts.js",
+                                                lineNumber: 114,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
+                                                className: "p-2 border",
+                                                children: "فتح"
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/shifts.js",
+                                                lineNumber: 115,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
+                                                className: "p-2 border",
+                                                children: "إغلاق"
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/shifts.js",
+                                                lineNumber: 116,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
+                                                className: "p-2 border",
+                                                children: "الحالة"
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/shifts.js",
+                                                lineNumber: 117,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
+                                                className: "p-2 border",
+                                                children: "المبيعات"
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/shifts.js",
+                                                lineNumber: 118,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/pages/shifts.js",
+                                        lineNumber: 113,
+                                        columnNumber: 17
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/shifts.js",
+                                    lineNumber: 112,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tbody", {
+                                    children: [
+                                        shifts.map((s)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tr", {
+                                                className: "border-t hover:bg-slate-50",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
+                                                        className: "p-2 border",
+                                                        children: s.id
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/pages/shifts.js",
+                                                        lineNumber: 124,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
+                                                        className: "p-2 border",
+                                                        children: s.open_time
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/pages/shifts.js",
+                                                        lineNumber: 125,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
+                                                        className: "p-2 border",
+                                                        children: s.close_time || "---"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/pages/shifts.js",
+                                                        lineNumber: 126,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
+                                                        className: "p-2 border",
+                                                        children: s.status === "open" ? "🔵 مفتوح" : "⚫ مغلق"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/pages/shifts.js",
+                                                        lineNumber: 127,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
+                                                        className: "p-2 border",
+                                                        children: [
+                                                            s.total_sales,
+                                                            " ر.س"
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/pages/shifts.js",
+                                                        lineNumber: 130,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, s.id, true, {
+                                                fileName: "[project]/pages/shifts.js",
+                                                lineNumber: 123,
+                                                columnNumber: 19
+                                            }, this)),
+                                        !shifts.length && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tr", {
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
+                                                colSpan: 5,
+                                                className: "py-4 text-center text-gray-500",
+                                                children: "لا توجد شفتات مسجلة."
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/shifts.js",
+                                                lineNumber: 136,
+                                                columnNumber: 21
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/shifts.js",
+                                            lineNumber: 135,
+                                            columnNumber: 19
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/pages/shifts.js",
+                                    lineNumber: 121,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/pages/shifts.js",
+                            lineNumber: 111,
+                            columnNumber: 13
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/pages/shifts.js",
+                    lineNumber: 103,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
-            fileName: "[project]/pages/dashboard.js",
-            lineNumber: 93,
+            fileName: "[project]/pages/shifts.js",
+            lineNumber: 61,
             columnNumber: 7
         }, this)
     }, void 0, false, {
-        fileName: "[project]/pages/dashboard.js",
-        lineNumber: 92,
+        fileName: "[project]/pages/shifts.js",
+        lineNumber: 60,
         columnNumber: 5
     }, this);
-}
-// 🟡 بطاقة الملخص
-function SummaryCard({ title, value, color }) {
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-        className: "p-5 transition bg-white border shadow-md rounded-xl hover:shadow-lg",
-        children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
-                className: "text-sm text-gray-500",
-                children: title
-            }, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 199,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h3", {
-                className: `mt-1 text-2xl font-bold ${color}`,
-                children: value
-            }, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 200,
-                columnNumber: 7
-            }, this)
-        ]
-    }, void 0, true, {
-        fileName: "[project]/pages/dashboard.js",
-        lineNumber: 198,
-        columnNumber: 5
-    }, this);
-}
-// 🟣 بطاقة عملية
-function ActivityCard({ icon, text }) {
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("li", {
-        className: "flex items-center gap-3 p-3 transition border rounded-lg bg-gray-50 hover:bg-gray-100",
-        children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
-                className: "text-xl",
-                children: icon
-            }, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 209,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
-                children: text
-            }, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 210,
-                columnNumber: 7
-            }, this)
-        ]
-    }, void 0, true, {
-        fileName: "[project]/pages/dashboard.js",
-        lineNumber: 208,
-        columnNumber: 5
-    }, this);
-} // import { useState, useEffect } from 'react'
- // import { useRouter } from 'next/router'
- // import Layout from '../components/Layout'
- // import theme from '../theme'
- // import {
- //   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
- // } from 'recharts'
- // export default function Dashboard() {
- //   const [user] = useState({ name: 'المدير أحمد', role: 'admin' })
- //   const [users, setUsers] = useState([])
- //   const [salesData, setSalesData] = useState([])
- //   const router = useRouter()
- // //   useEffect(() => {
- // //   const token = localStorage.getItem("pharmacy_token")
- // //   if (!token) {
- // //     router.replace("/")   // redirect to login
- // //   }
- // // }, [])
- //   useEffect(() => {
- //     setUsers([
- //       { id: 1, name: 'محمد الصيدلي', role: 'pharmacist', email: 'pharma@mail.com' },
- //       { id: 2, name: 'أحمد الكاشير', role: 'cashier', email: 'cashier@mail.com' },
- //       { id: 3, name: 'مها الإدارية', role: 'admin', email: 'admin@mail.com' }
- //     ])
- //     setSalesData([
- //       { month: 'يناير', total: 3200 },
- //       { month: 'فبراير', total: 4100 },
- //       { month: 'مارس', total: 3800 },
- //       { month: 'أبريل', total: 5200 },
- //       { month: 'مايو', total: 6100 },
- //       { month: 'يونيو', total: 5700 }
- //     ])
- //   }, [])
- //   const totalSales = salesData.reduce((s, m) => s + m.total, 0)
- //   // روابط الوصول السريع (بدون react-icons)
- //   const quickLinks = [
- //     { title: 'المنتجات', icon: '💊', bg: 'from-green-500/70 to-emerald-600/70', path: '/products' },
- //     { title: 'المبيعات', icon: '🧾', bg: 'from-sky-500/70 to-blue-600/70', path: '/sales' },
- //     { title: 'المخزن', icon: '🏬', bg: 'from-orange-500/70 to-amber-600/70', path: '/inventory' },
- //     { title: 'التقارير', icon: '📈', bg: 'from-purple-500/70 to-indigo-600/70', path: '/reports' },
- //     { title: 'الحسابات', icon: '💵', bg: 'from-amber-500/70 to-yellow-600/70', path: '/accounts' },
- //     { title: 'المستخدمون', icon: '👥', bg: 'from-teal-500/70 to-cyan-600/70', path: '/users' }
- //   ]
- //   return (
- //     <Layout user={user} title="لوحة التحكم الرئيسية">
- //       <div dir="rtl" className="space-y-10">
- //         {/* الوصول السريع */}
- //         <section>
- //           <h2 className="mb-5 text-xl font-semibold text-gray-800">الوصول السريع</h2>
- //           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
- //             {quickLinks.map((link, i) => (
- //               <button
- //                 key={i}
- //                 onClick={() => router.push(link.path)}
- //                 className={`
- //                   group relative flex flex-col items-center justify-center
- //                   py-4 px-3 rounded-xl text-white shadow-md hover:shadow-xl hover:scale-[1.03]
- //                   transition-all duration-200 bg-gradient-to-br ${link.bg}
- //                 `}
- //               >
- //                 <div className="absolute inset-0 bg-black opacity-10 group-hover:opacity-25 rounded-xl"></div>
- //                 <div className="relative z-10 text-3xl mb-1.5">{link.icon}</div>
- //                 <h3 className="relative z-10 text-sm font-semibold tracking-wide">{link.title}</h3>
- //               </button>
- //             ))}
- //           </div>
- //         </section>
- //         {/* بطاقات الملخص */}
- //         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
- //           <SummaryCard title="إجمالي المبيعات" value={`${totalSales.toLocaleString()} ر.س`} color="text-sky-600" />
- //           <SummaryCard title="عدد الفواتير" value="248" color="text-blue-600" />
- //           <SummaryCard title="عدد الأدوية" value="126" color="text-green-600" />
- //           <SummaryCard title="عدد المستخدمين" value={users.length} color="text-amber-600" />
- //         </div>
- //         {/* الرسم البياني للمبيعات */}
- //         <div className="p-5 bg-white border rounded-lg shadow-sm">
- //           <h3 className="mb-3 text-lg font-semibold text-gray-700">المبيعات الشهرية</h3>
- //           <ResponsiveContainer width="100%" height={250}>
- //             <LineChart data={salesData}>
- //               <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
- //               <XAxis dataKey="month" />
- //               <YAxis />
- //               <Tooltip />
- //               <Line type="monotone" dataKey="total" stroke={theme.colors.primary} strokeWidth={2} />
- //             </LineChart>
- //           </ResponsiveContainer>
- //         </div>
- //         {/* آخر العمليات + ملاحظة تحليلية */}
- //         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
- //           <div className="p-5 bg-white border rounded-lg shadow-sm lg:col-span-2">
- //             <h3 className="mb-4 text-lg font-semibold text-gray-700">آخر العمليات</h3>
- //             <ul className="space-y-2 text-sm text-gray-700">
- //               <li className="p-3 transition border border-gray-100 rounded-lg hover:bg-gray-50">
- //                 💰 تم إنشاء فاتورة بقيمة <span className="font-semibold text-green-700">245 ر.س</span> بواسطة <span className="text-blue-600">أحمد</span>.
- //               </li>
- //               <li className="p-3 transition border border-gray-100 rounded-lg hover:bg-gray-50">
- //                 📦 تم تحديث مخزون دواء <span className="font-semibold text-emerald-700">“فيتامين سي”</span>.
- //               </li>
- //               <li className="p-3 transition border border-gray-100 rounded-lg hover:bg-gray-50">
- //                 📊 تم عرض تقرير <span className="font-semibold text-purple-600">المبيعات اليومية</span>.
- //               </li>
- //             </ul>
- //           </div>
- //           <div className="p-5 border border-green-200 rounded-lg shadow-sm bg-gradient-to-br from-green-50 to-green-100">
- //             <h3 className="mb-3 text-lg font-semibold text-green-700">📈 ملاحظة تحليلية</h3>
- //             <p className="text-sm leading-relaxed text-green-800">
- //               أداء المبيعات في آخر أسبوع ارتفع بنسبة <strong>+12%</strong> مقارنة بالفترة السابقة،
- //               مع زيادة في عدد الطلبات بمعدل <strong>8%</strong>.
- //             </p>
- //           </div>
- //         </div>
+} // // pages/shift.js
+ // import Layout from "../components/Layout";
+ // import { useShift } from "../context/ShiftContext";
+ // import { useAuth } from "../context/AuthContext";
+ // export default function ShiftPage() {
+ //   const { user, hasPermission } = useAuth();
+ //   const { shiftOpen, shiftData, openShift, closeShift } = useShift();
+ //   if (!hasPermission(["admin", "cashier"])) {
+ //     return (
+ //       <div dir="rtl" className="p-6 text-center text-red-600">
+ //         ⚠️ ليس لديك صلاحية لدخول شاشة الشِّفت.
  //       </div>
- //     </Layout>
- //   )
- // }
- // function SummaryCard({ title, value, color }) {
- //   return (
- //     <div className="p-5 text-center transition bg-white border rounded-lg shadow-sm hover:shadow-md">
- //       <p className="text-sm text-gray-500">{title}</p>
- //       <h3 className={`text-2xl font-bold ${color}`}>{value}</h3>
- //     </div>
- //   )
- // }
- // import { useState, useEffect } from 'react'
- // import { useRouter } from 'next/router'
- // import Layout from '../components/Layout'
- // import toast from 'react-hot-toast'
- // import theme from '../theme'
- // import {
- //   LineChart,
- //   Line,
- //   XAxis,
- //   YAxis,
- //   CartesianGrid,
- //   Tooltip,
- //   ResponsiveContainer
- // } from 'recharts'
- // import {
- //   FaPills,
- //   FaCashRegister,
- //   FaChartLine,
- //   FaMoneyBillWave,
- //   FaUsers
- // } from 'react-icons/fa'
- // export default function Dashboard() {
- //   const [user] = useState({ name: 'المدير أحمد', role: 'admin' })
- //   const [users, setUsers] = useState([])
- //   const [salesData, setSalesData] = useState([])
- //   const router = useRouter()
- //   useEffect(() => {
- //     setUsers([
- //       { id: 1, name: 'محمد الصيدلي', role: 'pharmacist', email: 'pharma@mail.com' },
- //       { id: 2, name: 'أحمد الكاشير', role: 'cashier', email: 'cashier@mail.com' },
- //       { id: 3, name: 'مها الإدارية', role: 'admin', email: 'admin@mail.com' }
- //     ])
- //     setSalesData([
- //       { month: 'يناير', total: 3200 },
- //       { month: 'فبراير', total: 4100 },
- //       { month: 'مارس', total: 3800 },
- //       { month: 'أبريل', total: 5200 },
- //       { month: 'مايو', total: 6100 },
- //       { month: 'يونيو', total: 5700 }
- //     ])
- //   }, [])
- //   const totalSales = salesData.reduce((s, m) => s + m.total, 0)
- //   // 🔹 روابط الوصول السريع
- //   const quickLinks = [
- //     { title: 'المنتجات', icon: <FaPills />, bg: 'bg-gradient-to-br from-green-500 to-emerald-600', path: '/products' },
- //     { title: 'المبيعات', icon: <FaCashRegister />, bg: 'bg-gradient-to-br from-sky-500 to-blue-600', path: '/sales' },
- //     { title: 'التقارير', icon: <FaChartLine />, bg: 'bg-gradient-to-br from-purple-500 to-indigo-600', path: '/reports' },
- //     { title: 'الحسابات', icon: <FaMoneyBillWave />, bg: 'bg-gradient-to-br from-amber-500 to-yellow-600', path: '/accounts' },
- //     { title: 'إدارة المستخدمين', icon: <FaUsers />, bg: 'bg-gradient-to-br from-teal-500 to-cyan-600', path: '/users' }
- //   ]
- //   return (
- //     <Layout user={user} title="لوحة التحكم الرئيسية">
- //       <div dir="rtl" className="space-y-10">
- //         {/* 🔹 الوصول السريع */}
- //         <section>
- //           <h2 className="mb-5 text-xl font-semibold text-gray-800">الوصول السريع</h2>
- //           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
- //             {quickLinks.map((link, i) => (
- //               <button
- //                 key={i}
- //                 onClick={() => router.push(link.path)}
- //                 className={`
- //                   group relative flex flex-col items-center justify-center 
- //                   p-6 rounded-2xl text-white shadow-md hover:shadow-xl hover:scale-[1.03] transition-all duration-200
- //                   ${link.bg}
- //                 `}
- //               >
- //                 <div className="absolute inset-0 bg-black opacity-10 group-hover:opacity-20 rounded-2xl"></div>
- //                 <div className="relative z-10 mb-3 text-4xl">{link.icon}</div>
- //                 <h3 className="relative z-10 text-lg font-bold tracking-wide">{link.title}</h3>
- //               </button>
- //             ))}
- //           </div>
- //         </section>
- //         {/* 🧾 بطاقات الملخص */}
- //         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
- //           <SummaryCard title="إجمالي المبيعات" value={`${totalSales.toLocaleString()} ر.س`} color="text-sky-600" />
- //           <SummaryCard title="عدد الفواتير" value="248" color="text-blue-600" />
- //           <SummaryCard title="عدد الأدوية" value="126" color="text-green-600" />
- //           <SummaryCard title="عدد المستخدمين" value={users.length} color="text-amber-600" />
+ //     );
+ //   }
+ //   const printShiftReport = () => {
+ //     const w = window.open("", "", "width=900,height=700");
+ //     const salesTotal = shiftData.totalSales || 0;
+ //     const returnsTotal = shiftData.totalReturns || 0;
+ //     const net = salesTotal - returnsTotal;
+ //     w.document.write(`
+ //       <html dir="rtl" lang="ar">
+ //       <head>
+ //         <title>تقرير الشِّفت</title>
+ //         <style>
+ //           body { font-family:'Tajawal',sans-serif; padding:20px; }
+ //           h1,h2,h3 { text-align:center; margin:5px 0; }
+ //           table { width:100%; border-collapse:collapse; margin-top:15px; font-size:12px; }
+ //           th,td { border:1px solid #ddd; padding:6px; text-align:right; }
+ //           th { background:#f3f4f6; }
+ //           .summary { margin-top:10px; }
+ //         </style>
+ //       </head>
+ //       <body>
+ //         <h1>📋 تقرير الشِّفت</h1>
+ //         <h3>الكاشير: ${user?.name || ""}</h3>
+ //         <p style="text-align:center;">
+ //           من: ${shiftData.startTime || "-"}<br/>
+ //           إلى: ${shiftData.endTime || "لم يُغلق بعد"}
+ //         </p>
+ //         <div class="summary">
+ //           <p>إجمالي المبيعات: <strong>${salesTotal.toFixed(2)} ر.س</strong></p>
+ //           <p>إجمالي المرتجعات: <strong>${returnsTotal.toFixed(2)} ر.س</strong></p>
+ //           <p>صافي الشِّفت: <strong>${net.toFixed(2)} ر.س</strong></p>
  //         </div>
- //         {/* 📈 الرسم البياني للمبيعات */}
- //         <div className="p-5 bg-white border rounded-lg shadow-sm">
- //           <h3 className="mb-3 text-lg font-semibold text-gray-700">المبيعات الشهرية</h3>
- //           <ResponsiveContainer width="100%" height={250}>
- //             <LineChart data={salesData}>
- //               <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
- //               <XAxis dataKey="month" />
- //               <YAxis />
- //               <Tooltip />
- //               <Line type="monotone" dataKey="total" stroke={theme.colors.primary} strokeWidth={2} />
- //             </LineChart>
- //           </ResponsiveContainer>
- //         </div>
- //         {/* 🧾 آخر العمليات */}
- //         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
- //           {/* قائمة العمليات */}
- //           <div className="p-5 bg-white border rounded-lg shadow-sm lg:col-span-2">
- //             <h3 className="mb-4 text-lg font-semibold text-gray-700">آخر العمليات</h3>
- //             <ul className="space-y-2 text-sm text-gray-700">
- //               <li className="p-3 transition border border-gray-100 rounded-lg hover:bg-gray-50">
- //                 💰 تم إنشاء فاتورة جديدة بقيمة <span className="font-semibold text-green-700">245 ر.س</span> بواسطة <span className="text-blue-600">أحمد</span>.
- //               </li>
- //               <li className="p-3 transition border border-gray-100 rounded-lg hover:bg-gray-50">
- //                 📦 تم تحديث مخزون دواء <span className="font-semibold text-emerald-700">“فيتامين سي”</span>.
- //               </li>
- //               <li className="p-3 transition border border-gray-100 rounded-lg hover:bg-gray-50">
- //                 📊 تم عرض تقرير <span className="font-semibold text-purple-600">المبيعات اليومية</span>.
- //               </li>
- //             </ul>
- //           </div>
- //           {/* تنبيه تحليلي */}
- //           <div className="p-5 border border-green-200 rounded-lg shadow-sm bg-gradient-to-br from-green-50 to-green-100">
- //             <h3 className="mb-3 text-lg font-semibold text-green-700">📈 ملاحظة تحليلية</h3>
- //             <p className="text-sm leading-relaxed text-green-800">
- //               أداء المبيعات في آخر أسبوع ارتفع بنسبة <strong>+12%</strong> مقارنة بالفترة السابقة،
- //               مع زيادة في عدد الطلبات بمعدل <strong>8%</strong>.
- //               حافظ على هذا الأداء لتعزيز الأرباح الشهرية.
- //             </p>
- //           </div>
- //         </div>
- //       </div>
- //     </Layout>
- //   )
- // }
- // // 🧩 بطاقة الملخص
- // function SummaryCard({ title, value, color }) {
- //   return (
- //     <div className="p-5 text-center transition bg-white border rounded-lg shadow-sm hover:shadow-md">
- //       <p className="text-sm text-gray-500">{title}</p>
- //       <h3 className={`text-2xl font-bold ${color}`}>{value}</h3>
- //     </div>
- //   )
- // }
- // import { useState, useEffect } from 'react'
- // import Layout from '../components/Layout'
- // import toast from 'react-hot-toast'
- // import theme from '../theme'
- // import {
- //   LineChart,
- //   Line,
- //   XAxis,
- //   YAxis,
- //   CartesianGrid,
- //   Tooltip,
- //   PieChart,
- //   Pie,
- //   Cell,
- //   ResponsiveContainer
- // } from 'recharts'
- // export default function Dashboard() {
- //   const [user] = useState({ name: 'المدير أحمد', role: 'admin' })
- //   const [users, setUsers] = useState([])
- //   const [salesData, setSalesData] = useState([])
- //   const [showAddModal, setShowAddModal] = useState(false)
- //   const [showEditModal, setShowEditModal] = useState(false)
- //   const [showPermModal, setShowPermModal] = useState(false)
- //   const [newUser, setNewUser] = useState({ name: '', role: '', email: '', permissions: [] })
- //   const [editUser, setEditUser] = useState(null)
- //   const [permUser, setPermUser] = useState(null)
- //   // 🔹 قائمة الصلاحيات
- //   const allPermissions = [
- //     { key: 'view_sales', label: 'عرض المبيعات' },
- //     { key: 'add_sale', label: 'إضافة عملية بيع' },
- //     { key: 'manage_medicines', label: 'إدارة الأدوية' },
- //     { key: 'manage_users', label: 'إدارة المستخدمين' },
- //     { key: 'view_reports', label: 'عرض التقارير' },
- //     { key: 'print_reports', label: 'طباعة التقارير' },
- //   ]
- //   // 🔹 بيانات مبدئية
- //   useEffect(() => {
- //     setUsers([
- //       { id: 1, name: 'محمد الصيدلي', role: 'pharmacist', email: 'pharma@mail.com', permissions: ['manage_medicines', 'view_reports'] },
- //       { id: 2, name: 'أحمد الكاشير', role: 'cashier', email: 'cashier@mail.com', permissions: ['add_sale', 'view_sales', 'print_reports'] },
- //       { id: 3, name: 'مها الإدارية', role: 'admin', email: 'admin@mail.com', permissions: ['manage_users', 'view_reports', 'print_reports'] },
- //     ])
- //     setSalesData([
- //       { month: 'يناير', total: 3200 },
- //       { month: 'فبراير', total: 4100 },
- //       { month: 'مارس', total: 3800 },
- //       { month: 'أبريل', total: 5200 },
- //       { month: 'مايو', total: 6100 },
- //       { month: 'يونيو', total: 5700 },
- //     ])
- //   }, [])
- //   const totalSales = salesData.reduce((s, m) => s + m.total, 0)
- //   const COLORS = ['#0EA5E9', '#10B981', '#F59E0B']
- //   // 🟢 إضافة مستخدم
- //   const addUser = () => {
- //     if (!newUser.name || !newUser.role || !newUser.email) {
- //       toast.error('⚠️ يرجى إدخال جميع الحقول')
- //       return
- //     }
- //     setUsers([...users, { id: Date.now(), ...newUser }])
- //     setNewUser({ name: '', role: '', email: '', permissions: [] })
- //     setShowAddModal(false)
- //     toast.success('✅ تم إضافة المستخدم بنجاح')
- //   }
- //   // ✏️ تعديل مستخدم
- //   const openEditModal = (u) => {
- //     setEditUser({ ...u })
- //     setShowEditModal(true)
- //   }
- //   const saveEditUser = () => {
- //     if (!editUser.name || !editUser.role || !editUser.email) return toast.error('⚠️ يرجى إدخال جميع الحقول')
- //     setUsers(users.map((u) => (u.id === editUser.id ? editUser : u)))
- //     setShowEditModal(false)
- //     toast.success('✅ تم تعديل المستخدم بنجاح')
- //   }
- //   // 🔐 صلاحيات المستخدم
- //   const openPermModal = (u) => {
- //     setPermUser({ ...u })
- //     setShowPermModal(true)
- //   }
- //   const togglePermission = (permKey) => {
- //     const perms = permUser.permissions.includes(permKey)
- //       ? permUser.permissions.filter((p) => p !== permKey)
- //       : [...permUser.permissions, permKey]
- //     setPermUser({ ...permUser, permissions: perms })
- //   }
- //   const savePermissions = () => {
- //     setUsers(users.map((u) => (u.id === permUser.id ? permUser : u)))
- //     setShowPermModal(false)
- //     toast.success('🔐 تم تحديث صلاحيات المستخدم')
- //   }
- //   // ❌ حذف مستخدم
- //   const deleteUser = (id) => {
- //     if (confirm('هل تريد حذف هذا المستخدم؟')) {
- //       setUsers(users.filter((u) => u.id !== id))
- //       toast.success('🗑️ تم حذف المستخدم بنجاح')
- //     }
- //   }
- //   return (
- //     <Layout user={user} title="لوحة المدير">
- //       <div dir="rtl" className="space-y-8">
- //         {/* 🧾 الملخص */}
- //         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
- //           <SummaryCard title="إجمالي المبيعات" value={`${totalSales.toLocaleString()} ر.س`} color="text-sky-600" />
- //           <SummaryCard title="عدد الفواتير" value="248" color="text-blue-600" />
- //           <SummaryCard title="عدد الأدوية" value="126" color="text-green-600" />
- //           <SummaryCard title="عدد المستخدمين" value={users.length} color="text-amber-600" />
- //         </div>
- //         {/* 👥 إدارة المستخدمين */}
- //         <div className="p-5 bg-white border rounded-lg shadow-sm">
- //           <div className="flex items-center justify-between mb-4">
- //             <h3 className="text-lg font-semibold text-gray-700">إدارة المستخدمين والصلاحيات</h3>
- //             <button onClick={() => setShowAddModal(true)} className="px-4 py-2 text-white rounded-md shadow bg-sky-600 hover:bg-sky-700">
- //               ➕ مستخدم جديد
- //             </button>
- //           </div>
- //           <table className="w-full text-sm text-right border-t border-gray-100">
- //             <thead className="text-gray-600 bg-gray-50">
+ //         <h3>تفاصيل العمليات</h3>
+ //         <table>
+ //           <thead>
+ //             <tr>
+ //               <th>النوع</th>
+ //               <th>الصنف</th>
+ //               <th>الكمية</th>
+ //               <th>الإجمالي</th>
+ //               <th>الوقت</th>
+ //             </tr>
+ //           </thead>
+ //           <tbody>
+ //             ${
+ //               shiftData.operations && shiftData.operations.length
+ //                 ? shiftData.operations
+ //                     .map(
+ //                       (op) => `
  //               <tr>
- //                 <th className="px-3 py-2">الاسم</th>
- //                 <th className="px-3 py-2">البريد</th>
- //                 <th className="px-3 py-2">الدور</th>
- //                 <th className="px-3 py-2">الصلاحيات</th>
- //                 <th className="px-3 py-2">الإجراءات</th>
+ //                 <td>${op.type === "sale" ? "💵 بيع" : "🔁 مرتجع"}</td>
+ //                 <td>${op.productName}</td>
+ //                 <td>${op.qty}</td>
+ //                 <td>${op.total}</td>
+ //                 <td>${op.time}</td>
  //               </tr>
- //             </thead>
- //             <tbody>
- //               {users.map((u) => (
- //                 <tr key={u.id} className="border-t hover:bg-gray-50">
- //                   <td className="px-3 py-2">{u.name}</td>
- //                   <td className="px-3 py-2">{u.email}</td>
- //                   <td className="px-3 py-2">{u.role === 'admin' ? '👑 مدير' : u.role === 'pharmacist' ? '💊 صيدلي' : '💵 كاشير'}</td>
- //                   <td className="px-3 py-2">
- //                     {u.permissions.map((p) => (
- //                       <span key={p} className="inline-block px-2 py-0.5 m-0.5 bg-sky-50 text-sky-700 rounded">
- //                         {allPermissions.find((x) => x.key === p)?.label || p}
- //                       </span>
- //                     ))}
- //                   </td>
- //                   <td className="px-3 py-2 space-x-2 space-x-reverse">
- //                     <button onClick={() => openEditModal(u)} className="px-3 py-1 text-sm text-blue-600 border border-blue-100 rounded hover:bg-blue-50">
- //                       تعديل
- //                     </button>
- //                     <button onClick={() => openPermModal(u)} className="px-3 py-1 text-sm text-indigo-600 border border-indigo-100 rounded hover:bg-indigo-50">
- //                       صلاحيات
- //                     </button>
- //                     <button onClick={() => deleteUser(u.id)} className="px-3 py-1 text-sm text-red-600 border border-red-100 rounded hover:bg-red-50">
- //                       حذف
- //                     </button>
- //                   </td>
- //                 </tr>
- //               ))}
- //             </tbody>
- //           </table>
- //         </div>
- //         {/* 🟢 مودالات */}
- //         {showAddModal && (
- //           <UserModal title="➕ إضافة مستخدم جديد" userData={newUser} setUserData={setNewUser} onSave={addUser} onCancel={() => setShowAddModal(false)} />
- //         )}
- //         {showEditModal && (
- //           <UserModal title="✏️ تعديل المستخدم" userData={editUser} setUserData={setEditUser} onSave={saveEditUser} onCancel={() => setShowEditModal(false)} />
- //         )}
- //         {showPermModal && (
- //           <PermissionsModal
- //             user={permUser}
- //             permissions={allPermissions}
- //             togglePermission={togglePermission}
- //             onSave={savePermissions}
- //             onCancel={() => setShowPermModal(false)}
- //           />
- //         )}
- //       </div>
- //     </Layout>
- //   )
- // }
- // // 🧩 بطاقات الملخص
- // function SummaryCard({ title, value, color }) {
+ //             `
+ //                     )
+ //                     .join("")
+ //                 : `<tr><td colspan="5" style="text-align:center;">لا توجد عمليات مسجلة في هذا الشِّفت.</td></tr>`
+ //             }
+ //           </tbody>
+ //         </table>
+ //         <script>window.print()</script>
+ //       </body>
+ //       </html>
+ //     `);
+ //     w.document.close();
+ //   };
  //   return (
- //     <div className="p-4 text-center bg-white border rounded-lg shadow-sm hover:shadow-md">
- //       <p className="text-sm text-gray-500">{title}</p>
- //       <h3 className={`text-2xl font-bold ${color}`}>{value}</h3>
- //     </div>
- //   )
- // }
- // // 🧩 نافذة المستخدم (إضافة / تعديل)
- // function UserModal({ title, userData, setUserData, onSave, onCancel }) {
- //   return (
- //     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999]">
- //       <div className="w-full max-w-md p-6 text-right bg-white rounded-lg shadow-lg">
- //         <h3 className="mb-4 text-lg font-semibold text-gray-700">{title}</h3>
- //         <label className="block mb-1 text-sm">الاسم</label>
- //         <input value={userData.name} onChange={(e) => setUserData({ ...userData, name: e.target.value })} className="w-full px-3 py-2 mb-3 border rounded-md" />
- //         <label className="block mb-1 text-sm">البريد الإلكتروني</label>
- //         <input value={userData.email} onChange={(e) => setUserData({ ...userData, email: e.target.value })} className="w-full px-3 py-2 mb-3 border rounded-md" />
- //         <label className="block mb-1 text-sm">الدور</label>
- //         <select value={userData.role} onChange={(e) => setUserData({ ...userData, role: e.target.value })} className="w-full px-3 py-2 mb-4 border rounded-md">
- //           <option value="">اختر الدور...</option>
- //           <option value="admin">👑 مدير</option>
- //           <option value="pharmacist">💊 صيدلي</option>
- //           <option value="cashier">💵 كاشير</option>
- //         </select>
- //         <div className="flex justify-end gap-3">
- //           <button onClick={onSave} className="px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-700">حفظ</button>
- //           <button onClick={onCancel} className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300">إلغاء</button>
- //         </div>
- //       </div>
- //     </div>
- //   )
- // }
- // // 🟣 نافذة الصلاحيات
- // function PermissionsModal({ user, permissions, togglePermission, onSave, onCancel }) {
- //   return (
- //     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999]">
- //       <div className="w-full max-w-lg p-6 text-right bg-white rounded-lg shadow-lg">
- //         <h3 className="mb-4 text-lg font-semibold text-gray-700">🔐 تعديل صلاحيات {user.name}</h3>
- //         <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
- //           {permissions.map((p) => (
- //             <label key={p.key} className="flex items-center gap-2">
- //               <input type="checkbox" checked={user.permissions.includes(p.key)} onChange={() => togglePermission(p.key)} />
- //               {p.label}
- //             </label>
- //           ))}
- //         </div>
- //         <div className="flex justify-end gap-3">
- //           <button onClick={onSave} className="px-4 py-2 text-white rounded-md bg-sky-600 hover:bg-sky-700">حفظ</button>
- //           <button onClick={onCancel} className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300">إلغاء</button>
- //         </div>
- //       </div>
- //     </div>
- //   )
- // }
- // import { useState, useEffect } from 'react'
- // import Layout from '../components/Layout'
- // import toast from 'react-hot-toast'
- // import theme from '../theme'
- // import {
- //   LineChart,
- //   Line,
- //   XAxis,
- //   YAxis,
- //   CartesianGrid,
- //   Tooltip,
- //   PieChart,
- //   Pie,
- //   Cell,
- //   ResponsiveContainer
- // } from 'recharts'
- // export default function Dashboard() {
- //   const [user] = useState({ name: 'المدير أحمد', role: 'admin' })
- //   const [users, setUsers] = useState([])
- //   const [salesData, setSalesData] = useState([])
- //   const [showAddModal, setShowAddModal] = useState(false)
- //   const [showEditModal, setShowEditModal] = useState(false)
- //   const [newUser, setNewUser] = useState({ name: '', role: '', email: '' })
- //   const [editUser, setEditUser] = useState(null)
- //   // 🔹 تحميل بيانات افتراضية
- //   useEffect(() => {
- //     setUsers([
- //       { id: 1, name: 'محمد الصيدلي', role: 'pharmacist', email: 'pharma@mail.com' },
- //       { id: 2, name: 'أحمد الكاشير', role: 'cashier', email: 'cashier@mail.com' },
- //       { id: 3, name: 'مها الإدارية', role: 'admin', email: 'admin@mail.com' },
- //     ])
- //     setSalesData([
- //       { month: 'يناير', total: 3200 },
- //       { month: 'فبراير', total: 4100 },
- //       { month: 'مارس', total: 3800 },
- //       { month: 'أبريل', total: 5200 },
- //       { month: 'مايو', total: 6100 },
- //       { month: 'يونيو', total: 5700 },
- //     ])
- //   }, [])
- //   const totalSales = salesData.reduce((s, m) => s + m.total, 0)
- //   const COLORS = ['#0EA5E9', '#10B981', '#F59E0B']
- //   // 🟢 إضافة مستخدم جديد
- //   const addUser = () => {
- //     if (!newUser.name || !newUser.role || !newUser.email) {
- //       toast.error('⚠️ يرجى إدخال جميع الحقول')
- //       return
- //     }
- //     setUsers([...users, { id: Date.now(), ...newUser }])
- //     setNewUser({ name: '', role: '', email: '' })
- //     setShowAddModal(false)
- //     toast.success('✅ تم إضافة المستخدم بنجاح')
- //   }
- //   // 🟡 فتح نافذة تعديل المستخدم
- //   const openEditModal = (user) => {
- //     setEditUser({ ...user })
- //     setShowEditModal(true)
- //   }
- //   // 🟣 حفظ التعديل
- //   const saveEditUser = () => {
- //     if (!editUser.name || !editUser.role || !editUser.email) {
- //       toast.error('⚠️ يرجى إدخال جميع الحقول')
- //       return
- //     }
- //     setUsers(users.map((u) => (u.id === editUser.id ? editUser : u)))
- //     setShowEditModal(false)
- //     toast.success('✅ تم تعديل المستخدم بنجاح')
- //   }
- //   // 🔴 حذف مستخدم
- //   const deleteUser = (id) => {
- //     if (confirm('هل تريد حذف هذا المستخدم؟')) {
- //       setUsers(users.filter((u) => u.id !== id))
- //       toast.success('🗑️ تم حذف المستخدم بنجاح')
- //     }
- //   }
- //   return (
- //     <Layout user={user} title="لوحة المدير">
- //       <div dir="rtl" className="space-y-8">
- //         {/* 🧾 ملخص النظام */}
- //         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
- //           <div className="p-4 text-center bg-white border rounded-lg shadow-sm hover:shadow-md">
- //             <p className="text-sm text-gray-500">إجمالي المبيعات</p>
- //             <h3 className="text-2xl font-bold text-sky-600">{totalSales.toLocaleString()} ر.س</h3>
- //           </div>
- //           <div className="p-4 text-center bg-white border rounded-lg shadow-sm hover:shadow-md">
- //             <p className="text-sm text-gray-500">عدد الفواتير</p>
- //             <h3 className="text-2xl font-bold text-blue-600">248</h3>
- //           </div>
- //           <div className="p-4 text-center bg-white border rounded-lg shadow-sm hover:shadow-md">
- //             <p className="text-sm text-gray-500">عدد الأدوية</p>
- //             <h3 className="text-2xl font-bold text-green-600">126</h3>
- //           </div>
- //           <div className="p-4 text-center bg-white border rounded-lg shadow-sm hover:shadow-md">
- //             <p className="text-sm text-gray-500">عدد المستخدمين</p>
- //             <h3 className="text-2xl font-bold text-amber-600">{users.length}</h3>
- //           </div>
- //         </div>
- //         {/* 📈 الرسوم التحليلية */}
- //         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
- //           <div className="p-5 bg-white border rounded-lg shadow-sm">
- //             <h3 className="mb-3 text-lg font-semibold text-gray-700">المبيعات الشهرية</h3>
- //             <ResponsiveContainer width="100%" height={250}>
- //               <LineChart data={salesData}>
- //                 <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
- //                 <XAxis dataKey="month" />
- //                 <YAxis />
- //                 <Tooltip />
- //                 <Line type="monotone" dataKey="total" stroke={theme.colors.primary} strokeWidth={2} />
- //               </LineChart>
- //             </ResponsiveContainer>
- //           </div>
- //           <div className="p-5 bg-white border rounded-lg shadow-sm">
- //             <h3 className="mb-3 text-lg font-semibold text-gray-700">توزيع المستخدمين حسب الدور</h3>
- //             <ResponsiveContainer width="100%" height={250}>
- //               <PieChart>
- //                 <Pie
- //                   data={[
- //                     { name: 'مديرين', value: users.filter(u => u.role === 'admin').length },
- //                     { name: 'صيدليين', value: users.filter(u => u.role === 'pharmacist').length },
- //                     { name: 'كاشير', value: users.filter(u => u.role === 'cashier').length },
- //                   ]}
- //                   cx="50%"
- //                   cy="50%"
- //                   outerRadius={80}
- //                   label
- //                   dataKey="value"
- //                 >
- //                   {COLORS.map((c, i) => <Cell key={i} fill={c} />)}
- //                 </Pie>
- //                 <Tooltip />
- //               </PieChart>
- //             </ResponsiveContainer>
- //           </div>
- //         </div>
- //         {/* 👥 إدارة المستخدمين */}
- //         <div className="p-5 bg-white border rounded-lg shadow-sm">
- //           <div className="flex items-center justify-between mb-4">
- //             <h3 className="text-lg font-semibold text-gray-700">إدارة المستخدمين</h3>
+ //     <Layout user={user} title="الشِّفت">
+ //       <div dir="rtl" className="space-y-6">
+ //         <h1 className="text-xl font-bold text-gray-800">🕒 إدارة الشِّفت</h1>
+ //         {!shiftOpen ? (
+ //           <div className="p-5 space-y-3 bg-white shadow rounded-xl">
+ //             <p className="text-sm text-gray-600">
+ //               لا يوجد شِفت مفتوح حاليًا. يمكنك فتح شِفت جديد لبدء تسجيل المبيعات.
+ //             </p>
  //             <button
- //               onClick={() => setShowAddModal(true)}
- //               className="px-4 py-2 text-white rounded-md shadow bg-sky-600 hover:bg-sky-700"
+ //               onClick={openShift}
+ //               className="px-6 py-2 text-sm text-white bg-green-600 rounded-lg hover:bg-green-700"
  //             >
- //               ➕ مستخدم جديد
+ //               🔓 فتح شِفت جديد
  //             </button>
  //           </div>
- //           <table className="w-full text-sm text-right border-t border-gray-100">
- //             <thead className="text-gray-600 bg-gray-50">
- //               <tr>
- //                 <th className="px-3 py-2">الاسم</th>
- //                 <th className="px-3 py-2">البريد</th>
- //                 <th className="px-3 py-2">الدور</th>
- //                 <th className="px-3 py-2">الإجراءات</th>
- //               </tr>
- //             </thead>
- //             <tbody>
- //               {users.map((u) => (
- //                 <tr key={u.id} className="border-t hover:bg-gray-50">
- //                   <td className="px-3 py-2">{u.name}</td>
- //                   <td className="px-3 py-2">{u.email}</td>
- //                   <td className="px-3 py-2">
- //                     {u.role === 'admin' ? '👑 مدير' : u.role === 'pharmacist' ? '💊 صيدلي' : '💵 كاشير'}
- //                   </td>
- //                   <td className="px-3 py-2 space-x-2 space-x-reverse">
- //                     <button
- //                       onClick={() => openEditModal(u)}
- //                       className="px-3 py-1 text-sm text-blue-600 border border-blue-100 rounded hover:bg-blue-50"
+ //         ) : (
+ //           <>
+ //             <div className="grid gap-4 md:grid-cols-2">
+ //               <div className="p-4 space-y-2 text-sm bg-white shadow rounded-xl">
+ //                 <h2 className="font-semibold text-gray-700">
+ //                   معلومات الشِّفت
+ //                 </h2>
+ //                 <p>
+ //                   👤 الكاشير: <strong>{user?.name}</strong>
+ //                 </p>
+ //                 <p>
+ //                   🕒 وقت البداية:{" "}
+ //                   <strong>{shiftData.startTime || "غير محدد"}</strong>
+ //                 </p>
+ //                 <p>
+ //                   🕒 وقت النهاية:{" "}
+ //                   <strong>{shiftData.endTime || "لم يُغلق بعد"}</strong>
+ //                 </p>
+ //               </div>
+ //               <div className="p-4 space-y-2 text-sm bg-white shadow rounded-xl">
+ //                 <h2 className="font-semibold text-gray-700">
+ //                   ملخص مالي
+ //                 </h2>
+ //                 <p>
+ //                   💵 إجمالي المبيعات:{" "}
+ //                   <strong>
+ //                     {(shiftData.totalSales || 0).toFixed(2)} ر.س
+ //                   </strong>
+ //                 </p>
+ //                 <p>
+ //                   🔁 إجمالي المرتجعات:{" "}
+ //                   <strong>
+ //                     {(shiftData.totalReturns || 0).toFixed(2)} ر.س
+ //                   </strong>
+ //                 </p>
+ //                 <p>
+ //                   📌 صافي الشِّفت:{" "}
+ //                   <strong>
+ //                     {(
+ //                       (shiftData.totalSales || 0) -
+ //                       (shiftData.totalReturns || 0)
+ //                     ).toFixed(2)}{" "}
+ //                     ر.س
+ //                   </strong>
+ //                 </p>
+ //               </div>
+ //             </div>
+ //             <div className="p-4 space-y-3 text-sm bg-white shadow rounded-xl">
+ //               <h2 className="font-semibold text-gray-700">
+ //                 سجل العمليات
+ //               </h2>
+ //               {shiftData.operations && shiftData.operations.length ? (
+ //                 <div className="space-y-2 overflow-y-auto max-h-80">
+ //                   {shiftData.operations.map((op, idx) => (
+ //                     <div
+ //                       key={idx}
+ //                       className="flex items-center justify-between pb-2 border-b"
  //                     >
- //                       تعديل
- //                     </button>
- //                     <button
- //                       onClick={() => deleteUser(u.id)}
- //                       className="px-3 py-1 text-sm text-red-600 border border-red-100 rounded hover:bg-red-50"
- //                     >
- //                       حذف
- //                     </button>
- //                   </td>
- //                 </tr>
- //               ))}
- //             </tbody>
- //           </table>
- //         </div>
- //         {/* 🟢 مودال إضافة مستخدم */}
- //         {showAddModal && (
- //           <ModalForm
- //             title="➕ إضافة مستخدم جديد"
- //             userData={newUser}
- //             setUserData={setNewUser}
- //             onSave={addUser}
- //             onCancel={() => setShowAddModal(false)}
- //           />
- //         )}
- //         {/* 🟣 مودال تعديل مستخدم */}
- //         {showEditModal && (
- //           <ModalForm
- //             title="✏️ تعديل المستخدم"
- //             userData={editUser}
- //             setUserData={setEditUser}
- //             onSave={saveEditUser}
- //             onCancel={() => setShowEditModal(false)}
- //           />
+ //                       <div>
+ //                         <p>
+ //                           {op.type === "sale" ? "💵 بيع" : "🔁 مرتجع"} —{" "}
+ //                           <strong>{op.productName}</strong>
+ //                         </p>
+ //                         <p className="text-xs text-gray-500">
+ //                           الكمية: {op.qty} | الإجمالي: {op.total} ر.س
+ //                         </p>
+ //                       </div>
+ //                       <span className="text-xs text-gray-500">
+ //                         {op.time}
+ //                       </span>
+ //                     </div>
+ //                   ))}
+ //                 </div>
+ //               ) : (
+ //                 <p className="text-sm text-gray-500">
+ //                   لا توجد عمليات مسجلة في هذا الشِّفت حتى الآن.
+ //                 </p>
+ //               )}
+ //             </div>
+ //             <div className="flex flex-col gap-3 md:flex-row">
+ //               <button
+ //                 onClick={printShiftReport}
+ //                 className="flex-1 py-2 text-sm text-white bg-indigo-600 rounded-lg hover:bg-indigo-700"
+ //               >
+ //                 🖨️ طباعة تقرير الشِّفت
+ //               </button>
+ //               <button
+ //                 onClick={closeShift}
+ //                 className="flex-1 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-700"
+ //               >
+ //                 🔒 إغلاق الشِّفت
+ //               </button>
+ //             </div>
+ //           </>
  //         )}
  //       </div>
  //     </Layout>
- //   )
+ //   );
  // }
- // // 🧩 مكون المودال القابل لإعادة الاستخدام
- // function ModalForm({ title, userData, setUserData, onSave, onCancel }) {
- //   return (
- //     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999]">
- //       <div className="w-full max-w-md p-6 text-right bg-white rounded-lg shadow-lg">
- //         <h3 className="mb-4 text-lg font-semibold text-gray-700">{title}</h3>
- //         <label className="block mb-1 text-sm">الاسم</label>
- //         <input
- //           value={userData.name}
- //           onChange={(e) => setUserData({ ...userData, name: e.target.value })}
- //           className="w-full px-3 py-2 mb-3 border rounded-md"
- //         />
- //         <label className="block mb-1 text-sm">البريد الإلكتروني</label>
- //         <input
- //           value={userData.email}
- //           onChange={(e) => setUserData({ ...userData, email: e.target.value })}
- //           className="w-full px-3 py-2 mb-3 border rounded-md"
- //         />
- //         <label className="block mb-1 text-sm">الدور</label>
- //         <select
- //           value={userData.role}
- //           onChange={(e) => setUserData({ ...userData, role: e.target.value })}
- //           className="w-full px-3 py-2 mb-4 border rounded-md"
- //         >
- //           <option value="">اختر الدور...</option>
- //           <option value="admin">👑 مدير</option>
- //           <option value="pharmacist">💊 صيدلي</option>
- //           <option value="cashier">💵 كاشير</option>
- //         </select>
- //         <div className="flex justify-end gap-3">
- //           <button
- //             onClick={onSave}
- //             className="px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-700"
- //           >
- //             حفظ
- //           </button>
- //           <button
- //             onClick={onCancel}
- //             className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
- //           >
- //             إلغاء
- //           </button>
- //         </div>
+ // // pages/shift.js
+ // import Layout from "../components/Layout";
+ // import { useShift } from "../context/ShiftContext";
+ // import { useAuth } from "../context/AuthContext";
+ // export default function ShiftPage() {
+ //   const { user, hasPermission } = useAuth();
+ //   const { shiftOpen, shiftData, openShift, closeShift } = useShift();
+ //   if (!hasPermission(["admin", "cashier"])) {
+ //     return (
+ //       <div className="p-6 text-center text-red-600" dir="rtl">
+ //         ⚠️ غير مسموح لك بالدخول إلى شاشة الشِّفت.
  //       </div>
- //     </div>
- //   )
+ //     );
+ //   }
+ //   const printShiftReport = () => {
+ //     const w = window.open("", "", "width=900,height=700");
+ //     const salesTotal = shiftData.totalSales || 0;
+ //     const returnsTotal = shiftData.totalReturns || 0;
+ //     const net = salesTotal - returnsTotal;
+ //     w.document.write(`
+ //       <html dir="rtl" lang="ar">
+ //       <head>
+ //         <title>تقرير الشِّفت</title>
+ //         <style>
+ //           body { font-family: 'Tajawal', sans-serif; padding: 20px; }
+ //           h1, h2, h3 { text-align: center; margin: 5px 0; }
+ //           table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+ //           th, td { border: 1px solid #ddd; padding: 6px; font-size: 13px; }
+ //           th { background: #f3f4f6; }
+ //           .summary { margin-top: 15px; font-size: 14px; }
+ //         </style>
+ //       </head>
+ //       <body>
+ //         <h1>📋 تقرير الشِّفت</h1>
+ //         <h3>الكاشير: ${user?.name || ""}</h3>
+ //         <p style="text-align:center;">من: ${shiftData.startTime || "-"}<br/>إلى: ${
+ //       shiftData.endTime || "لم يُغلق بعد"
+ //     }</p>
+ //         <div class="summary">
+ //           <p>إجمالي المبيعات: <strong>${salesTotal.toFixed(
+ //             2
+ //           )} ر.س</strong></p>
+ //           <p>إجمالي المرتجعات: <strong>${returnsTotal.toFixed(
+ //             2
+ //           )} ر.س</strong></p>
+ //           <p>صافي الشِّفت: <strong>${net.toFixed(2)} ر.س</strong></p>
+ //         </div>
+ //         <h3>تفاصيل العمليات</h3>
+ //         <table>
+ //           <thead>
+ //             <tr>
+ //               <th>النوع</th>
+ //               <th>الصنف</th>
+ //               <th>الكمية</th>
+ //               <th>الإجمالي</th>
+ //               <th>الوقت</th>
+ //             </tr>
+ //           </thead>
+ //           <tbody>
+ //             ${
+ //               shiftData.operations && shiftData.operations.length
+ //                 ? shiftData.operations
+ //                     .map(
+ //                       (op) => `
+ //                 <tr>
+ //                   <td>${op.type === "sale" ? "💵 بيع" : "🔁 مرتجع"}</td>
+ //                   <td>${op.productName}</td>
+ //                   <td>${op.qty}</td>
+ //                   <td>${op.total} ر.س</td>
+ //                   <td>${op.time}</td>
+ //                 </tr>
+ //               `
+ //                     )
+ //                     .join("")
+ //                 : `<tr><td colspan="5" style="text-align:center;">لا توجد عمليات مسجلة في هذا الشِّفت.</td></tr>`
+ //             }
+ //           </tbody>
+ //         </table>
+ //         <script>
+ //           window.print();
+ //         </script>
+ //       </body>
+ //       </html>
+ //     `);
+ //     w.document.close();
+ //   };
+ //   return (
+ //     <Layout user={user} title="الشِّفت">
+ //       <div className="space-y-6" dir="rtl">
+ //         <h1 className="text-xl font-bold text-gray-800">🕒 إدارة الشِّفت</h1>
+ //         {!shiftOpen ? (
+ //           <div className="p-5 space-y-3 bg-white shadow rounded-xl">
+ //             <p className="text-sm text-gray-600">
+ //               لا يوجد شِفت مفتوح حالياً. يمكنك فتح شِفت جديد لبدء تسجيل المبيعات.
+ //             </p>
+ //             <button
+ //               onClick={openShift}
+ //               className="px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700"
+ //             >
+ //               🔓 فتح شِفت جديد
+ //             </button>
+ //           </div>
+ //         ) : (
+ //           <>
+ //             <div className="grid gap-4 md:grid-cols-2">
+ //               <div className="p-4 space-y-2 text-sm bg-white shadow rounded-xl">
+ //                 <h2 className="font-semibold text-gray-700">معلومات الشِّفت</h2>
+ //                 <p>
+ //                   👤 الكاشير: <strong>{user?.name}</strong>
+ //                 </p>
+ //                 <p>
+ //                   🕒 وقت البداية:{" "}
+ //                   <strong>{shiftData.startTime || "غير محدد"}</strong>
+ //                 </p>
+ //                 <p>
+ //                   🕒 وقت النهاية:{" "}
+ //                   <strong>{shiftData.endTime || "لم يُغلق بعد"}</strong>
+ //                 </p>
+ //               </div>
+ //               <div className="p-4 space-y-2 text-sm bg-white shadow rounded-xl">
+ //                 <h2 className="font-semibold text-gray-700">ملخص مالي</h2>
+ //                 <p>
+ //                   💵 إجمالي المبيعات:{" "}
+ //                   <strong>{(shiftData.totalSales || 0).toFixed(2)} ر.س</strong>
+ //                 </p>
+ //                 <p>
+ //                   🔁 إجمالي المرتجعات:{" "}
+ //                   <strong>{(shiftData.totalReturns || 0).toFixed(2)} ر.س</strong>
+ //                 </p>
+ //                 <p>
+ //                   📌 صافي الشِّفت:{" "}
+ //                   <strong>
+ //                     {(
+ //                       (shiftData.totalSales || 0) -
+ //                       (shiftData.totalReturns || 0)
+ //                     ).toFixed(2)}{" "}
+ //                     ر.س
+ //                   </strong>
+ //                 </p>
+ //               </div>
+ //             </div>
+ //             <div className="p-4 space-y-3 text-sm bg-white shadow rounded-xl">
+ //               <h2 className="font-semibold text-gray-700">سجل العمليات</h2>
+ //               {shiftData.operations && shiftData.operations.length ? (
+ //                 <div className="space-y-2 overflow-y-auto max-h-80">
+ //                   {shiftData.operations.map((op, idx) => (
+ //                     <div
+ //                       key={idx}
+ //                       className="flex items-center justify-between pb-2 border-b"
+ //                     >
+ //                       <div>
+ //                         <p>
+ //                           {op.type === "sale" ? "💵 بيع" : "🔁 مرتجع"} —{" "}
+ //                           <strong>{op.productName}</strong>
+ //                         </p>
+ //                         <p className="text-xs text-gray-500">
+ //                           الكمية: {op.qty} | الإجمالي: {op.total} ر.س
+ //                         </p>
+ //                       </div>
+ //                       <span className="text-xs text-gray-500">{op.time}</span>
+ //                     </div>
+ //                   ))}
+ //                 </div>
+ //               ) : (
+ //                 <p className="text-sm text-gray-500">
+ //                   لا توجد عمليات مسجلة في هذا الشِّفت حتى الآن.
+ //                 </p>
+ //               )}
+ //             </div>
+ //             <div className="flex flex-col gap-3 md:flex-row">
+ //               <button
+ //                 onClick={printShiftReport}
+ //                 className="flex-1 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700"
+ //               >
+ //                 🖨️ طباعة تقرير الشِّفت
+ //               </button>
+ //               <button
+ //                 onClick={closeShift}
+ //                 className="flex-1 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700"
+ //               >
+ //                 🔒 إغلاق الشِّفت
+ //               </button>
+ //             </div>
+ //           </>
+ //         )}
+ //       </div>
+ //     </Layout>
+ //   );
  // }
-}),
+ // // pages/shift.js
+ // import { useShift } from "../context/ShiftContext";
+ // import Layout from "../components/Layout";
+ // import { useAuth } from "../context/AuthContext";
+ // export default function ShiftPage() {
+ //   const { user, hasPermission } = useAuth();
+ //   const { shiftOpen, shiftData, openShift, closeShift } = useShift();
+ //   if (!hasPermission(["admin", "cashier"])) {
+ //     return <div className="p-5 text-center text-red-600">غير مسموح لك بالدخول</div>;
+ //   }
+ //   return (
+ //     <Layout user={user} title="الشفت">
+ //       <div className="space-y-6" dir="rtl">
+ //         <h1 className="text-xl font-bold">🕒 إدارة الشفت</h1>
+ //         {!shiftOpen ? (
+ //           <button
+ //             onClick={openShift}
+ //             className="px-6 py-3 text-white bg-green-600 rounded"
+ //           >
+ //             🔓 فتح شفت جديد
+ //           </button>
+ //         ) : (
+ //           <>
+ //             <div className="p-4 bg-white rounded shadow">
+ //               <p>وقت البداية: {shiftData.startTime}</p>
+ //               <p>وقت النهاية: {shiftData.endTime || "…"}</p>
+ //               <p>إجمالي المبيعات: {shiftData.totalSales} ر.س</p>
+ //               <p>إجمالي المرتجعات: {shiftData.totalReturns} ر.س</p>
+ //             </div>
+ //             <h3 className="text-lg font-semibold">سجل العمليات</h3>
+ //             <div className="p-4 bg-white rounded shadow">
+ //               {shiftData.operations.map((o, i) => (
+ //                 <div key={i} className="py-2 text-sm border-b">
+ //                   <p>
+ //                     {o.type === "sale" ? "💵 بيع" : "🔁 مرتجع"} — {o.productName}
+ //                   </p>
+ //                   <p>الكمية: {o.qty}</p>
+ //                   <p>الإجمالي: {o.total} ر.س</p>
+ //                 </div>
+ //               ))}
+ //             </div>
+ //             <button
+ //               onClick={closeShift}
+ //               className="w-full py-2 text-white bg-red-600 rounded"
+ //             >
+ //               🔒 إغلاق الشفت
+ //             </button>
+ //           </>
+ //         )}
+ //       </div>
+ //     </Layout>
+ //   );
+ // }
+ // import { useState } from "react";
+ // import Layout from "../components/Layout";
+ // export default function ShiftPage() {
+ //   const [user] = useState({ name: "أحمد", role: "cashier" });
+ //   // حالة الشفت (مغلق / مفتوح)
+ //   const [shiftOpen, setShiftOpen] = useState(false);
+ //   // بيانات الشفت الحالي (Mock)
+ //   const [shiftData, setShiftData] = useState({
+ //     startTime: "",
+ //     endTime: "",
+ //     openingBalance: 0,
+ //     closingBalance: 0,
+ //     salesTotal: 0,
+ //     operations: [],
+ //   });
+ //   // فتح الشفت
+ //   const openShift = () => {
+ //     setShiftOpen(true);
+ //     setShiftData({
+ //       ...shiftData,
+ //       startTime: new Date().toLocaleString(),
+ //       openingBalance: 0,
+ //       operations: [],
+ //     });
+ //   };
+ //   // إغلاق الشفت
+ //   const closeShift = () => {
+ //     setShiftOpen(false);
+ //     setShiftData({
+ //       ...shiftData,
+ //       endTime: new Date().toLocaleString(),
+ //       closingBalance: shiftData.salesTotal,
+ //     });
+ //   };
+ //   // إضافة عملية داخل الشفت
+ //   const addOperation = (type, amount, note = "") => {
+ //     setShiftData({
+ //       ...shiftData,
+ //       salesTotal: shiftData.salesTotal + amount,
+ //       operations: [
+ //         ...shiftData.operations,
+ //         {
+ //           type,
+ //           amount,
+ //           note,
+ //           time: new Date().toLocaleTimeString(),
+ //         },
+ //       ],
+ //     });
+ //   };
+ //   return (
+ //     <Layout user={user} title="إدارة الشفت">
+ //       <div dir="rtl" className="space-y-8">
+ //         <h1 className="text-2xl font-bold text-gray-800">🕒 إدارة الشفت</h1>
+ //         {/* ================= */}
+ //         {/* شفت مغلق */}
+ //         {/* ================= */}
+ //         {!shiftOpen && (
+ //           <div className="p-8 space-y-4 text-center bg-white border shadow-lg rounded-xl">
+ //             <h2 className="text-xl font-semibold text-gray-700">الشفت غير مفتوح</h2>
+ //             <p className="text-sm text-gray-500">اضغط على زر الفتح لبدء العمل.</p>
+ //             <button
+ //               onClick={openShift}
+ //               className="px-6 py-3 text-white transition bg-green-600 shadow-md hover:bg-green-700 rounded-xl"
+ //             >
+ //               🚀 فتح الشفت الآن
+ //             </button>
+ //           </div>
+ //         )}
+ //         {/* ================= */}
+ //         {/* شفت مفتوح */}
+ //         {/* ================= */}
+ //         {shiftOpen && (
+ //           <div className="space-y-6">
+ //             {/* معلومات الشفت */}
+ //             <div className="p-6 bg-white border shadow-lg rounded-xl">
+ //               <h3 className="mb-3 text-xl font-semibold text-gray-700">
+ //                 🔓 الشفت مفتوح الآن
+ //               </h3>
+ //               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+ //                 <InfoRow label="وقت الفتح" value={shiftData.startTime} />
+ //                 <InfoRow label="إجمالي المبيعات" value={`${shiftData.salesTotal} ر.س`} />
+ //               </div>
+ //             </div>
+ //             {/* إضافة عملية */}
+ //             <div className="p-6 space-y-4 bg-white border shadow-lg rounded-xl">
+ //               <h3 className="text-lg font-semibold text-gray-700">إضافة عملية جديدة</h3>
+ //               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+ //                 <button
+ //                   onClick={() => addOperation("عملية بيع", 50)}
+ //                   className="px-4 py-3 text-white rounded-lg shadow bg-sky-600 hover:bg-sky-700"
+ //                 >
+ //                   💵 إضافة بيع +50 ر.س
+ //                 </button>
+ //                 <button
+ //                   onClick={() => addOperation("عملية بيع", 120)}
+ //                   className="px-4 py-3 text-white rounded-lg shadow bg-sky-600 hover:bg-sky-700"
+ //                 >
+ //                   💵 إضافة بيع +120 ر.س
+ //                 </button>
+ //                 <button
+ //                   onClick={() => addOperation("ملاحظة", 0, "دواء مفقود")}
+ //                   className="px-4 py-3 text-white rounded-lg shadow bg-amber-500 hover:bg-amber-600"
+ //                 >
+ //                   ⚠️ إضافة ملاحظة
+ //                 </button>
+ //               </div>
+ //             </div>
+ //             {/* سجل العمليات */}
+ //             <div className="p-6 bg-white border shadow-lg rounded-xl">
+ //               <h3 className="mb-3 text-lg font-semibold text-gray-700">
+ //                 📝 سجل عمليات الشفت
+ //               </h3>
+ //               {shiftData.operations.length === 0 ? (
+ //                 <p className="py-6 text-sm text-center text-gray-500">
+ //                   لا توجد عمليات بعد…
+ //                 </p>
+ //               ) : (
+ //                 <ul className="space-y-3">
+ //                   {shiftData.operations.map((op, i) => (
+ //                     <li
+ //                       key={i}
+ //                       className="p-4 transition border rounded-lg shadow-sm bg-gray-50 hover:bg-gray-100"
+ //                     >
+ //                       <div className="flex items-center justify-between">
+ //                         <div>
+ //                           <p className="font-semibold">{op.type}</p>
+ //                           {op.note && (
+ //                             <p className="text-xs text-gray-500">{op.note}</p>
+ //                           )}
+ //                         </div>
+ //                         <div className="text-right">
+ //                           <p className="text-sm font-bold text-green-700">
+ //                             {op.amount > 0 ? `+${op.amount} ر.س` : ""}
+ //                           </p>
+ //                           <p className="text-xs text-gray-400">{op.time}</p>
+ //                         </div>
+ //                       </div>
+ //                     </li>
+ //                   ))}
+ //                 </ul>
+ //               )}
+ //             </div>
+ //             {/* زر إغلاق الشفت */}
+ //             <div className="text-center">
+ //               <button
+ //                 onClick={closeShift}
+ //                 className="px-8 py-3 text-white transition bg-red-600 shadow-lg rounded-xl hover:bg-red-700"
+ //               >
+ //                 🔒 إغلاق الشفت
+ //               </button>
+ //             </div>
+ //           </div>
+ //         )}
+ //       </div>
+ //     </Layout>
+ //   );
+ // }
+ // // عنصر صغير لعرض معلومة
+ // function InfoRow({ label, value }) {
+ //   return (
+ //     <div className="p-4 border rounded-lg shadow-sm bg-gray-50">
+ //       <p className="text-sm text-gray-500">{label}</p>
+ //       <p className="mt-1 text-lg font-bold">{value}</p>
+ //     </div>
+ //   );
+ // }
+__turbopack_async_result__();
+} catch(e) { __turbopack_async_result__(e); } }, false);}),
 "[externals]/next/dist/shared/lib/no-fallback-error.external.js [external] (next/dist/shared/lib/no-fallback-error.external.js, cjs)", ((__turbopack_context__, module, exports) => {
 
 const mod = __turbopack_context__.x("next/dist/shared/lib/no-fallback-error.external.js", () => require("next/dist/shared/lib/no-fallback-error.external.js"));
@@ -2525,4 +2368,4 @@ module.exports = mod;
 }),
 ];
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__c2a592f7._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__95bebca4._.js.map

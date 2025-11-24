@@ -83,7 +83,7 @@ export default function Dashboard() {
     {
       title: "الشفت",
       icon: <FaClock />,
-      path: "/shift",
+      path: "/shifts",
       color: "from-pink-500 to-rose-600",
     },
   ];

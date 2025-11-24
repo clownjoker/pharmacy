@@ -1861,1274 +1861,1366 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
 }),
-"[project]/pages/dashboard.js [client] (ecmascript)", ((__turbopack_context__) => {
+"[project]/utils/api.js [client] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
-// pages/dashboard.js
 __turbopack_context__.s([
     "default",
-    ()=>Dashboard
+    ()=>__TURBOPACK__default__export__
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [client] (ecmascript)");
+;
+const api = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].create({
+    baseURL: "http://127.0.0.1:5000/api"
+});
+const __TURBOPACK__default__export__ = api;
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
+"[project]/pages/reports.js [client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "default",
+    ()=>Reports
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/jsx-dev-runtime.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/index.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/router.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Layout$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/Layout.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$theme$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/theme.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/utils/api.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$ResponsiveContainer$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/component/ResponsiveContainer.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$chart$2f$LineChart$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/chart/LineChart.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Line$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/cartesian/Line.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$XAxis$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/cartesian/XAxis.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$YAxis$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/cartesian/YAxis.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$CartesianGrid$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/cartesian/CartesianGrid.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Tooltip$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/component/Tooltip.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$ResponsiveContainer$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/component/ResponsiveContainer.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-icons/fa/index.mjs [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$CartesianGrid$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/cartesian/CartesianGrid.js [client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
 ;
-;
-;
-function Dashboard() {
+function Reports() {
     _s();
-    const [user] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])({
-        name: "المدير أحمد",
-        role: "admin"
-    });
-    const [users, setUsers] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])([]);
-    const [salesData, setSalesData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])([]);
-    const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"])();
+    const [activeTab, setActiveTab] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("overview");
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [invoices, setInvoices] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [products, setProducts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [alerts, setAlerts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])([]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "Dashboard.useEffect": ()=>{
-            setUsers([
-                {
-                    id: 1,
-                    name: "محمد الصيدلي",
-                    role: "pharmacist"
-                },
-                {
-                    id: 2,
-                    name: "أحمد الكاشير",
-                    role: "cashier"
-                },
-                {
-                    id: 3,
-                    name: "مها الإدارية",
-                    role: "admin"
-                }
-            ]);
-            setSalesData([
-                {
-                    month: "يناير",
-                    total: 3200
-                },
-                {
-                    month: "فبراير",
-                    total: 4100
-                },
-                {
-                    month: "مارس",
-                    total: 3800
-                },
-                {
-                    month: "أبريل",
-                    total: 5200
-                },
-                {
-                    month: "مايو",
-                    total: 6100
-                },
-                {
-                    month: "يونيو",
-                    total: 5700
-                }
-            ]);
+        "Reports.useEffect": ()=>{
+            loadData();
         }
-    }["Dashboard.useEffect"], []);
-    const totalSales = salesData.reduce((s, m)=>s + m.total, 0);
-    // روابط الوصول السريع — محسّنة بصرياً
-    const quickLinks = [
-        {
-            title: "المنتجات",
-            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["FaPills"], {}, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 55,
-                columnNumber: 13
-            }, this),
-            path: "/products",
-            color: "from-green-500 to-emerald-600"
-        },
-        {
-            title: "المبيعات",
-            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["FaCashRegister"], {}, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 61,
-                columnNumber: 13
-            }, this),
-            path: "/sales",
-            color: "from-sky-500 to-blue-600"
-        },
-        {
-            title: "التقارير",
-            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["FaChartLine"], {}, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 67,
-                columnNumber: 13
-            }, this),
-            path: "/reports",
-            color: "from-purple-500 to-indigo-600"
-        },
-        {
-            title: "الحسابات",
-            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["FaMoneyBillWave"], {}, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 73,
-                columnNumber: 13
-            }, this),
-            path: "/accounts",
-            color: "from-amber-500 to-yellow-600"
-        },
-        {
-            title: "المستخدمون",
-            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["FaUsers"], {}, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 79,
-                columnNumber: 13
-            }, this),
-            path: "/users",
-            color: "from-teal-500 to-cyan-600"
-        },
-        {
-            title: "الشفت",
-            icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["FaClock"], {}, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 85,
-                columnNumber: 13
-            }, this),
-            path: "/shifts",
-            color: "from-pink-500 to-rose-600"
+    }["Reports.useEffect"], []);
+    async function loadData() {
+        try {
+            setLoading(true);
+            setError("");
+            const [salesRes, stockRes, alertsRes] = await Promise.all([
+                __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].get("/reports/sales"),
+                __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].get("/reports/stock"),
+                __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].get("/reports/alerts")
+            ]);
+            // 🔥 إصلاح مشكلة double array
+            const cleanSales = Array.isArray(salesRes.data[0]) ? salesRes.data[0] : salesRes.data;
+            const cleanStock = Array.isArray(stockRes.data[0]) ? stockRes.data[0] : stockRes.data;
+            const cleanAlerts = Array.isArray(alertsRes.data[0]) ? alertsRes.data[0] : alertsRes.data;
+            setInvoices(cleanSales);
+            setProducts(cleanStock);
+            setAlerts(cleanAlerts);
+        } catch (err) {
+            console.error("loadData error:", err);
+            setError("فشل تحميل بيانات التقرير");
+        } finally{
+            setLoading(false);
         }
-    ];
+    }
+    const formatCurrency = (v)=>`${Number(v || 0).toLocaleString("ar-SA")} ر.س`;
+    /* ----------------- المتغيرات بعد جلب الداتا ----------------- */ const salesStats = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useMemo"])({
+        "Reports.useMemo[salesStats]": ()=>{
+            if (!invoices.length) return {
+                totalSales: 0,
+                count: 0,
+                avg: 0,
+                todayTotal: 0,
+                monthTotal: 0
+            };
+            const dates = invoices.filter({
+                "Reports.useMemo[salesStats].dates": (i)=>i.date
+            }["Reports.useMemo[salesStats].dates"]).map({
+                "Reports.useMemo[salesStats].dates": (i)=>i.date.slice(0, 10)
+            }["Reports.useMemo[salesStats].dates"]);
+            if (!dates.length) return {
+                totalSales: 0,
+                count: 0,
+                avg: 0,
+                todayTotal: 0,
+                monthTotal: 0
+            };
+            const today = dates.sort()[dates.length - 1];
+            const thisMonth = today.slice(0, 7);
+            let totalSales = 0;
+            let todayTotal = 0;
+            let monthTotal = 0;
+            invoices.forEach({
+                "Reports.useMemo[salesStats]": (inv)=>{
+                    if (!inv.total) return;
+                    const val = Number(inv.total);
+                    const d = inv.date?.slice(0, 10);
+                    totalSales += val;
+                    if (d === today) todayTotal += val;
+                    if (d?.slice(0, 7) === thisMonth) monthTotal += val;
+                }
+            }["Reports.useMemo[salesStats]"]);
+            return {
+                totalSales,
+                count: invoices.length,
+                avg: invoices.length ? totalSales / invoices.length : 0,
+                todayTotal,
+                monthTotal
+            };
+        }
+    }["Reports.useMemo[salesStats]"], [
+        invoices
+    ]);
+    const monthlyChartData = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useMemo"])({
+        "Reports.useMemo[monthlyChartData]": ()=>{
+            const map = new Map();
+            invoices.forEach({
+                "Reports.useMemo[monthlyChartData]": (inv)=>{
+                    if (!inv.date) return;
+                    const key = inv.date.slice(0, 7);
+                    map.set(key, (map.get(key) || 0) + Number(inv.total || 0));
+                }
+            }["Reports.useMemo[monthlyChartData]"]);
+            return Array.from(map.entries()).map({
+                "Reports.useMemo[monthlyChartData]": ([month, total])=>({
+                        month,
+                        total
+                    })
+            }["Reports.useMemo[monthlyChartData]"]);
+        }
+    }["Reports.useMemo[monthlyChartData]"], [
+        invoices
+    ]);
+    const lowStock = products.filter((p)=>Number(p.quantity) <= Number(p.min_qty));
+    const expiredStock = products.filter((p)=>p.expiryDate && new Date(p.expiryDate) < new Date());
+    const nearExpiry = products.filter((p)=>{
+        if (!p.expiryDate) return false;
+        const exp = new Date(p.expiryDate);
+        const now = new Date();
+        const limit = new Date();
+        limit.setMonth(now.getMonth() + 1);
+        return exp >= now && exp <= limit;
+    });
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Layout$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
-        user: user,
-        title: "لوحة التحكم",
+        title: "التقارير",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             dir: "rtl",
-            className: "space-y-10",
+            className: "space-y-6",
             children: [
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "flex gap-2 p-2 bg-white border rounded-lg shadow-sm",
                     children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                            className: "mb-4 text-2xl font-bold text-gray-800",
-                            children: "الوصول السريع"
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Tab, {
+                            id: "overview",
+                            label: "نظرة عامة",
+                            active: activeTab,
+                            setActive: setActiveTab
                         }, void 0, false, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 97,
+                            fileName: "[project]/pages/reports.js",
+                            lineNumber: 151,
                             columnNumber: 11
                         }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6",
-                            children: quickLinks.map((link, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>router.push(link.path),
-                                    className: `
-                  relative flex flex-col items-center justify-center p-5 
-                  rounded-2xl shadow-md bg-gradient-to-br ${link.color}
-                  text-white transition-all duration-200 
-                  hover:scale-[1.05] hover:shadow-xl
-                `,
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "absolute inset-0 transition bg-black/10 rounded-2xl group-hover:bg-black/20"
-                                        }, void 0, false, {
-                                            fileName: "[project]/pages/dashboard.js",
-                                            lineNumber: 111,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "relative mb-2 text-4xl",
-                                            children: link.icon
-                                        }, void 0, false, {
-                                            fileName: "[project]/pages/dashboard.js",
-                                            lineNumber: 112,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                            className: "relative text-sm font-semibold",
-                                            children: link.title
-                                        }, void 0, false, {
-                                            fileName: "[project]/pages/dashboard.js",
-                                            lineNumber: 113,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, index, true, {
-                                    fileName: "[project]/pages/dashboard.js",
-                                    lineNumber: 101,
-                                    columnNumber: 15
-                                }, this))
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Tab, {
+                            id: "sales",
+                            label: "المبيعات",
+                            active: activeTab,
+                            setActive: setActiveTab
                         }, void 0, false, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 99,
+                            fileName: "[project]/pages/reports.js",
+                            lineNumber: 152,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Tab, {
+                            id: "stock",
+                            label: "المخزون",
+                            active: activeTab,
+                            setActive: setActiveTab
+                        }, void 0, false, {
+                            fileName: "[project]/pages/reports.js",
+                            lineNumber: 153,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Tab, {
+                            id: "profit",
+                            label: "ربحية المنتجات",
+                            active: activeTab,
+                            setActive: setActiveTab
+                        }, void 0, false, {
+                            fileName: "[project]/pages/reports.js",
+                            lineNumber: 154,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Tab, {
+                            id: "alerts",
+                            label: "التنبيهات",
+                            active: activeTab,
+                            setActive: setActiveTab
+                        }, void 0, false, {
+                            fileName: "[project]/pages/reports.js",
+                            lineNumber: 155,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
-                    fileName: "[project]/pages/dashboard.js",
-                    lineNumber: 96,
+                    fileName: "[project]/pages/reports.js",
+                    lineNumber: 150,
                     columnNumber: 9
                 }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4",
+                loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                    className: "p-4 text-center",
+                    children: "⏳ جاري التحميل..."
+                }, void 0, false, {
+                    fileName: "[project]/pages/reports.js",
+                    lineNumber: 158,
+                    columnNumber: 21
+                }, this),
+                error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "p-3 text-center text-red-700 border border-red-200 rounded-md bg-red-50",
+                    children: error
+                }, void 0, false, {
+                    fileName: "[project]/pages/reports.js",
+                    lineNumber: 160,
+                    columnNumber: 11
+                }, this),
+                !loading && !error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["Fragment"], {
                     children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SummaryCard, {
-                            title: "إجمالي المبيعات",
-                            value: `${totalSales.toLocaleString()} ر.س`,
-                            color: "text-sky-600"
+                        activeTab === "overview" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(OverviewTab, {
+                            salesStats: salesStats,
+                            chart: monthlyChartData,
+                            invoices: invoices,
+                            formatCurrency: formatCurrency
                         }, void 0, false, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 121,
-                            columnNumber: 11
+                            fileName: "[project]/pages/reports.js",
+                            lineNumber: 168,
+                            columnNumber: 15
                         }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SummaryCard, {
-                            title: "عدد الفواتير",
-                            value: "248",
-                            color: "text-blue-600"
+                        activeTab === "sales" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SalesTab, {
+                            invoices: invoices,
+                            formatCurrency: formatCurrency
                         }, void 0, false, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 126,
-                            columnNumber: 11
+                            fileName: "[project]/pages/reports.js",
+                            lineNumber: 177,
+                            columnNumber: 15
                         }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SummaryCard, {
-                            title: "عدد الأدوية",
-                            value: "126",
-                            color: "text-green-600"
+                        activeTab === "stock" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StockTab, {
+                            products: products,
+                            formatCurrency: formatCurrency
                         }, void 0, false, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 127,
-                            columnNumber: 11
+                            fileName: "[project]/pages/reports.js",
+                            lineNumber: 184,
+                            columnNumber: 15
                         }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SummaryCard, {
-                            title: "عدد المستخدمين",
-                            value: users.length,
-                            color: "text-amber-600"
+                        activeTab === "profit" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ProfitTab, {
+                            products: products,
+                            formatCurrency: formatCurrency
                         }, void 0, false, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 128,
-                            columnNumber: 11
+                            fileName: "[project]/pages/reports.js",
+                            lineNumber: 191,
+                            columnNumber: 15
+                        }, this),
+                        activeTab === "alerts" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(AlertsTab, {
+                            low: lowStock,
+                            expired: expiredStock,
+                            nearExpiry: nearExpiry
+                        }, void 0, false, {
+                            fileName: "[project]/pages/reports.js",
+                            lineNumber: 198,
+                            columnNumber: 15
                         }, this)
                     ]
-                }, void 0, true, {
-                    fileName: "[project]/pages/dashboard.js",
-                    lineNumber: 120,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "p-5 bg-white border shadow-lg rounded-xl",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                            className: "mb-3 text-lg font-bold text-gray-800",
-                            children: "المبيعات الشهرية"
-                        }, void 0, false, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 137,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$ResponsiveContainer$2e$js__$5b$client$5d$__$28$ecmascript$29$__["ResponsiveContainer"], {
-                            width: "100%",
-                            height: 260,
+                }, void 0, true)
+            ]
+        }, void 0, true, {
+            fileName: "[project]/pages/reports.js",
+            lineNumber: 149,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/pages/reports.js",
+        lineNumber: 148,
+        columnNumber: 5
+    }, this);
+}
+_s(Reports, "qwiKt081JvYpAXVD87FC9mJPJDU=");
+_c = Reports;
+/* -------------- Components ---------------- */ function Tab({ id, label, active, setActive }) {
+    const isActive = id === active;
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+        onClick: ()=>setActive(id),
+        className: `px-3 py-1.5 text-sm rounded-lg border ${isActive ? "bg-sky-600 text-white border-sky-600" : "bg-white"}`,
+        children: label
+    }, void 0, false, {
+        fileName: "[project]/pages/reports.js",
+        lineNumber: 216,
+        columnNumber: 5
+    }, this);
+}
+_c1 = Tab;
+/* --------- باقي التبويبات كما في نسختك (نفس التصميم) --------- */ function OverviewTab({ salesStats, chart, invoices, formatCurrency }) {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "space-y-5",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Card, {
+                        title: "إجمالي المبيعات",
+                        value: formatCurrency(salesStats.totalSales)
+                    }, void 0, false, {
+                        fileName: "[project]/pages/reports.js",
+                        lineNumber: 233,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Card, {
+                        title: "عدد الفواتير",
+                        value: salesStats.count
+                    }, void 0, false, {
+                        fileName: "[project]/pages/reports.js",
+                        lineNumber: 234,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Card, {
+                        title: "متوسط الفاتورة",
+                        value: formatCurrency(salesStats.avg)
+                    }, void 0, false, {
+                        fileName: "[project]/pages/reports.js",
+                        lineNumber: 235,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Card, {
+                        title: "مبيعات اليوم",
+                        value: formatCurrency(salesStats.todayTotal)
+                    }, void 0, false, {
+                        fileName: "[project]/pages/reports.js",
+                        lineNumber: 236,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/pages/reports.js",
+                lineNumber: 232,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "p-4 bg-white border rounded-lg shadow-sm",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                        className: "mb-3 text-lg font-semibold",
+                        children: "📈 المبيعات الشهرية"
+                    }, void 0, false, {
+                        fileName: "[project]/pages/reports.js",
+                        lineNumber: 240,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "h-64",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$ResponsiveContainer$2e$js__$5b$client$5d$__$28$ecmascript$29$__["ResponsiveContainer"], {
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$chart$2f$LineChart$2e$js__$5b$client$5d$__$28$ecmascript$29$__["LineChart"], {
-                                data: salesData,
+                                data: chart,
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$CartesianGrid$2e$js__$5b$client$5d$__$28$ecmascript$29$__["CartesianGrid"], {
-                                        strokeDasharray: "4 4",
-                                        stroke: "#e5e7eb"
+                                        strokeDasharray: "3 3"
                                     }, void 0, false, {
-                                        fileName: "[project]/pages/dashboard.js",
-                                        lineNumber: 143,
+                                        fileName: "[project]/pages/reports.js",
+                                        lineNumber: 244,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$XAxis$2e$js__$5b$client$5d$__$28$ecmascript$29$__["XAxis"], {
-                                        dataKey: "month",
-                                        stroke: "#6b7280"
+                                        dataKey: "month"
                                     }, void 0, false, {
-                                        fileName: "[project]/pages/dashboard.js",
-                                        lineNumber: 144,
+                                        fileName: "[project]/pages/reports.js",
+                                        lineNumber: 245,
                                         columnNumber: 15
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$YAxis$2e$js__$5b$client$5d$__$28$ecmascript$29$__["YAxis"], {
-                                        stroke: "#6b7280"
-                                    }, void 0, false, {
-                                        fileName: "[project]/pages/dashboard.js",
-                                        lineNumber: 145,
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$YAxis$2e$js__$5b$client$5d$__$28$ecmascript$29$__["YAxis"], {}, void 0, false, {
+                                        fileName: "[project]/pages/reports.js",
+                                        lineNumber: 246,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Tooltip$2e$js__$5b$client$5d$__$28$ecmascript$29$__["Tooltip"], {}, void 0, false, {
-                                        fileName: "[project]/pages/dashboard.js",
-                                        lineNumber: 146,
+                                        fileName: "[project]/pages/reports.js",
+                                        lineNumber: 247,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Line$2e$js__$5b$client$5d$__$28$ecmascript$29$__["Line"], {
                                         type: "monotone",
                                         dataKey: "total",
-                                        stroke: __TURBOPACK__imported__module__$5b$project$5d2f$theme$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].colors.primary,
-                                        strokeWidth: 3,
-                                        dot: {
-                                            r: 5
-                                        }
+                                        stroke: "#0ea5e9",
+                                        strokeWidth: 2
                                     }, void 0, false, {
-                                        fileName: "[project]/pages/dashboard.js",
-                                        lineNumber: 147,
+                                        fileName: "[project]/pages/reports.js",
+                                        lineNumber: 248,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
-                                fileName: "[project]/pages/dashboard.js",
-                                lineNumber: 142,
+                                fileName: "[project]/pages/reports.js",
+                                lineNumber: 243,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 141,
+                            fileName: "[project]/pages/reports.js",
+                            lineNumber: 242,
                             columnNumber: 11
                         }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/pages/dashboard.js",
-                    lineNumber: 136,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "grid grid-cols-1 gap-6 lg:grid-cols-3",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "p-5 bg-white border shadow-lg rounded-xl lg:col-span-2",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                    className: "mb-4 text-lg font-bold text-gray-800",
-                                    children: "آخر العمليات"
-                                }, void 0, false, {
-                                    fileName: "[project]/pages/dashboard.js",
-                                    lineNumber: 162,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
-                                    className: "space-y-3 text-sm",
+                    }, void 0, false, {
+                        fileName: "[project]/pages/reports.js",
+                        lineNumber: 241,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/pages/reports.js",
+                lineNumber: 239,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "p-4 overflow-x-auto bg-white border rounded-lg shadow-sm",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                        className: "mb-3 text-lg font-semibold",
+                        children: "🧾 آخر الفواتير"
+                    }, void 0, false, {
+                        fileName: "[project]/pages/reports.js",
+                        lineNumber: 255,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
+                        className: "w-full min-w-[700px] text-sm",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
+                                className: "bg-gray-50",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
                                     children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ActivityCard, {
-                                            icon: "💰",
-                                            text: "تم إنشاء فاتورة بقيمة 245 ر.س بواسطة أحمد."
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                            children: "رقم"
                                         }, void 0, false, {
-                                            fileName: "[project]/pages/dashboard.js",
-                                            lineNumber: 164,
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 259,
                                             columnNumber: 15
                                         }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ActivityCard, {
-                                            icon: "📦",
-                                            text: "تم تحديث مخزون دواء “فيتامين سي”."
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                            children: "نوع"
                                         }, void 0, false, {
-                                            fileName: "[project]/pages/dashboard.js",
-                                            lineNumber: 168,
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 260,
                                             columnNumber: 15
                                         }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ActivityCard, {
-                                            icon: "📊",
-                                            text: "تم عرض تقرير المبيعات اليومية."
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                            children: "عميل"
                                         }, void 0, false, {
-                                            fileName: "[project]/pages/dashboard.js",
-                                            lineNumber: 172,
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 261,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                            children: "كاشير"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 262,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                            children: "دفع"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 263,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                            children: "قيمة"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 264,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
-                                    fileName: "[project]/pages/dashboard.js",
-                                    lineNumber: 163,
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 258,
                                     columnNumber: 13
                                 }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 161,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "p-5 border border-green-300 shadow-lg rounded-xl bg-gradient-to-br from-green-50 to-green-100",
+                            }, void 0, false, {
+                                fileName: "[project]/pages/reports.js",
+                                lineNumber: 257,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
+                                children: invoices.slice(0, 5).map((i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                        className: "border-t hover:bg-gray-50",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                                children: i.id
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/reports.js",
+                                                lineNumber: 270,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                                children: i.type
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/reports.js",
+                                                lineNumber: 271,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                                children: i.customer
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/reports.js",
+                                                lineNumber: 272,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                                children: i.cashier
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/reports.js",
+                                                lineNumber: 273,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                                children: i.payment
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/reports.js",
+                                                lineNumber: 274,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                                className: "font-bold text-emerald-700",
+                                                children: formatCurrency(i.total)
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/reports.js",
+                                                lineNumber: 275,
+                                                columnNumber: 17
+                                            }, this)
+                                        ]
+                                    }, i.id, true, {
+                                        fileName: "[project]/pages/reports.js",
+                                        lineNumber: 269,
+                                        columnNumber: 15
+                                    }, this))
+                            }, void 0, false, {
+                                fileName: "[project]/pages/reports.js",
+                                lineNumber: 267,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/pages/reports.js",
+                        lineNumber: 256,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/pages/reports.js",
+                lineNumber: 254,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "[project]/pages/reports.js",
+        lineNumber: 231,
+        columnNumber: 5
+    }, this);
+}
+_c2 = OverviewTab;
+/* ============================================================
+   🔵 1) SalesTab — تقرير المبيعات
+============================================================ */ function SalesTab({ invoices, formatCurrency }) {
+    if (!Array.isArray(invoices)) invoices = [];
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "p-4 overflow-x-auto bg-white border rounded-lg shadow-sm",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                className: "mb-3 text-lg font-semibold",
+                children: "🧾 تقرير المبيعات"
+            }, void 0, false, {
+                fileName: "[project]/pages/reports.js",
+                lineNumber: 292,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
+                className: "w-full min-w-[900px] text-sm text-right",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
+                        className: "text-gray-700 bg-gray-50",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                    className: "mb-3 text-lg font-bold text-green-800",
-                                    children: "📈 تحليل الأداء"
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "رقم"
                                 }, void 0, false, {
-                                    fileName: "[project]/pages/dashboard.js",
-                                    lineNumber: 181,
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 297,
                                     columnNumber: 13
                                 }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-sm leading-relaxed text-green-700",
-                                    children: [
-                                        "أداء المبيعات ارتفع بنسبة ",
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                            children: "+12%"
-                                        }, void 0, false, {
-                                            fileName: "[project]/pages/dashboard.js",
-                                            lineNumber: 183,
-                                            columnNumber: 41
-                                        }, this),
-                                        " الأسبوع الماضي، مع زيادة في عدد الطلبات ",
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                            children: "+8%"
-                                        }, void 0, false, {
-                                            fileName: "[project]/pages/dashboard.js",
-                                            lineNumber: 184,
-                                            columnNumber: 39
-                                        }, this),
-                                        ". استمر بتحسين العروض والسرعة لزيادة الأرباح."
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/pages/dashboard.js",
-                                    lineNumber: 182,
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "عميل"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 298,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "كاشير"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 299,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "نوع"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 300,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "الدفع"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 301,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "الإجمالي"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 302,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "التاريخ"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 303,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
-                            fileName: "[project]/pages/dashboard.js",
-                            lineNumber: 180,
+                            fileName: "[project]/pages/reports.js",
+                            lineNumber: 296,
                             columnNumber: 11
                         }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/pages/dashboard.js",
-                    lineNumber: 159,
-                    columnNumber: 9
-                }, this)
-            ]
-        }, void 0, true, {
-            fileName: "[project]/pages/dashboard.js",
-            lineNumber: 93,
-            columnNumber: 7
-        }, this)
-    }, void 0, false, {
-        fileName: "[project]/pages/dashboard.js",
-        lineNumber: 92,
+                    }, void 0, false, {
+                        fileName: "[project]/pages/reports.js",
+                        lineNumber: 295,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
+                        children: [
+                            invoices.map((i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                    className: "border-t hover:bg-gray-50",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: i.id
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 309,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: i.customer
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 310,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: i.cashier
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 311,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: i.type
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 312,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: i.payment
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 313,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            className: "font-bold text-emerald-700",
+                                            children: formatCurrency(i.total)
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 314,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: i.date?.replace("T", " ").slice(0, 16)
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 317,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, i.id, true, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 308,
+                                    columnNumber: 13
+                                }, this)),
+                            !invoices.length && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                    colSpan: 7,
+                                    className: "py-4 text-center text-gray-500",
+                                    children: "لا توجد فواتير بعد…"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 322,
+                                    columnNumber: 15
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/pages/reports.js",
+                                lineNumber: 321,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/pages/reports.js",
+                        lineNumber: 306,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/pages/reports.js",
+                lineNumber: 294,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "[project]/pages/reports.js",
+        lineNumber: 291,
         columnNumber: 5
     }, this);
 }
-_s(Dashboard, "qJ6pwOCGWbsL8xhFZkdxBwchy9k=", false, function() {
-    return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"]
-    ];
-});
-_c = Dashboard;
-// 🟡 بطاقة الملخص
-function SummaryCard({ title, value, color }) {
+_c3 = SalesTab;
+/* ============================================================
+   🔵 2) StockTab — تقرير المخزون
+============================================================ */ function StockTab({ products, formatCurrency }) {
+    if (!Array.isArray(products)) products = [];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "p-5 transition bg-white border shadow-md rounded-xl hover:shadow-lg",
+        className: "p-4 overflow-x-auto bg-white border rounded-lg shadow-sm",
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "text-sm text-gray-500",
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                className: "mb-3 text-lg font-semibold",
+                children: "🏬 تقرير المخزون"
+            }, void 0, false, {
+                fileName: "[project]/pages/reports.js",
+                lineNumber: 341,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
+                className: "w-full min-w-[900px] text-sm text-right",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
+                        className: "bg-gray-50",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "كود"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 346,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "اسم"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 347,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "الشركة"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 348,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "الكمية"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 349,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "الحد الأدنى"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 350,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "تاريخ الانتهاء"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 351,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "السعر"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 352,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/pages/reports.js",
+                            lineNumber: 345,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/pages/reports.js",
+                        lineNumber: 344,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
+                        children: [
+                            products.map((p)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                    className: "border-t hover:bg-gray-50",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: p.id
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 358,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: p.name
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 359,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: p.company
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 360,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: p.quantity
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 361,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: p.min_qty
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 362,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: p.expiryDate
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 363,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: formatCurrency(p.price)
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 364,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, p.id, true, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 357,
+                                    columnNumber: 13
+                                }, this)),
+                            !products.length && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                    colSpan: 7,
+                                    className: "py-4 text-center text-gray-500",
+                                    children: "لا توجد منتجات حالياً…"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 370,
+                                    columnNumber: 15
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/pages/reports.js",
+                                lineNumber: 369,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/pages/reports.js",
+                        lineNumber: 355,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/pages/reports.js",
+                lineNumber: 343,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "[project]/pages/reports.js",
+        lineNumber: 340,
+        columnNumber: 5
+    }, this);
+}
+_c4 = StockTab;
+/* ============================================================
+   🔵 3) ProfitTab — تقرير ربحية المنتجات
+============================================================ */ function ProfitTab({ products, formatCurrency }) {
+    if (!Array.isArray(products)) products = [];
+    const rows = products.map((p)=>{
+        const totalCost = Number(p.cost_price || 0) * Number(p.quantity);
+        const totalSell = Number(p.price || 0) * Number(p.quantity);
+        const profit = totalSell - totalCost;
+        return {
+            ...p,
+            totalCost,
+            totalSell,
+            profit,
+            marginPercent: totalSell ? (profit / totalSell * 100).toFixed(1) : "0.0"
+        };
+    });
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "p-4 overflow-x-auto bg-white border rounded-lg shadow-sm",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                className: "mb-3 text-lg font-semibold",
+                children: "📊 ربحية المنتجات"
+            }, void 0, false, {
+                fileName: "[project]/pages/reports.js",
+                lineNumber: 402,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
+                className: "w-full min-w-[950px] text-sm text-right",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
+                        className: "bg-gray-50",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "اسم"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 407,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "تكلفة الوحدة"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 408,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "سعر البيع"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 409,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "الكمية"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 410,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "إجمالي التكلفة"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 411,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "إجمالي البيع"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 412,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "الربح"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 413,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: "الربحية %"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 414,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/pages/reports.js",
+                            lineNumber: 406,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/pages/reports.js",
+                        lineNumber: 405,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
+                        children: [
+                            rows.map((r)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                    className: "border-t hover:bg-gray-50",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: r.name
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 421,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: formatCurrency(r.cost_price)
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 422,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: formatCurrency(r.price)
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 423,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: r.quantity
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 424,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: formatCurrency(r.totalCost)
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 425,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: formatCurrency(r.totalSell)
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 426,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            className: r.profit >= 0 ? "text-emerald-700" : "text-red-600",
+                                            children: formatCurrency(r.profit)
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 427,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                            children: [
+                                                r.marginPercent,
+                                                "%"
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/pages/reports.js",
+                                            lineNumber: 430,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, r.id, true, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 420,
+                                    columnNumber: 13
+                                }, this)),
+                            !rows.length && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                    colSpan: 8,
+                                    className: "py-4 text-center text-gray-500",
+                                    children: "لا توجد بيانات…"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 436,
+                                    columnNumber: 15
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/pages/reports.js",
+                                lineNumber: 435,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/pages/reports.js",
+                        lineNumber: 418,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/pages/reports.js",
+                lineNumber: 404,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "[project]/pages/reports.js",
+        lineNumber: 401,
+        columnNumber: 5
+    }, this);
+}
+_c5 = ProfitTab;
+/* ============================================================
+   🔵 4) AlertsTab — التنبيهات
+============================================================ */ function AlertsTab({ low, expired, nearExpiry }) {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "space-y-6",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(AlertSection, {
+                title: "❌ منتهية",
+                color: "text-red-700",
+                rows: expired,
+                headers: [
+                    "اسم",
+                    "كمية",
+                    "انتهاء"
+                ],
+                mapper: (p)=>[
+                        p.name,
+                        p.quantity,
+                        p.expiryDate
+                    ]
+            }, void 0, false, {
+                fileName: "[project]/pages/reports.js",
+                lineNumber: 453,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(AlertSection, {
+                title: "⚠️ قرب الانتهاء",
+                color: "text-amber-700",
+                rows: nearExpiry,
+                headers: [
+                    "اسم",
+                    "كمية",
+                    "انتهاء"
+                ],
+                mapper: (p)=>[
+                        p.name,
+                        p.quantity,
+                        p.expiryDate
+                    ]
+            }, void 0, false, {
+                fileName: "[project]/pages/reports.js",
+                lineNumber: 461,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(AlertSection, {
+                title: "📉 كمية منخفضة",
+                color: "text-orange-700",
+                rows: low,
+                headers: [
+                    "اسم",
+                    "كمية",
+                    "حد أدنى"
+                ],
+                mapper: (p)=>[
+                        p.name,
+                        p.quantity,
+                        p.min_qty
+                    ]
+            }, void 0, false, {
+                fileName: "[project]/pages/reports.js",
+                lineNumber: 469,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "[project]/pages/reports.js",
+        lineNumber: 452,
+        columnNumber: 5
+    }, this);
+}
+_c6 = AlertsTab;
+function AlertSection({ title, color, rows, headers, mapper }) {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "p-4 overflow-x-auto bg-white border rounded-lg shadow-sm",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                className: `mb-3 text-lg font-semibold ${color}`,
                 children: title
             }, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 199,
+                fileName: "[project]/pages/reports.js",
+                lineNumber: 483,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                className: `mt-1 text-2xl font-bold ${color}`,
-                children: value
-            }, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 200,
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
+                className: "w-full min-w-[700px] text-sm text-right",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
+                        className: "bg-gray-50",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                            children: headers.map((h)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Th, {
+                                    children: h
+                                }, h, false, {
+                                    fileName: "[project]/pages/reports.js",
+                                    lineNumber: 488,
+                                    columnNumber: 15
+                                }, this))
+                        }, void 0, false, {
+                            fileName: "[project]/pages/reports.js",
+                            lineNumber: 486,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/pages/reports.js",
+                        lineNumber: 485,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
+                        children: rows.length ? rows.map((p, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                className: "border-t hover:bg-gray-50",
+                                children: mapper(p).map((val, x)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Td, {
+                                        children: val
+                                    }, x, false, {
+                                        fileName: "[project]/pages/reports.js",
+                                        lineNumber: 497,
+                                        columnNumber: 19
+                                    }, this))
+                            }, i, false, {
+                                fileName: "[project]/pages/reports.js",
+                                lineNumber: 495,
+                                columnNumber: 15
+                            }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                colSpan: headers.length,
+                                className: "py-4 text-center text-gray-500",
+                                children: "لا توجد بيانات…"
+                            }, void 0, false, {
+                                fileName: "[project]/pages/reports.js",
+                                lineNumber: 503,
+                                columnNumber: 15
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/pages/reports.js",
+                            lineNumber: 502,
+                            columnNumber: 13
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/pages/reports.js",
+                        lineNumber: 492,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/pages/reports.js",
+                lineNumber: 484,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
-        fileName: "[project]/pages/dashboard.js",
-        lineNumber: 198,
+        fileName: "[project]/pages/reports.js",
+        lineNumber: 482,
         columnNumber: 5
     }, this);
 }
-_c1 = SummaryCard;
-// 🟣 بطاقة عملية
-function ActivityCard({ icon, text }) {
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-        className: "flex items-center gap-3 p-3 transition border rounded-lg bg-gray-50 hover:bg-gray-100",
+_c7 = AlertSection;
+const Th = ({ children })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+        className: "px-3 py-2",
+        children: children
+    }, void 0, false, {
+        fileName: "[project]/pages/reports.js",
+        lineNumber: 516,
+        columnNumber: 30
+    }, ("TURBOPACK compile-time value", void 0));
+_c8 = Th;
+const Td = ({ children })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+        className: "px-3 py-2",
+        children: children
+    }, void 0, false, {
+        fileName: "[project]/pages/reports.js",
+        lineNumber: 517,
+        columnNumber: 30
+    }, ("TURBOPACK compile-time value", void 0));
+_c9 = Td;
+const Card = ({ title, value })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "p-4 text-center bg-white border rounded-lg shadow-sm",
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                className: "text-xl",
-                children: icon
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                className: "text-xs text-gray-500",
+                children: title
             }, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 209,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                children: text
+                fileName: "[project]/pages/reports.js",
+                lineNumber: 520,
+                columnNumber: 5
+            }, ("TURBOPACK compile-time value", void 0)),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                className: "text-xl font-bold",
+                children: value
             }, void 0, false, {
-                fileName: "[project]/pages/dashboard.js",
-                lineNumber: 210,
-                columnNumber: 7
-            }, this)
+                fileName: "[project]/pages/reports.js",
+                lineNumber: 521,
+                columnNumber: 5
+            }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
-        fileName: "[project]/pages/dashboard.js",
-        lineNumber: 208,
-        columnNumber: 5
-    }, this);
-} // import { useState, useEffect } from 'react'
- // import { useRouter } from 'next/router'
- // import Layout from '../components/Layout'
- // import theme from '../theme'
- // import {
- //   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
- // } from 'recharts'
- // export default function Dashboard() {
- //   const [user] = useState({ name: 'المدير أحمد', role: 'admin' })
- //   const [users, setUsers] = useState([])
- //   const [salesData, setSalesData] = useState([])
- //   const router = useRouter()
- // //   useEffect(() => {
- // //   const token = localStorage.getItem("pharmacy_token")
- // //   if (!token) {
- // //     router.replace("/")   // redirect to login
- // //   }
- // // }, [])
- //   useEffect(() => {
- //     setUsers([
- //       { id: 1, name: 'محمد الصيدلي', role: 'pharmacist', email: 'pharma@mail.com' },
- //       { id: 2, name: 'أحمد الكاشير', role: 'cashier', email: 'cashier@mail.com' },
- //       { id: 3, name: 'مها الإدارية', role: 'admin', email: 'admin@mail.com' }
- //     ])
- //     setSalesData([
- //       { month: 'يناير', total: 3200 },
- //       { month: 'فبراير', total: 4100 },
- //       { month: 'مارس', total: 3800 },
- //       { month: 'أبريل', total: 5200 },
- //       { month: 'مايو', total: 6100 },
- //       { month: 'يونيو', total: 5700 }
- //     ])
- //   }, [])
- //   const totalSales = salesData.reduce((s, m) => s + m.total, 0)
- //   // روابط الوصول السريع (بدون react-icons)
- //   const quickLinks = [
- //     { title: 'المنتجات', icon: '💊', bg: 'from-green-500/70 to-emerald-600/70', path: '/products' },
- //     { title: 'المبيعات', icon: '🧾', bg: 'from-sky-500/70 to-blue-600/70', path: '/sales' },
- //     { title: 'المخزن', icon: '🏬', bg: 'from-orange-500/70 to-amber-600/70', path: '/inventory' },
- //     { title: 'التقارير', icon: '📈', bg: 'from-purple-500/70 to-indigo-600/70', path: '/reports' },
- //     { title: 'الحسابات', icon: '💵', bg: 'from-amber-500/70 to-yellow-600/70', path: '/accounts' },
- //     { title: 'المستخدمون', icon: '👥', bg: 'from-teal-500/70 to-cyan-600/70', path: '/users' }
- //   ]
- //   return (
- //     <Layout user={user} title="لوحة التحكم الرئيسية">
- //       <div dir="rtl" className="space-y-10">
- //         {/* الوصول السريع */}
- //         <section>
- //           <h2 className="mb-5 text-xl font-semibold text-gray-800">الوصول السريع</h2>
- //           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
- //             {quickLinks.map((link, i) => (
- //               <button
- //                 key={i}
- //                 onClick={() => router.push(link.path)}
- //                 className={`
- //                   group relative flex flex-col items-center justify-center
- //                   py-4 px-3 rounded-xl text-white shadow-md hover:shadow-xl hover:scale-[1.03]
- //                   transition-all duration-200 bg-gradient-to-br ${link.bg}
- //                 `}
- //               >
- //                 <div className="absolute inset-0 bg-black opacity-10 group-hover:opacity-25 rounded-xl"></div>
- //                 <div className="relative z-10 text-3xl mb-1.5">{link.icon}</div>
- //                 <h3 className="relative z-10 text-sm font-semibold tracking-wide">{link.title}</h3>
- //               </button>
- //             ))}
- //           </div>
- //         </section>
- //         {/* بطاقات الملخص */}
- //         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
- //           <SummaryCard title="إجمالي المبيعات" value={`${totalSales.toLocaleString()} ر.س`} color="text-sky-600" />
- //           <SummaryCard title="عدد الفواتير" value="248" color="text-blue-600" />
- //           <SummaryCard title="عدد الأدوية" value="126" color="text-green-600" />
- //           <SummaryCard title="عدد المستخدمين" value={users.length} color="text-amber-600" />
- //         </div>
- //         {/* الرسم البياني للمبيعات */}
- //         <div className="p-5 bg-white border rounded-lg shadow-sm">
- //           <h3 className="mb-3 text-lg font-semibold text-gray-700">المبيعات الشهرية</h3>
- //           <ResponsiveContainer width="100%" height={250}>
- //             <LineChart data={salesData}>
- //               <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
- //               <XAxis dataKey="month" />
- //               <YAxis />
- //               <Tooltip />
- //               <Line type="monotone" dataKey="total" stroke={theme.colors.primary} strokeWidth={2} />
- //             </LineChart>
- //           </ResponsiveContainer>
- //         </div>
- //         {/* آخر العمليات + ملاحظة تحليلية */}
- //         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
- //           <div className="p-5 bg-white border rounded-lg shadow-sm lg:col-span-2">
- //             <h3 className="mb-4 text-lg font-semibold text-gray-700">آخر العمليات</h3>
- //             <ul className="space-y-2 text-sm text-gray-700">
- //               <li className="p-3 transition border border-gray-100 rounded-lg hover:bg-gray-50">
- //                 💰 تم إنشاء فاتورة بقيمة <span className="font-semibold text-green-700">245 ر.س</span> بواسطة <span className="text-blue-600">أحمد</span>.
- //               </li>
- //               <li className="p-3 transition border border-gray-100 rounded-lg hover:bg-gray-50">
- //                 📦 تم تحديث مخزون دواء <span className="font-semibold text-emerald-700">“فيتامين سي”</span>.
- //               </li>
- //               <li className="p-3 transition border border-gray-100 rounded-lg hover:bg-gray-50">
- //                 📊 تم عرض تقرير <span className="font-semibold text-purple-600">المبيعات اليومية</span>.
- //               </li>
- //             </ul>
- //           </div>
- //           <div className="p-5 border border-green-200 rounded-lg shadow-sm bg-gradient-to-br from-green-50 to-green-100">
- //             <h3 className="mb-3 text-lg font-semibold text-green-700">📈 ملاحظة تحليلية</h3>
- //             <p className="text-sm leading-relaxed text-green-800">
- //               أداء المبيعات في آخر أسبوع ارتفع بنسبة <strong>+12%</strong> مقارنة بالفترة السابقة،
- //               مع زيادة في عدد الطلبات بمعدل <strong>8%</strong>.
- //             </p>
- //           </div>
- //         </div>
- //       </div>
- //     </Layout>
- //   )
- // }
- // function SummaryCard({ title, value, color }) {
- //   return (
- //     <div className="p-5 text-center transition bg-white border rounded-lg shadow-sm hover:shadow-md">
- //       <p className="text-sm text-gray-500">{title}</p>
- //       <h3 className={`text-2xl font-bold ${color}`}>{value}</h3>
- //     </div>
- //   )
- // }
- // import { useState, useEffect } from 'react'
- // import { useRouter } from 'next/router'
- // import Layout from '../components/Layout'
- // import toast from 'react-hot-toast'
- // import theme from '../theme'
- // import {
- //   LineChart,
- //   Line,
- //   XAxis,
- //   YAxis,
- //   CartesianGrid,
- //   Tooltip,
- //   ResponsiveContainer
- // } from 'recharts'
- // import {
- //   FaPills,
- //   FaCashRegister,
- //   FaChartLine,
- //   FaMoneyBillWave,
- //   FaUsers
- // } from 'react-icons/fa'
- // export default function Dashboard() {
- //   const [user] = useState({ name: 'المدير أحمد', role: 'admin' })
- //   const [users, setUsers] = useState([])
- //   const [salesData, setSalesData] = useState([])
- //   const router = useRouter()
- //   useEffect(() => {
- //     setUsers([
- //       { id: 1, name: 'محمد الصيدلي', role: 'pharmacist', email: 'pharma@mail.com' },
- //       { id: 2, name: 'أحمد الكاشير', role: 'cashier', email: 'cashier@mail.com' },
- //       { id: 3, name: 'مها الإدارية', role: 'admin', email: 'admin@mail.com' }
- //     ])
- //     setSalesData([
- //       { month: 'يناير', total: 3200 },
- //       { month: 'فبراير', total: 4100 },
- //       { month: 'مارس', total: 3800 },
- //       { month: 'أبريل', total: 5200 },
- //       { month: 'مايو', total: 6100 },
- //       { month: 'يونيو', total: 5700 }
- //     ])
- //   }, [])
- //   const totalSales = salesData.reduce((s, m) => s + m.total, 0)
- //   // 🔹 روابط الوصول السريع
- //   const quickLinks = [
- //     { title: 'المنتجات', icon: <FaPills />, bg: 'bg-gradient-to-br from-green-500 to-emerald-600', path: '/products' },
- //     { title: 'المبيعات', icon: <FaCashRegister />, bg: 'bg-gradient-to-br from-sky-500 to-blue-600', path: '/sales' },
- //     { title: 'التقارير', icon: <FaChartLine />, bg: 'bg-gradient-to-br from-purple-500 to-indigo-600', path: '/reports' },
- //     { title: 'الحسابات', icon: <FaMoneyBillWave />, bg: 'bg-gradient-to-br from-amber-500 to-yellow-600', path: '/accounts' },
- //     { title: 'إدارة المستخدمين', icon: <FaUsers />, bg: 'bg-gradient-to-br from-teal-500 to-cyan-600', path: '/users' }
- //   ]
- //   return (
- //     <Layout user={user} title="لوحة التحكم الرئيسية">
- //       <div dir="rtl" className="space-y-10">
- //         {/* 🔹 الوصول السريع */}
- //         <section>
- //           <h2 className="mb-5 text-xl font-semibold text-gray-800">الوصول السريع</h2>
- //           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
- //             {quickLinks.map((link, i) => (
- //               <button
- //                 key={i}
- //                 onClick={() => router.push(link.path)}
- //                 className={`
- //                   group relative flex flex-col items-center justify-center 
- //                   p-6 rounded-2xl text-white shadow-md hover:shadow-xl hover:scale-[1.03] transition-all duration-200
- //                   ${link.bg}
- //                 `}
- //               >
- //                 <div className="absolute inset-0 bg-black opacity-10 group-hover:opacity-20 rounded-2xl"></div>
- //                 <div className="relative z-10 mb-3 text-4xl">{link.icon}</div>
- //                 <h3 className="relative z-10 text-lg font-bold tracking-wide">{link.title}</h3>
- //               </button>
- //             ))}
- //           </div>
- //         </section>
- //         {/* 🧾 بطاقات الملخص */}
- //         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
- //           <SummaryCard title="إجمالي المبيعات" value={`${totalSales.toLocaleString()} ر.س`} color="text-sky-600" />
- //           <SummaryCard title="عدد الفواتير" value="248" color="text-blue-600" />
- //           <SummaryCard title="عدد الأدوية" value="126" color="text-green-600" />
- //           <SummaryCard title="عدد المستخدمين" value={users.length} color="text-amber-600" />
- //         </div>
- //         {/* 📈 الرسم البياني للمبيعات */}
- //         <div className="p-5 bg-white border rounded-lg shadow-sm">
- //           <h3 className="mb-3 text-lg font-semibold text-gray-700">المبيعات الشهرية</h3>
- //           <ResponsiveContainer width="100%" height={250}>
- //             <LineChart data={salesData}>
- //               <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
- //               <XAxis dataKey="month" />
- //               <YAxis />
- //               <Tooltip />
- //               <Line type="monotone" dataKey="total" stroke={theme.colors.primary} strokeWidth={2} />
- //             </LineChart>
- //           </ResponsiveContainer>
- //         </div>
- //         {/* 🧾 آخر العمليات */}
- //         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
- //           {/* قائمة العمليات */}
- //           <div className="p-5 bg-white border rounded-lg shadow-sm lg:col-span-2">
- //             <h3 className="mb-4 text-lg font-semibold text-gray-700">آخر العمليات</h3>
- //             <ul className="space-y-2 text-sm text-gray-700">
- //               <li className="p-3 transition border border-gray-100 rounded-lg hover:bg-gray-50">
- //                 💰 تم إنشاء فاتورة جديدة بقيمة <span className="font-semibold text-green-700">245 ر.س</span> بواسطة <span className="text-blue-600">أحمد</span>.
- //               </li>
- //               <li className="p-3 transition border border-gray-100 rounded-lg hover:bg-gray-50">
- //                 📦 تم تحديث مخزون دواء <span className="font-semibold text-emerald-700">“فيتامين سي”</span>.
- //               </li>
- //               <li className="p-3 transition border border-gray-100 rounded-lg hover:bg-gray-50">
- //                 📊 تم عرض تقرير <span className="font-semibold text-purple-600">المبيعات اليومية</span>.
- //               </li>
- //             </ul>
- //           </div>
- //           {/* تنبيه تحليلي */}
- //           <div className="p-5 border border-green-200 rounded-lg shadow-sm bg-gradient-to-br from-green-50 to-green-100">
- //             <h3 className="mb-3 text-lg font-semibold text-green-700">📈 ملاحظة تحليلية</h3>
- //             <p className="text-sm leading-relaxed text-green-800">
- //               أداء المبيعات في آخر أسبوع ارتفع بنسبة <strong>+12%</strong> مقارنة بالفترة السابقة،
- //               مع زيادة في عدد الطلبات بمعدل <strong>8%</strong>.
- //               حافظ على هذا الأداء لتعزيز الأرباح الشهرية.
- //             </p>
- //           </div>
- //         </div>
- //       </div>
- //     </Layout>
- //   )
- // }
- // // 🧩 بطاقة الملخص
- // function SummaryCard({ title, value, color }) {
- //   return (
- //     <div className="p-5 text-center transition bg-white border rounded-lg shadow-sm hover:shadow-md">
- //       <p className="text-sm text-gray-500">{title}</p>
- //       <h3 className={`text-2xl font-bold ${color}`}>{value}</h3>
- //     </div>
- //   )
- // }
- // import { useState, useEffect } from 'react'
- // import Layout from '../components/Layout'
- // import toast from 'react-hot-toast'
- // import theme from '../theme'
- // import {
- //   LineChart,
- //   Line,
- //   XAxis,
- //   YAxis,
- //   CartesianGrid,
- //   Tooltip,
- //   PieChart,
- //   Pie,
- //   Cell,
- //   ResponsiveContainer
- // } from 'recharts'
- // export default function Dashboard() {
- //   const [user] = useState({ name: 'المدير أحمد', role: 'admin' })
- //   const [users, setUsers] = useState([])
- //   const [salesData, setSalesData] = useState([])
- //   const [showAddModal, setShowAddModal] = useState(false)
- //   const [showEditModal, setShowEditModal] = useState(false)
- //   const [showPermModal, setShowPermModal] = useState(false)
- //   const [newUser, setNewUser] = useState({ name: '', role: '', email: '', permissions: [] })
- //   const [editUser, setEditUser] = useState(null)
- //   const [permUser, setPermUser] = useState(null)
- //   // 🔹 قائمة الصلاحيات
- //   const allPermissions = [
- //     { key: 'view_sales', label: 'عرض المبيعات' },
- //     { key: 'add_sale', label: 'إضافة عملية بيع' },
- //     { key: 'manage_medicines', label: 'إدارة الأدوية' },
- //     { key: 'manage_users', label: 'إدارة المستخدمين' },
- //     { key: 'view_reports', label: 'عرض التقارير' },
- //     { key: 'print_reports', label: 'طباعة التقارير' },
- //   ]
- //   // 🔹 بيانات مبدئية
- //   useEffect(() => {
- //     setUsers([
- //       { id: 1, name: 'محمد الصيدلي', role: 'pharmacist', email: 'pharma@mail.com', permissions: ['manage_medicines', 'view_reports'] },
- //       { id: 2, name: 'أحمد الكاشير', role: 'cashier', email: 'cashier@mail.com', permissions: ['add_sale', 'view_sales', 'print_reports'] },
- //       { id: 3, name: 'مها الإدارية', role: 'admin', email: 'admin@mail.com', permissions: ['manage_users', 'view_reports', 'print_reports'] },
- //     ])
- //     setSalesData([
- //       { month: 'يناير', total: 3200 },
- //       { month: 'فبراير', total: 4100 },
- //       { month: 'مارس', total: 3800 },
- //       { month: 'أبريل', total: 5200 },
- //       { month: 'مايو', total: 6100 },
- //       { month: 'يونيو', total: 5700 },
- //     ])
- //   }, [])
- //   const totalSales = salesData.reduce((s, m) => s + m.total, 0)
- //   const COLORS = ['#0EA5E9', '#10B981', '#F59E0B']
- //   // 🟢 إضافة مستخدم
- //   const addUser = () => {
- //     if (!newUser.name || !newUser.role || !newUser.email) {
- //       toast.error('⚠️ يرجى إدخال جميع الحقول')
- //       return
- //     }
- //     setUsers([...users, { id: Date.now(), ...newUser }])
- //     setNewUser({ name: '', role: '', email: '', permissions: [] })
- //     setShowAddModal(false)
- //     toast.success('✅ تم إضافة المستخدم بنجاح')
- //   }
- //   // ✏️ تعديل مستخدم
- //   const openEditModal = (u) => {
- //     setEditUser({ ...u })
- //     setShowEditModal(true)
- //   }
- //   const saveEditUser = () => {
- //     if (!editUser.name || !editUser.role || !editUser.email) return toast.error('⚠️ يرجى إدخال جميع الحقول')
- //     setUsers(users.map((u) => (u.id === editUser.id ? editUser : u)))
- //     setShowEditModal(false)
- //     toast.success('✅ تم تعديل المستخدم بنجاح')
- //   }
- //   // 🔐 صلاحيات المستخدم
- //   const openPermModal = (u) => {
- //     setPermUser({ ...u })
- //     setShowPermModal(true)
- //   }
- //   const togglePermission = (permKey) => {
- //     const perms = permUser.permissions.includes(permKey)
- //       ? permUser.permissions.filter((p) => p !== permKey)
- //       : [...permUser.permissions, permKey]
- //     setPermUser({ ...permUser, permissions: perms })
- //   }
- //   const savePermissions = () => {
- //     setUsers(users.map((u) => (u.id === permUser.id ? permUser : u)))
- //     setShowPermModal(false)
- //     toast.success('🔐 تم تحديث صلاحيات المستخدم')
- //   }
- //   // ❌ حذف مستخدم
- //   const deleteUser = (id) => {
- //     if (confirm('هل تريد حذف هذا المستخدم؟')) {
- //       setUsers(users.filter((u) => u.id !== id))
- //       toast.success('🗑️ تم حذف المستخدم بنجاح')
- //     }
- //   }
- //   return (
- //     <Layout user={user} title="لوحة المدير">
- //       <div dir="rtl" className="space-y-8">
- //         {/* 🧾 الملخص */}
- //         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
- //           <SummaryCard title="إجمالي المبيعات" value={`${totalSales.toLocaleString()} ر.س`} color="text-sky-600" />
- //           <SummaryCard title="عدد الفواتير" value="248" color="text-blue-600" />
- //           <SummaryCard title="عدد الأدوية" value="126" color="text-green-600" />
- //           <SummaryCard title="عدد المستخدمين" value={users.length} color="text-amber-600" />
- //         </div>
- //         {/* 👥 إدارة المستخدمين */}
- //         <div className="p-5 bg-white border rounded-lg shadow-sm">
- //           <div className="flex items-center justify-between mb-4">
- //             <h3 className="text-lg font-semibold text-gray-700">إدارة المستخدمين والصلاحيات</h3>
- //             <button onClick={() => setShowAddModal(true)} className="px-4 py-2 text-white rounded-md shadow bg-sky-600 hover:bg-sky-700">
- //               ➕ مستخدم جديد
- //             </button>
- //           </div>
- //           <table className="w-full text-sm text-right border-t border-gray-100">
- //             <thead className="text-gray-600 bg-gray-50">
- //               <tr>
- //                 <th className="px-3 py-2">الاسم</th>
- //                 <th className="px-3 py-2">البريد</th>
- //                 <th className="px-3 py-2">الدور</th>
- //                 <th className="px-3 py-2">الصلاحيات</th>
- //                 <th className="px-3 py-2">الإجراءات</th>
- //               </tr>
- //             </thead>
- //             <tbody>
- //               {users.map((u) => (
- //                 <tr key={u.id} className="border-t hover:bg-gray-50">
- //                   <td className="px-3 py-2">{u.name}</td>
- //                   <td className="px-3 py-2">{u.email}</td>
- //                   <td className="px-3 py-2">{u.role === 'admin' ? '👑 مدير' : u.role === 'pharmacist' ? '💊 صيدلي' : '💵 كاشير'}</td>
- //                   <td className="px-3 py-2">
- //                     {u.permissions.map((p) => (
- //                       <span key={p} className="inline-block px-2 py-0.5 m-0.5 bg-sky-50 text-sky-700 rounded">
- //                         {allPermissions.find((x) => x.key === p)?.label || p}
- //                       </span>
- //                     ))}
- //                   </td>
- //                   <td className="px-3 py-2 space-x-2 space-x-reverse">
- //                     <button onClick={() => openEditModal(u)} className="px-3 py-1 text-sm text-blue-600 border border-blue-100 rounded hover:bg-blue-50">
- //                       تعديل
- //                     </button>
- //                     <button onClick={() => openPermModal(u)} className="px-3 py-1 text-sm text-indigo-600 border border-indigo-100 rounded hover:bg-indigo-50">
- //                       صلاحيات
- //                     </button>
- //                     <button onClick={() => deleteUser(u.id)} className="px-3 py-1 text-sm text-red-600 border border-red-100 rounded hover:bg-red-50">
- //                       حذف
- //                     </button>
- //                   </td>
- //                 </tr>
- //               ))}
- //             </tbody>
- //           </table>
- //         </div>
- //         {/* 🟢 مودالات */}
- //         {showAddModal && (
- //           <UserModal title="➕ إضافة مستخدم جديد" userData={newUser} setUserData={setNewUser} onSave={addUser} onCancel={() => setShowAddModal(false)} />
- //         )}
- //         {showEditModal && (
- //           <UserModal title="✏️ تعديل المستخدم" userData={editUser} setUserData={setEditUser} onSave={saveEditUser} onCancel={() => setShowEditModal(false)} />
- //         )}
- //         {showPermModal && (
- //           <PermissionsModal
- //             user={permUser}
- //             permissions={allPermissions}
- //             togglePermission={togglePermission}
- //             onSave={savePermissions}
- //             onCancel={() => setShowPermModal(false)}
- //           />
- //         )}
- //       </div>
- //     </Layout>
- //   )
- // }
- // // 🧩 بطاقات الملخص
- // function SummaryCard({ title, value, color }) {
- //   return (
- //     <div className="p-4 text-center bg-white border rounded-lg shadow-sm hover:shadow-md">
- //       <p className="text-sm text-gray-500">{title}</p>
- //       <h3 className={`text-2xl font-bold ${color}`}>{value}</h3>
- //     </div>
- //   )
- // }
- // // 🧩 نافذة المستخدم (إضافة / تعديل)
- // function UserModal({ title, userData, setUserData, onSave, onCancel }) {
- //   return (
- //     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999]">
- //       <div className="w-full max-w-md p-6 text-right bg-white rounded-lg shadow-lg">
- //         <h3 className="mb-4 text-lg font-semibold text-gray-700">{title}</h3>
- //         <label className="block mb-1 text-sm">الاسم</label>
- //         <input value={userData.name} onChange={(e) => setUserData({ ...userData, name: e.target.value })} className="w-full px-3 py-2 mb-3 border rounded-md" />
- //         <label className="block mb-1 text-sm">البريد الإلكتروني</label>
- //         <input value={userData.email} onChange={(e) => setUserData({ ...userData, email: e.target.value })} className="w-full px-3 py-2 mb-3 border rounded-md" />
- //         <label className="block mb-1 text-sm">الدور</label>
- //         <select value={userData.role} onChange={(e) => setUserData({ ...userData, role: e.target.value })} className="w-full px-3 py-2 mb-4 border rounded-md">
- //           <option value="">اختر الدور...</option>
- //           <option value="admin">👑 مدير</option>
- //           <option value="pharmacist">💊 صيدلي</option>
- //           <option value="cashier">💵 كاشير</option>
- //         </select>
- //         <div className="flex justify-end gap-3">
- //           <button onClick={onSave} className="px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-700">حفظ</button>
- //           <button onClick={onCancel} className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300">إلغاء</button>
- //         </div>
- //       </div>
- //     </div>
- //   )
- // }
- // // 🟣 نافذة الصلاحيات
- // function PermissionsModal({ user, permissions, togglePermission, onSave, onCancel }) {
- //   return (
- //     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999]">
- //       <div className="w-full max-w-lg p-6 text-right bg-white rounded-lg shadow-lg">
- //         <h3 className="mb-4 text-lg font-semibold text-gray-700">🔐 تعديل صلاحيات {user.name}</h3>
- //         <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
- //           {permissions.map((p) => (
- //             <label key={p.key} className="flex items-center gap-2">
- //               <input type="checkbox" checked={user.permissions.includes(p.key)} onChange={() => togglePermission(p.key)} />
- //               {p.label}
- //             </label>
- //           ))}
- //         </div>
- //         <div className="flex justify-end gap-3">
- //           <button onClick={onSave} className="px-4 py-2 text-white rounded-md bg-sky-600 hover:bg-sky-700">حفظ</button>
- //           <button onClick={onCancel} className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300">إلغاء</button>
- //         </div>
- //       </div>
- //     </div>
- //   )
- // }
- // import { useState, useEffect } from 'react'
- // import Layout from '../components/Layout'
- // import toast from 'react-hot-toast'
- // import theme from '../theme'
- // import {
- //   LineChart,
- //   Line,
- //   XAxis,
- //   YAxis,
- //   CartesianGrid,
- //   Tooltip,
- //   PieChart,
- //   Pie,
- //   Cell,
- //   ResponsiveContainer
- // } from 'recharts'
- // export default function Dashboard() {
- //   const [user] = useState({ name: 'المدير أحمد', role: 'admin' })
- //   const [users, setUsers] = useState([])
- //   const [salesData, setSalesData] = useState([])
- //   const [showAddModal, setShowAddModal] = useState(false)
- //   const [showEditModal, setShowEditModal] = useState(false)
- //   const [newUser, setNewUser] = useState({ name: '', role: '', email: '' })
- //   const [editUser, setEditUser] = useState(null)
- //   // 🔹 تحميل بيانات افتراضية
- //   useEffect(() => {
- //     setUsers([
- //       { id: 1, name: 'محمد الصيدلي', role: 'pharmacist', email: 'pharma@mail.com' },
- //       { id: 2, name: 'أحمد الكاشير', role: 'cashier', email: 'cashier@mail.com' },
- //       { id: 3, name: 'مها الإدارية', role: 'admin', email: 'admin@mail.com' },
- //     ])
- //     setSalesData([
- //       { month: 'يناير', total: 3200 },
- //       { month: 'فبراير', total: 4100 },
- //       { month: 'مارس', total: 3800 },
- //       { month: 'أبريل', total: 5200 },
- //       { month: 'مايو', total: 6100 },
- //       { month: 'يونيو', total: 5700 },
- //     ])
- //   }, [])
- //   const totalSales = salesData.reduce((s, m) => s + m.total, 0)
- //   const COLORS = ['#0EA5E9', '#10B981', '#F59E0B']
- //   // 🟢 إضافة مستخدم جديد
- //   const addUser = () => {
- //     if (!newUser.name || !newUser.role || !newUser.email) {
- //       toast.error('⚠️ يرجى إدخال جميع الحقول')
- //       return
- //     }
- //     setUsers([...users, { id: Date.now(), ...newUser }])
- //     setNewUser({ name: '', role: '', email: '' })
- //     setShowAddModal(false)
- //     toast.success('✅ تم إضافة المستخدم بنجاح')
- //   }
- //   // 🟡 فتح نافذة تعديل المستخدم
- //   const openEditModal = (user) => {
- //     setEditUser({ ...user })
- //     setShowEditModal(true)
- //   }
- //   // 🟣 حفظ التعديل
- //   const saveEditUser = () => {
- //     if (!editUser.name || !editUser.role || !editUser.email) {
- //       toast.error('⚠️ يرجى إدخال جميع الحقول')
- //       return
- //     }
- //     setUsers(users.map((u) => (u.id === editUser.id ? editUser : u)))
- //     setShowEditModal(false)
- //     toast.success('✅ تم تعديل المستخدم بنجاح')
- //   }
- //   // 🔴 حذف مستخدم
- //   const deleteUser = (id) => {
- //     if (confirm('هل تريد حذف هذا المستخدم؟')) {
- //       setUsers(users.filter((u) => u.id !== id))
- //       toast.success('🗑️ تم حذف المستخدم بنجاح')
- //     }
- //   }
- //   return (
- //     <Layout user={user} title="لوحة المدير">
- //       <div dir="rtl" className="space-y-8">
- //         {/* 🧾 ملخص النظام */}
- //         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
- //           <div className="p-4 text-center bg-white border rounded-lg shadow-sm hover:shadow-md">
- //             <p className="text-sm text-gray-500">إجمالي المبيعات</p>
- //             <h3 className="text-2xl font-bold text-sky-600">{totalSales.toLocaleString()} ر.س</h3>
- //           </div>
- //           <div className="p-4 text-center bg-white border rounded-lg shadow-sm hover:shadow-md">
- //             <p className="text-sm text-gray-500">عدد الفواتير</p>
- //             <h3 className="text-2xl font-bold text-blue-600">248</h3>
- //           </div>
- //           <div className="p-4 text-center bg-white border rounded-lg shadow-sm hover:shadow-md">
- //             <p className="text-sm text-gray-500">عدد الأدوية</p>
- //             <h3 className="text-2xl font-bold text-green-600">126</h3>
- //           </div>
- //           <div className="p-4 text-center bg-white border rounded-lg shadow-sm hover:shadow-md">
- //             <p className="text-sm text-gray-500">عدد المستخدمين</p>
- //             <h3 className="text-2xl font-bold text-amber-600">{users.length}</h3>
- //           </div>
- //         </div>
- //         {/* 📈 الرسوم التحليلية */}
- //         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
- //           <div className="p-5 bg-white border rounded-lg shadow-sm">
- //             <h3 className="mb-3 text-lg font-semibold text-gray-700">المبيعات الشهرية</h3>
- //             <ResponsiveContainer width="100%" height={250}>
- //               <LineChart data={salesData}>
- //                 <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
- //                 <XAxis dataKey="month" />
- //                 <YAxis />
- //                 <Tooltip />
- //                 <Line type="monotone" dataKey="total" stroke={theme.colors.primary} strokeWidth={2} />
- //               </LineChart>
- //             </ResponsiveContainer>
- //           </div>
- //           <div className="p-5 bg-white border rounded-lg shadow-sm">
- //             <h3 className="mb-3 text-lg font-semibold text-gray-700">توزيع المستخدمين حسب الدور</h3>
- //             <ResponsiveContainer width="100%" height={250}>
- //               <PieChart>
- //                 <Pie
- //                   data={[
- //                     { name: 'مديرين', value: users.filter(u => u.role === 'admin').length },
- //                     { name: 'صيدليين', value: users.filter(u => u.role === 'pharmacist').length },
- //                     { name: 'كاشير', value: users.filter(u => u.role === 'cashier').length },
- //                   ]}
- //                   cx="50%"
- //                   cy="50%"
- //                   outerRadius={80}
- //                   label
- //                   dataKey="value"
- //                 >
- //                   {COLORS.map((c, i) => <Cell key={i} fill={c} />)}
- //                 </Pie>
- //                 <Tooltip />
- //               </PieChart>
- //             </ResponsiveContainer>
- //           </div>
- //         </div>
- //         {/* 👥 إدارة المستخدمين */}
- //         <div className="p-5 bg-white border rounded-lg shadow-sm">
- //           <div className="flex items-center justify-between mb-4">
- //             <h3 className="text-lg font-semibold text-gray-700">إدارة المستخدمين</h3>
- //             <button
- //               onClick={() => setShowAddModal(true)}
- //               className="px-4 py-2 text-white rounded-md shadow bg-sky-600 hover:bg-sky-700"
- //             >
- //               ➕ مستخدم جديد
- //             </button>
- //           </div>
- //           <table className="w-full text-sm text-right border-t border-gray-100">
- //             <thead className="text-gray-600 bg-gray-50">
- //               <tr>
- //                 <th className="px-3 py-2">الاسم</th>
- //                 <th className="px-3 py-2">البريد</th>
- //                 <th className="px-3 py-2">الدور</th>
- //                 <th className="px-3 py-2">الإجراءات</th>
- //               </tr>
- //             </thead>
- //             <tbody>
- //               {users.map((u) => (
- //                 <tr key={u.id} className="border-t hover:bg-gray-50">
- //                   <td className="px-3 py-2">{u.name}</td>
- //                   <td className="px-3 py-2">{u.email}</td>
- //                   <td className="px-3 py-2">
- //                     {u.role === 'admin' ? '👑 مدير' : u.role === 'pharmacist' ? '💊 صيدلي' : '💵 كاشير'}
- //                   </td>
- //                   <td className="px-3 py-2 space-x-2 space-x-reverse">
- //                     <button
- //                       onClick={() => openEditModal(u)}
- //                       className="px-3 py-1 text-sm text-blue-600 border border-blue-100 rounded hover:bg-blue-50"
- //                     >
- //                       تعديل
- //                     </button>
- //                     <button
- //                       onClick={() => deleteUser(u.id)}
- //                       className="px-3 py-1 text-sm text-red-600 border border-red-100 rounded hover:bg-red-50"
- //                     >
- //                       حذف
- //                     </button>
- //                   </td>
- //                 </tr>
- //               ))}
- //             </tbody>
- //           </table>
- //         </div>
- //         {/* 🟢 مودال إضافة مستخدم */}
- //         {showAddModal && (
- //           <ModalForm
- //             title="➕ إضافة مستخدم جديد"
- //             userData={newUser}
- //             setUserData={setNewUser}
- //             onSave={addUser}
- //             onCancel={() => setShowAddModal(false)}
- //           />
- //         )}
- //         {/* 🟣 مودال تعديل مستخدم */}
- //         {showEditModal && (
- //           <ModalForm
- //             title="✏️ تعديل المستخدم"
- //             userData={editUser}
- //             setUserData={setEditUser}
- //             onSave={saveEditUser}
- //             onCancel={() => setShowEditModal(false)}
- //           />
- //         )}
- //       </div>
- //     </Layout>
- //   )
- // }
- // // 🧩 مكون المودال القابل لإعادة الاستخدام
- // function ModalForm({ title, userData, setUserData, onSave, onCancel }) {
- //   return (
- //     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999]">
- //       <div className="w-full max-w-md p-6 text-right bg-white rounded-lg shadow-lg">
- //         <h3 className="mb-4 text-lg font-semibold text-gray-700">{title}</h3>
- //         <label className="block mb-1 text-sm">الاسم</label>
- //         <input
- //           value={userData.name}
- //           onChange={(e) => setUserData({ ...userData, name: e.target.value })}
- //           className="w-full px-3 py-2 mb-3 border rounded-md"
- //         />
- //         <label className="block mb-1 text-sm">البريد الإلكتروني</label>
- //         <input
- //           value={userData.email}
- //           onChange={(e) => setUserData({ ...userData, email: e.target.value })}
- //           className="w-full px-3 py-2 mb-3 border rounded-md"
- //         />
- //         <label className="block mb-1 text-sm">الدور</label>
- //         <select
- //           value={userData.role}
- //           onChange={(e) => setUserData({ ...userData, role: e.target.value })}
- //           className="w-full px-3 py-2 mb-4 border rounded-md"
- //         >
- //           <option value="">اختر الدور...</option>
- //           <option value="admin">👑 مدير</option>
- //           <option value="pharmacist">💊 صيدلي</option>
- //           <option value="cashier">💵 كاشير</option>
- //         </select>
- //         <div className="flex justify-end gap-3">
- //           <button
- //             onClick={onSave}
- //             className="px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-700"
- //           >
- //             حفظ
- //           </button>
- //           <button
- //             onClick={onCancel}
- //             className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
- //           >
- //             إلغاء
- //           </button>
- //         </div>
- //       </div>
- //     </div>
- //   )
- // }
-_c2 = ActivityCard;
-var _c, _c1, _c2;
-__turbopack_context__.k.register(_c, "Dashboard");
-__turbopack_context__.k.register(_c1, "SummaryCard");
-__turbopack_context__.k.register(_c2, "ActivityCard");
+        fileName: "[project]/pages/reports.js",
+        lineNumber: 519,
+        columnNumber: 3
+    }, ("TURBOPACK compile-time value", void 0));
+_c10 = Card;
+var _c, _c1, _c2, _c3, _c4, _c5, _c6, _c7, _c8, _c9, _c10;
+__turbopack_context__.k.register(_c, "Reports");
+__turbopack_context__.k.register(_c1, "Tab");
+__turbopack_context__.k.register(_c2, "OverviewTab");
+__turbopack_context__.k.register(_c3, "SalesTab");
+__turbopack_context__.k.register(_c4, "StockTab");
+__turbopack_context__.k.register(_c5, "ProfitTab");
+__turbopack_context__.k.register(_c6, "AlertsTab");
+__turbopack_context__.k.register(_c7, "AlertSection");
+__turbopack_context__.k.register(_c8, "Th");
+__turbopack_context__.k.register(_c9, "Td");
+__turbopack_context__.k.register(_c10, "Card");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
 }),
-"[next]/entry/page-loader.ts { PAGE => \"[project]/pages/dashboard.js [client] (ecmascript)\" } [client] (ecmascript)", ((__turbopack_context__, module, exports) => {
+"[next]/entry/page-loader.ts { PAGE => \"[project]/pages/reports.js [client] (ecmascript)\" } [client] (ecmascript)", ((__turbopack_context__, module, exports) => {
 
-const PAGE_PATH = "/dashboard";
+const PAGE_PATH = "/reports";
 (window.__NEXT_P = window.__NEXT_P || []).push([
     PAGE_PATH,
     ()=>{
-        return __turbopack_context__.r("[project]/pages/dashboard.js [client] (ecmascript)");
+        return __turbopack_context__.r("[project]/pages/reports.js [client] (ecmascript)");
     }
 ]);
 // @ts-expect-error module.hot exists
@@ -3141,11 +3233,11 @@ if (module.hot) {
     });
 }
 }),
-"[hmr-entry]/hmr-entry.js { ENTRY => \"[project]/pages/dashboard\" }", ((__turbopack_context__) => {
+"[hmr-entry]/hmr-entry.js { ENTRY => \"[project]/pages/reports\" }", ((__turbopack_context__) => {
 "use strict";
 
-__turbopack_context__.r("[next]/entry/page-loader.ts { PAGE => \"[project]/pages/dashboard.js [client] (ecmascript)\" } [client] (ecmascript)");
+__turbopack_context__.r("[next]/entry/page-loader.ts { PAGE => \"[project]/pages/reports.js [client] (ecmascript)\" } [client] (ecmascript)");
 }),
 ]);
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__592917d9._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__043a48ad._.js.map

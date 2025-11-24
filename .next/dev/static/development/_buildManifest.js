@@ -1,12 +1,15 @@
 self.__BUILD_MANIFEST = {
-  "/accounts": [
-    "static/chunks/pages/accounts.js"
+  "/": [
+    "static/chunks/pages/index.js"
   ],
   "/dashboard": [
     "static/chunks/pages/dashboard.js"
   ],
-  "/users": [
-    "static/chunks/pages/users.js"
+  "/inventory": [
+    "static/chunks/pages/inventory.js"
+  ],
+  "/reports": [
+    "static/chunks/pages/reports.js"
   ],
   "__rewrites": {
     "afterFiles": [],
@@ -32,8 +35,8 @@ self.__BUILD_MANIFEST = {
     "/reports",
     "/returns",
     "/sales",
-    "/shift",
     "/shift-report",
+    "/shifts",
     "/users"
   ]
 };self.__BUILD_MANIFEST_CB && self.__BUILD_MANIFEST_CB()
