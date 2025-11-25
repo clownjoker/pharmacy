@@ -1,7 +1,10 @@
 {
+  "/": "pages/index.js",
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
+  "/_error": "pages/_error.js",
+  "/cashier": "pages/cashier.js",
   "/dashboard": "pages/dashboard.js",
-  "/inventory": "pages/inventory.js",
-  "/shifts": "pages/shifts.js"
+  "/shifts": "pages/shifts.js",
+  "/users": "pages/users.js"
 }

@@ -1,11 +1,10 @@
 // pages/users.js
 import { useMemo, useState, useEffect } from 'react'
 import Layout from '../components/Layout'
-import theme from '../theme'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 
-// إعداد الـ API
+// API
 const api = axios.create({
   baseURL: "http://localhost:5000/api",
 })
@@ -19,9 +18,9 @@ const ALL_PERMISSIONS = [
 ]
 
 const ROLE_LABELS = {
-  admin: 'مدير النظام',
-  pharmacist: 'صيدلي',
-  cashier: 'كاشير',
+  1: 'مدير النظام',
+  2: 'صيدلي',
+  3: 'كاشير',
 }
 
 export default function UsersPage() {
@@ -31,12 +30,13 @@ export default function UsersPage() {
   const [showAddModal, setShowAddModal] = useState(false)
   const [showPermModal, setShowPermModal] = useState(false)
 
+  // 🟢 نموذج إضافة مستخدم جديد
   const [newUser, setNewUser] = useState({
     name: '',
     username: '',
     email: '',
     password: '',
-    role: 'cashier',
+    role_id: 3,   // القيمة الافتراضية = كاشير
     active: true,
   })
 
@@ -164,14 +164,14 @@ export default function UsersPage() {
           </button>
         </div>
 
-        {/* 🧾 جدول */}
+        {/* 🧾 جدول المستخدمين */}
         <div className="overflow-x-auto bg-white border rounded-lg shadow-sm">
           <table className="w-full text-sm text-right min-w-[900px]">
             <thead className="text-xs bg-gray-50">
               <tr>
                 <th>#</th>
                 <th>الاسم</th>
-                <th>المستخدم</th>
+                <th>اسم المستخدم</th>
                 <th>البريد</th>
                 <th>الدور</th>
                 <th>الحالة</th>
@@ -190,7 +190,7 @@ export default function UsersPage() {
 
                   <td className="p-2">
                     <span className="px-3 py-1 text-xs text-blue-700 bg-blue-100 rounded-full">
-                      {ROLE_LABELS[u.role]}
+                      {ROLE_LABELS[u.role_id]}
                     </span>
                   </td>
 
@@ -283,15 +283,16 @@ export default function UsersPage() {
                 />
               </Field>
 
+              {/* 🔥 الدور (Role → Role_ID) */}
               <Field label="الدور">
                 <select
                   className="w-full p-2 border rounded"
-                  value={newUser.role}
-                  onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+                  value={newUser.role_id}
+                  onChange={(e) => setNewUser({ ...newUser, role_id: Number(e.target.value) })}
                 >
-                  <option value="admin">مدير</option>
-                  <option value="pharmacist">صيدلي</option>
-                  <option value="cashier">كاشير</option>
+                  <option value={1}>مدير النظام</option>
+                  <option value={2}>صيدلي</option>
+                  <option value={3}>كاشير</option>
                 </select>
               </Field>
 
