@@ -1902,13 +1902,16 @@ function ShiftsPage() {
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(true);
     const [currentShift, setCurrentShift] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [shifts, setShifts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])([]);
-    const userId = 1; // 🔹 لاحقاً اجلبها من السياق AuthContext
+    const userId = 1; // لاحقاً اجلبها من AuthContext
+    // -----------------------------------------------------
+    // 🔥 تحميل بيانات الشفت من API
+    // -----------------------------------------------------
     const loadData = async ()=>{
         try {
             setLoading(true);
             const [cur, list] = await Promise.all([
-                __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].get("/api/shifts/current"),
-                __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].get("/api/shifts")
+                __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].get("/shifts/current"),
+                __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].get("/shifts")
             ]);
             setCurrentShift(cur.data || null);
             setShifts(list.data || []);
@@ -1924,30 +1927,39 @@ function ShiftsPage() {
             loadData();
         }
     }["ShiftsPage.useEffect"], []);
+    // -----------------------------------------------------
+    // 🟢 بدء شفت جديد
+    // -----------------------------------------------------
     const startShift = async ()=>{
         try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].post("/api/shifts/start", {
+            await __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].post("/shifts/start", {
                 userId
             });
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].success("تم بدء الشفت");
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].success("✅ تم بدء الشفت");
             await loadData();
         } catch (err) {
             console.error(err);
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].error("تعذر بدء الشفت");
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].error(err.response?.data?.message || "تعذر بدء الشفت");
         }
     };
+    // -----------------------------------------------------
+    // 🔴 إغلاق الشفت
+    // -----------------------------------------------------
     const closeShift = async ()=>{
         try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].post("/api/shifts/close", {
+            await __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].post("/shifts/close", {
                 userId
             });
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].success("تم إغلاق الشفت");
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].success("🔒 تم إغلاق الشفت");
             await loadData();
         } catch (err) {
             console.error(err);
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].error("تعذر إغلاق الشفت");
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].error(err.response?.data?.message || "تعذر إغلاق الشفت");
         }
     };
+    // -----------------------------------------------------
+    // 🎨 واجهة العرض
+    // -----------------------------------------------------
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Layout$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
         title: "إدارة الشفتات",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1959,7 +1971,7 @@ function ShiftsPage() {
                     children: "🕒 إدارة الشفت"
                 }, void 0, false, {
                     fileName: "[project]/pages/shifts.js",
-                    lineNumber: 62,
+                    lineNumber: 74,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1970,7 +1982,7 @@ function ShiftsPage() {
                             children: "الشفت الحالي"
                         }, void 0, false, {
                             fileName: "[project]/pages/shifts.js",
-                            lineNumber: 66,
+                            lineNumber: 78,
                             columnNumber: 11
                         }, this),
                         loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1978,7 +1990,7 @@ function ShiftsPage() {
                             children: "جارٍ التحميل…"
                         }, void 0, false, {
                             fileName: "[project]/pages/shifts.js",
-                            lineNumber: 71,
+                            lineNumber: 83,
                             columnNumber: 13
                         }, this) : currentShift ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "space-y-2 text-sm",
@@ -1989,7 +2001,7 @@ function ShiftsPage() {
                                             children: "وقت الفتح:"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/shifts.js",
-                                            lineNumber: 74,
+                                            lineNumber: 86,
                                             columnNumber: 18
                                         }, this),
                                         " ",
@@ -1997,7 +2009,7 @@ function ShiftsPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/shifts.js",
-                                    lineNumber: 74,
+                                    lineNumber: 86,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2006,7 +2018,7 @@ function ShiftsPage() {
                                             children: "بواسطة:"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/shifts.js",
-                                            lineNumber: 75,
+                                            lineNumber: 87,
                                             columnNumber: 18
                                         }, this),
                                         " المستخدم #",
@@ -2014,7 +2026,7 @@ function ShiftsPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/shifts.js",
-                                    lineNumber: 75,
+                                    lineNumber: 87,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2023,7 +2035,7 @@ function ShiftsPage() {
                                             children: "إجمالي المبيعات:"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/shifts.js",
-                                            lineNumber: 76,
+                                            lineNumber: 88,
                                             columnNumber: 18
                                         }, this),
                                         " ",
@@ -2032,7 +2044,7 @@ function ShiftsPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/shifts.js",
-                                    lineNumber: 76,
+                                    lineNumber: 88,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2041,7 +2053,7 @@ function ShiftsPage() {
                                             children: "فواتير:"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/shifts.js",
-                                            lineNumber: 77,
+                                            lineNumber: 89,
                                             columnNumber: 18
                                         }, this),
                                         " ",
@@ -2049,7 +2061,7 @@ function ShiftsPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/shifts.js",
-                                    lineNumber: 77,
+                                    lineNumber: 89,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2058,7 +2070,7 @@ function ShiftsPage() {
                                             children: "نقد:"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/shifts.js",
-                                            lineNumber: 78,
+                                            lineNumber: 90,
                                             columnNumber: 18
                                         }, this),
                                         " ",
@@ -2066,7 +2078,7 @@ function ShiftsPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/shifts.js",
-                                    lineNumber: 78,
+                                    lineNumber: 90,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2075,7 +2087,7 @@ function ShiftsPage() {
                                             children: "بطاقة:"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/shifts.js",
-                                            lineNumber: 79,
+                                            lineNumber: 91,
                                             columnNumber: 18
                                         }, this),
                                         " ",
@@ -2083,7 +2095,7 @@ function ShiftsPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/shifts.js",
-                                    lineNumber: 79,
+                                    lineNumber: 91,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2092,7 +2104,7 @@ function ShiftsPage() {
                                             children: "محفظة:"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/shifts.js",
-                                            lineNumber: 80,
+                                            lineNumber: 92,
                                             columnNumber: 18
                                         }, this),
                                         " ",
@@ -2100,7 +2112,7 @@ function ShiftsPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/shifts.js",
-                                    lineNumber: 80,
+                                    lineNumber: 92,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2109,13 +2121,13 @@ function ShiftsPage() {
                                     children: "🔴 إغلاق الشفت"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/shifts.js",
-                                    lineNumber: 82,
+                                    lineNumber: 94,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/shifts.js",
-                            lineNumber: 73,
+                            lineNumber: 85,
                             columnNumber: 13
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             children: [
@@ -2124,7 +2136,7 @@ function ShiftsPage() {
                                     children: "لا يوجد شفت مفتوح حالياً."
                                 }, void 0, false, {
                                     fileName: "[project]/pages/shifts.js",
-                                    lineNumber: 91,
+                                    lineNumber: 103,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2133,19 +2145,19 @@ function ShiftsPage() {
                                     children: "🟢 بدء شفت جديد"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/shifts.js",
-                                    lineNumber: 92,
+                                    lineNumber: 104,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/shifts.js",
-                            lineNumber: 90,
+                            lineNumber: 102,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/shifts.js",
-                    lineNumber: 65,
+                    lineNumber: 77,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2156,7 +2168,7 @@ function ShiftsPage() {
                             children: "📝 السجل الكامل للشفتات"
                         }, void 0, false, {
                             fileName: "[project]/pages/shifts.js",
-                            lineNumber: 104,
+                            lineNumber: 116,
                             columnNumber: 11
                         }, this),
                         loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2164,7 +2176,7 @@ function ShiftsPage() {
                             children: "جارٍ التحميل…"
                         }, void 0, false, {
                             fileName: "[project]/pages/shifts.js",
-                            lineNumber: 109,
+                            lineNumber: 121,
                             columnNumber: 13
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
                             className: "w-full text-sm border",
@@ -2178,7 +2190,7 @@ function ShiftsPage() {
                                                 children: "رقم الشفت"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/shifts.js",
-                                                lineNumber: 114,
+                                                lineNumber: 126,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -2186,7 +2198,7 @@ function ShiftsPage() {
                                                 children: "فتح"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/shifts.js",
-                                                lineNumber: 115,
+                                                lineNumber: 127,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -2194,7 +2206,7 @@ function ShiftsPage() {
                                                 children: "إغلاق"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/shifts.js",
-                                                lineNumber: 116,
+                                                lineNumber: 128,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -2202,7 +2214,7 @@ function ShiftsPage() {
                                                 children: "الحالة"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/shifts.js",
-                                                lineNumber: 117,
+                                                lineNumber: 129,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -2210,18 +2222,18 @@ function ShiftsPage() {
                                                 children: "المبيعات"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/shifts.js",
-                                                lineNumber: 118,
+                                                lineNumber: 130,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/pages/shifts.js",
-                                        lineNumber: 113,
+                                        lineNumber: 125,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/pages/shifts.js",
-                                    lineNumber: 112,
+                                    lineNumber: 124,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -2234,7 +2246,7 @@ function ShiftsPage() {
                                                         children: s.id
                                                     }, void 0, false, {
                                                         fileName: "[project]/pages/shifts.js",
-                                                        lineNumber: 124,
+                                                        lineNumber: 136,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2242,7 +2254,7 @@ function ShiftsPage() {
                                                         children: s.open_time
                                                     }, void 0, false, {
                                                         fileName: "[project]/pages/shifts.js",
-                                                        lineNumber: 125,
+                                                        lineNumber: 137,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2250,7 +2262,7 @@ function ShiftsPage() {
                                                         children: s.close_time || "---"
                                                     }, void 0, false, {
                                                         fileName: "[project]/pages/shifts.js",
-                                                        lineNumber: 126,
+                                                        lineNumber: 138,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2258,7 +2270,7 @@ function ShiftsPage() {
                                                         children: s.status === "open" ? "🔵 مفتوح" : "⚫ مغلق"
                                                     }, void 0, false, {
                                                         fileName: "[project]/pages/shifts.js",
-                                                        lineNumber: 127,
+                                                        lineNumber: 139,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -2269,13 +2281,13 @@ function ShiftsPage() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/pages/shifts.js",
-                                                        lineNumber: 130,
+                                                        lineNumber: 142,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, s.id, true, {
                                                 fileName: "[project]/pages/shifts.js",
-                                                lineNumber: 123,
+                                                lineNumber: 135,
                                                 columnNumber: 19
                                             }, this)),
                                         !shifts.length && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
@@ -2285,44 +2297,177 @@ function ShiftsPage() {
                                                 children: "لا توجد شفتات مسجلة."
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/shifts.js",
-                                                lineNumber: 136,
+                                                lineNumber: 148,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/pages/shifts.js",
-                                            lineNumber: 135,
+                                            lineNumber: 147,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/shifts.js",
-                                    lineNumber: 121,
+                                    lineNumber: 133,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/shifts.js",
-                            lineNumber: 111,
+                            lineNumber: 123,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/shifts.js",
-                    lineNumber: 103,
+                    lineNumber: 115,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/pages/shifts.js",
-            lineNumber: 61,
+            lineNumber: 73,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/pages/shifts.js",
-        lineNumber: 60,
+        lineNumber: 72,
         columnNumber: 5
     }, this);
-} // // pages/shift.js
+} // // pages/shifts.js
+ // import { useState, useEffect } from "react";
+ // import Layout from "../components/Layout";
+ // import api from "../utils/api";
+ // import toast from "react-hot-toast";
+ // export default function ShiftsPage() {
+ //   const [loading, setLoading] = useState(true);
+ //   const [currentShift, setCurrentShift] = useState(null);
+ //   const [shifts, setShifts] = useState([]);
+ //   const userId = 1; // 🔹 لاحقاً اجلبها من السياق AuthContext
+ //   const loadData = async () => {
+ //     try {
+ //       setLoading(true);
+ //       const [cur, list] = await Promise.all([
+ //         api.get("/api/shifts/current"),
+ //         api.get("/api/shifts"),
+ //       ]);
+ //       setCurrentShift(cur.data || null);
+ //       setShifts(list.data || []);
+ //     } catch (err) {
+ //       console.error("loadData error:", err);
+ //       toast.error("خطأ في تحميل بيانات الشفت");
+ //     } finally {
+ //       setLoading(false);
+ //     }
+ //   };
+ //   useEffect(() => {
+ //     loadData();
+ //   }, []);
+ //   const startShift = async () => {
+ //     try {
+ //       const res = await api.post("/api/shifts/start", { userId });
+ //       toast.success("تم بدء الشفت");
+ //       await loadData();
+ //     } catch (err) {
+ //       console.error(err);
+ //       toast.error("تعذر بدء الشفت");
+ //     }
+ //   };
+ //   const closeShift = async () => {
+ //     try {
+ //       const res = await api.post("/api/shifts/close", { userId });
+ //       toast.success("تم إغلاق الشفت");
+ //       await loadData();
+ //     } catch (err) {
+ //       console.error(err);
+ //       toast.error("تعذر إغلاق الشفت");
+ //     }
+ //   };
+ //   return (
+ //     <Layout title="إدارة الشفتات">
+ //       <div className="p-5 space-y-6" dir="rtl">
+ //         <h1 className="text-2xl font-bold text-slate-800">🕒 إدارة الشفت</h1>
+ //         {/* الشفت الحالي */}
+ //         <div className="p-4 bg-white border shadow-sm rounded-xl">
+ //           <h2 className="mb-3 text-lg font-semibold text-slate-700">
+ //             الشفت الحالي
+ //           </h2>
+ //           {loading ? (
+ //             <p className="text-gray-500">جارٍ التحميل…</p>
+ //           ) : currentShift ? (
+ //             <div className="space-y-2 text-sm">
+ //               <p><strong>وقت الفتح:</strong> {currentShift.open_time}</p>
+ //               <p><strong>بواسطة:</strong> المستخدم #{currentShift.opened_by}</p>
+ //               <p><strong>إجمالي المبيعات:</strong> {currentShift.total_sales} ر.س</p>
+ //               <p><strong>فواتير:</strong> {currentShift.invoices_count}</p>
+ //               <p><strong>نقد:</strong> {currentShift.total_cash}</p>
+ //               <p><strong>بطاقة:</strong> {currentShift.total_card}</p>
+ //               <p><strong>محفظة:</strong> {currentShift.total_wallet}</p>
+ //               <button
+ //                 onClick={closeShift}
+ //                 className="px-4 py-2 mt-3 text-white bg-red-600 rounded-lg hover:bg-red-700"
+ //               >
+ //                 🔴 إغلاق الشفت
+ //               </button>
+ //             </div>
+ //           ) : (
+ //             <div>
+ //               <p className="mb-3 text-gray-500">لا يوجد شفت مفتوح حالياً.</p>
+ //               <button
+ //                 onClick={startShift}
+ //                 className="px-4 py-2 text-white rounded-lg bg-emerald-600 hover:bg-emerald-700"
+ //               >
+ //                 🟢 بدء شفت جديد
+ //               </button>
+ //             </div>
+ //           )}
+ //         </div>
+ //         {/* قائمة الشفتات */}
+ //         <div className="p-4 bg-white border shadow-sm rounded-xl">
+ //           <h2 className="mb-3 text-lg font-semibold text-slate-700">
+ //             📝 السجل الكامل للشفتات
+ //           </h2>
+ //           {loading ? (
+ //             <p className="text-gray-500">جارٍ التحميل…</p>
+ //           ) : (
+ //             <table className="w-full text-sm border">
+ //               <thead className="bg-slate-100 text-slate-600">
+ //                 <tr>
+ //                   <th className="p-2 border">رقم الشفت</th>
+ //                   <th className="p-2 border">فتح</th>
+ //                   <th className="p-2 border">إغلاق</th>
+ //                   <th className="p-2 border">الحالة</th>
+ //                   <th className="p-2 border">المبيعات</th>
+ //                 </tr>
+ //               </thead>
+ //               <tbody>
+ //                 {shifts.map((s) => (
+ //                   <tr key={s.id} className="border-t hover:bg-slate-50">
+ //                     <td className="p-2 border">{s.id}</td>
+ //                     <td className="p-2 border">{s.open_time}</td>
+ //                     <td className="p-2 border">{s.close_time || "---"}</td>
+ //                     <td className="p-2 border">
+ //                       {s.status === "open" ? "🔵 مفتوح" : "⚫ مغلق"}
+ //                     </td>
+ //                     <td className="p-2 border">{s.total_sales} ر.س</td>
+ //                   </tr>
+ //                 ))}
+ //                 {!shifts.length && (
+ //                   <tr>
+ //                     <td colSpan={5} className="py-4 text-center text-gray-500">
+ //                       لا توجد شفتات مسجلة.
+ //                     </td>
+ //                   </tr>
+ //                 )}
+ //               </tbody>
+ //             </table>
+ //           )}
+ //         </div>
+ //       </div>
+ //     </Layout>
+ //   );
+ // }
+ // // pages/shift.js
  // import Layout from "../components/Layout";
  // import { useShift } from "../context/ShiftContext";
  // import { useAuth } from "../context/AuthContext";

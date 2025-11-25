@@ -9,15 +9,18 @@ export default function ShiftsPage() {
   const [currentShift, setCurrentShift] = useState(null);
   const [shifts, setShifts] = useState([]);
 
-  const userId = 1; // 🔹 لاحقاً اجلبها من السياق AuthContext
+  const userId = 1; // لاحقاً اجلبها من AuthContext
 
+  // -----------------------------------------------------
+  // 🔥 تحميل بيانات الشفت من API
+  // -----------------------------------------------------
   const loadData = async () => {
     try {
       setLoading(true);
 
       const [cur, list] = await Promise.all([
-        api.get("/api/shifts/current"),
-        api.get("/api/shifts"),
+        api.get("/shifts/current"),
+        api.get("/shifts"),
       ]);
 
       setCurrentShift(cur.data || null);
@@ -34,28 +37,37 @@ export default function ShiftsPage() {
     loadData();
   }, []);
 
+  // -----------------------------------------------------
+  // 🟢 بدء شفت جديد
+  // -----------------------------------------------------
   const startShift = async () => {
     try {
-      const res = await api.post("/api/shifts/start", { userId });
-      toast.success("تم بدء الشفت");
+      await api.post("/shifts/start", { userId });
+      toast.success("✅ تم بدء الشفت");
       await loadData();
     } catch (err) {
       console.error(err);
-      toast.error("تعذر بدء الشفت");
+      toast.error(err.response?.data?.message || "تعذر بدء الشفت");
     }
   };
 
+  // -----------------------------------------------------
+  // 🔴 إغلاق الشفت
+  // -----------------------------------------------------
   const closeShift = async () => {
     try {
-      const res = await api.post("/api/shifts/close", { userId });
-      toast.success("تم إغلاق الشفت");
+      await api.post("/shifts/close", { userId });
+      toast.success("🔒 تم إغلاق الشفت");
       await loadData();
     } catch (err) {
       console.error(err);
-      toast.error("تعذر إغلاق الشفت");
+      toast.error(err.response?.data?.message || "تعذر إغلاق الشفت");
     }
   };
 
+  // -----------------------------------------------------
+  // 🎨 واجهة العرض
+  // -----------------------------------------------------
   return (
     <Layout title="إدارة الشفتات">
       <div className="p-5 space-y-6" dir="rtl">
@@ -99,7 +111,7 @@ export default function ShiftsPage() {
           )}
         </div>
 
-        {/* قائمة الشفتات */}
+        {/* السجل الكامل */}
         <div className="p-4 bg-white border shadow-sm rounded-xl">
           <h2 className="mb-3 text-lg font-semibold text-slate-700">
             📝 السجل الكامل للشفتات
@@ -146,6 +158,175 @@ export default function ShiftsPage() {
     </Layout>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // pages/shifts.js
+// import { useState, useEffect } from "react";
+// import Layout from "../components/Layout";
+// import api from "../utils/api";
+// import toast from "react-hot-toast";
+
+// export default function ShiftsPage() {
+//   const [loading, setLoading] = useState(true);
+//   const [currentShift, setCurrentShift] = useState(null);
+//   const [shifts, setShifts] = useState([]);
+
+//   const userId = 1; // 🔹 لاحقاً اجلبها من السياق AuthContext
+
+//   const loadData = async () => {
+//     try {
+//       setLoading(true);
+
+//       const [cur, list] = await Promise.all([
+//         api.get("/api/shifts/current"),
+//         api.get("/api/shifts"),
+//       ]);
+
+//       setCurrentShift(cur.data || null);
+//       setShifts(list.data || []);
+//     } catch (err) {
+//       console.error("loadData error:", err);
+//       toast.error("خطأ في تحميل بيانات الشفت");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     loadData();
+//   }, []);
+
+//   const startShift = async () => {
+//     try {
+//       const res = await api.post("/api/shifts/start", { userId });
+//       toast.success("تم بدء الشفت");
+//       await loadData();
+//     } catch (err) {
+//       console.error(err);
+//       toast.error("تعذر بدء الشفت");
+//     }
+//   };
+
+//   const closeShift = async () => {
+//     try {
+//       const res = await api.post("/api/shifts/close", { userId });
+//       toast.success("تم إغلاق الشفت");
+//       await loadData();
+//     } catch (err) {
+//       console.error(err);
+//       toast.error("تعذر إغلاق الشفت");
+//     }
+//   };
+
+//   return (
+//     <Layout title="إدارة الشفتات">
+//       <div className="p-5 space-y-6" dir="rtl">
+//         <h1 className="text-2xl font-bold text-slate-800">🕒 إدارة الشفت</h1>
+
+//         {/* الشفت الحالي */}
+//         <div className="p-4 bg-white border shadow-sm rounded-xl">
+//           <h2 className="mb-3 text-lg font-semibold text-slate-700">
+//             الشفت الحالي
+//           </h2>
+
+//           {loading ? (
+//             <p className="text-gray-500">جارٍ التحميل…</p>
+//           ) : currentShift ? (
+//             <div className="space-y-2 text-sm">
+//               <p><strong>وقت الفتح:</strong> {currentShift.open_time}</p>
+//               <p><strong>بواسطة:</strong> المستخدم #{currentShift.opened_by}</p>
+//               <p><strong>إجمالي المبيعات:</strong> {currentShift.total_sales} ر.س</p>
+//               <p><strong>فواتير:</strong> {currentShift.invoices_count}</p>
+//               <p><strong>نقد:</strong> {currentShift.total_cash}</p>
+//               <p><strong>بطاقة:</strong> {currentShift.total_card}</p>
+//               <p><strong>محفظة:</strong> {currentShift.total_wallet}</p>
+
+//               <button
+//                 onClick={closeShift}
+//                 className="px-4 py-2 mt-3 text-white bg-red-600 rounded-lg hover:bg-red-700"
+//               >
+//                 🔴 إغلاق الشفت
+//               </button>
+//             </div>
+//           ) : (
+//             <div>
+//               <p className="mb-3 text-gray-500">لا يوجد شفت مفتوح حالياً.</p>
+//               <button
+//                 onClick={startShift}
+//                 className="px-4 py-2 text-white rounded-lg bg-emerald-600 hover:bg-emerald-700"
+//               >
+//                 🟢 بدء شفت جديد
+//               </button>
+//             </div>
+//           )}
+//         </div>
+
+//         {/* قائمة الشفتات */}
+//         <div className="p-4 bg-white border shadow-sm rounded-xl">
+//           <h2 className="mb-3 text-lg font-semibold text-slate-700">
+//             📝 السجل الكامل للشفتات
+//           </h2>
+
+//           {loading ? (
+//             <p className="text-gray-500">جارٍ التحميل…</p>
+//           ) : (
+//             <table className="w-full text-sm border">
+//               <thead className="bg-slate-100 text-slate-600">
+//                 <tr>
+//                   <th className="p-2 border">رقم الشفت</th>
+//                   <th className="p-2 border">فتح</th>
+//                   <th className="p-2 border">إغلاق</th>
+//                   <th className="p-2 border">الحالة</th>
+//                   <th className="p-2 border">المبيعات</th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {shifts.map((s) => (
+//                   <tr key={s.id} className="border-t hover:bg-slate-50">
+//                     <td className="p-2 border">{s.id}</td>
+//                     <td className="p-2 border">{s.open_time}</td>
+//                     <td className="p-2 border">{s.close_time || "---"}</td>
+//                     <td className="p-2 border">
+//                       {s.status === "open" ? "🔵 مفتوح" : "⚫ مغلق"}
+//                     </td>
+//                     <td className="p-2 border">{s.total_sales} ر.س</td>
+//                   </tr>
+//                 ))}
+
+//                 {!shifts.length && (
+//                   <tr>
+//                     <td colSpan={5} className="py-4 text-center text-gray-500">
+//                       لا توجد شفتات مسجلة.
+//                     </td>
+//                   </tr>
+//                 )}
+//               </tbody>
+//             </table>
+//           )}
+//         </div>
+//       </div>
+//     </Layout>
+//   );
+// }
 
 
 
