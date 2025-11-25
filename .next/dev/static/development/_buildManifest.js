@@ -8,9 +8,6 @@ self.__BUILD_MANIFEST = {
   "/inventory": [
     "static/chunks/pages/inventory.js"
   ],
-  "/reports": [
-    "static/chunks/pages/reports.js"
-  ],
   "__rewrites": {
     "afterFiles": [],
     "beforeFiles": [],

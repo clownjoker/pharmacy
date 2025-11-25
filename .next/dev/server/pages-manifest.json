@@ -3,6 +3,5 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/dashboard": "pages/dashboard.js",
-  "/inventory": "pages/inventory.js",
-  "/reports": "pages/reports.js"
+  "/inventory": "pages/inventory.js"
 }

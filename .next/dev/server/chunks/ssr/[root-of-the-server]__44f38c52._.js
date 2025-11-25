@@ -1536,37 +1536,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$WarningIndicat
 ;
 ;
 ;
-// ⚠️ حالياً نستخدم بيانات تجريبية داخل الصفحة نفسها
-// لاحقاً يمكن نقلها إلى InventoryContext أو API
-const initialProducts = [
-    {
-        id: 1,
-        name: "باراسيتامول 500mg",
-        sku: "P-500",
-        category: "مسكنات",
-        quantity: 35,
-        minQty: 10,
-        expiryDate: "2026-01-15"
-    },
-    {
-        id: 2,
-        name: "فيتامين C 1000mg",
-        sku: "VIT-C-1000",
-        category: "فيتامينات",
-        quantity: 8,
-        minQty: 15,
-        expiryDate: "2025-12-01"
-    },
-    {
-        id: 3,
-        name: "أموكسيسيلين 250mg",
-        sku: "AMOX-250",
-        category: "مضادات حيوية",
-        quantity: 0,
-        minQty: 5,
-        expiryDate: "2024-11-20"
-    }
-];
 function getWarnings(p) {
     const warnings = [];
     if (p.quantity <= 0) warnings.push("out_of_stock");
@@ -1580,11 +1549,79 @@ function getWarnings(p) {
 }
 function InventoryPage() {
     const { user, hasPermission } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$context$2f$AuthContext$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["useAuth"])();
-    const [products, setProducts] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(initialProducts);
+    const [products, setProducts] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])([]);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(true);
     const [showModal, setShowModal] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(false);
     const [selected, setSelected] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(null);
     const [qty, setQty] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])("");
     const [type, setType] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])("in");
+    // -----------------------------------------------------------
+    // 🔥 تحميل قائمة المخزون من API
+    // -----------------------------------------------------------
+    (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
+        const fetchInventory = async ()=>{
+            try {
+                const res = await fetch("http://localhost:5000/api/inventory");
+                const data = await res.json();
+                if (data.success) {
+                    setProducts(data.data);
+                } else {
+                    alert("فشل تحميل بيانات المخزون");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("خطأ في الاتصال بالسيرفر");
+            } finally{
+                setLoading(false);
+            }
+        };
+        fetchInventory();
+    }, []);
+    // -----------------------------------------------------------
+    // 🔄 فتح نافذة تعديل الكمية
+    // -----------------------------------------------------------
+    const openModal = (p)=>{
+        setSelected(p);
+        setQty("");
+        setType("in");
+        setShowModal(true);
+    };
+    // -----------------------------------------------------------
+    // 🧾 إرسال تحديث المخزون إلى API
+    // -----------------------------------------------------------
+    const handleConfirm = async ()=>{
+        const n = Number(qty);
+        if (!n || n <= 0) {
+            alert("أدخل كمية صحيحة");
+            return;
+        }
+        try {
+            const res = await fetch(`http://localhost:5000/api/inventory/${selected.id}/adjust`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    type,
+                    quantity: n
+                })
+            });
+            const data = await res.json();
+            if (!data.success) {
+                alert(data.message || "خطأ أثناء تعديل المخزون");
+                return;
+            }
+            // 🔥 تحديث الواجهة
+            setProducts((prev)=>prev.map((p)=>p.id === selected.id ? data.data : p));
+            setShowModal(false);
+        } catch (err) {
+            console.error(err);
+            alert("خطأ في الاتصال بالسيرفر");
+        }
+    };
+    // -----------------------------------------------------------
+    // 🚫 التحقق من الصلاحية
+    // -----------------------------------------------------------
     if (!hasPermission([
         "admin",
         "pharmacist"
@@ -1598,86 +1635,40 @@ function InventoryPage() {
                 children: "⚠️ ليس لديك صلاحية لدخول شاشة المخزون."
             }, void 0, false, {
                 fileName: "[project]/pages/inventory.js",
-                lineNumber: 66,
+                lineNumber: 114,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/pages/inventory.js",
-            lineNumber: 65,
+            lineNumber: 113,
             columnNumber: 7
         }, this);
     }
-    const openModal = (p)=>{
-        setSelected(p);
-        setQty("");
-        setType("in");
-        setShowModal(true);
-    };
-    const handleConfirm = ()=>{
-        const n = Number(qty);
-        if (!n || n <= 0) {
-            alert("أدخل كمية صحيحة");
-            return;
-        }
-        setProducts((prev)=>prev.map((p)=>p.id === selected.id ? {
-                    ...p,
-                    quantity: type === "in" ? p.quantity + n : p.quantity - n
-                } : p));
-        setShowModal(false);
-    };
-    const printInventoryReport = ()=>{
-        const html = `
-      <html dir="rtl" lang="ar">
-        <head>
-          <meta charSet="utf-8" />
-          <title>تقرير المخزون</title>
-          <style>
-            body { font-family: 'Tajawal', sans-serif; padding: 20px; }
-            h2 { color:#0ea5e9; margin-bottom: 10px; }
-            table { width:100%; border-collapse: collapse; margin-top:10px; }
-            th, td { border:1px solid #ddd; padding:6px; text-align:center; }
-            th { background:#f3f4f6; }
-          </style>
-        </head>
-        <body>
-          <h2>🏬 تقرير المخزون</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>المنتج</th>
-                <th>الكود</th>
-                <th>الفئة</th>
-                <th>الكمية</th>
-                <th>الحد الأدنى</th>
-                <th>الصلاحية</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${products.map((p)=>`
-                <tr>
-                  <td>${p.name}</td>
-                  <td>${p.sku}</td>
-                  <td>${p.category}</td>
-                  <td>${p.quantity}</td>
-                  <td>${p.minQty}</td>
-                  <td>${p.expiryDate || "-"}</td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
-          <script>
-            window.onload = () => {
-              window.print();
-              setTimeout(() => window.close(), 800);
-            };
-          </script>
-        </body>
-      </html>
-    `;
-        const w = window.open("", "_blank", "width=900,height=900");
-        w.document.write(html);
-        w.document.close();
-    };
+    // -----------------------------------------------------------
+    // ⏳ تحميل ...
+    // -----------------------------------------------------------
+    if (loading) {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Layout$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
+            user: user,
+            title: "المخزون",
+            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                dir: "rtl",
+                className: "p-6 text-center",
+                children: "⏳ جاري تحميل المخزون…"
+            }, void 0, false, {
+                fileName: "[project]/pages/inventory.js",
+                lineNumber: 127,
+                columnNumber: 9
+            }, this)
+        }, void 0, false, {
+            fileName: "[project]/pages/inventory.js",
+            lineNumber: 126,
+            columnNumber: 7
+        }, this);
+    }
+    // -----------------------------------------------------------
+    // 🎨 الواجهة
+    // -----------------------------------------------------------
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Layout$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
         user: user,
         title: "المخزون",
@@ -1686,30 +1677,12 @@ function InventoryPage() {
                 dir: "rtl",
                 className: "space-y-6",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                        className: "flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h1", {
-                                className: "text-xl font-bold text-gray-800",
-                                children: "🏬 إدارة المخزون"
-                            }, void 0, false, {
-                                fileName: "[project]/pages/inventory.js",
-                                lineNumber: 162,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
-                                onClick: printInventoryReport,
-                                className: "px-4 py-2 text-sm text-white bg-green-600 rounded-lg hover:bg-green-700",
-                                children: "🖨️ طباعة تقرير المخزون"
-                            }, void 0, false, {
-                                fileName: "[project]/pages/inventory.js",
-                                lineNumber: 164,
-                                columnNumber: 11
-                            }, this)
-                        ]
-                    }, void 0, true, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h1", {
+                        className: "text-xl font-bold text-gray-800",
+                        children: "🏬 إدارة المخزون"
+                    }, void 0, false, {
                         fileName: "[project]/pages/inventory.js",
-                        lineNumber: 161,
+                        lineNumber: 139,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -1726,7 +1699,7 @@ function InventoryPage() {
                                                 children: "المنتج"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/inventory.js",
-                                                lineNumber: 176,
+                                                lineNumber: 145,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -1734,7 +1707,7 @@ function InventoryPage() {
                                                 children: "الكود"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/inventory.js",
-                                                lineNumber: 177,
+                                                lineNumber: 146,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -1742,7 +1715,7 @@ function InventoryPage() {
                                                 children: "الفئة"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/inventory.js",
-                                                lineNumber: 178,
+                                                lineNumber: 147,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -1750,7 +1723,7 @@ function InventoryPage() {
                                                 children: "الكمية"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/inventory.js",
-                                                lineNumber: 179,
+                                                lineNumber: 148,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -1758,7 +1731,7 @@ function InventoryPage() {
                                                 children: "الحد الأدنى"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/inventory.js",
-                                                lineNumber: 180,
+                                                lineNumber: 149,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -1766,7 +1739,7 @@ function InventoryPage() {
                                                 children: "الصلاحية"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/inventory.js",
-                                                lineNumber: 181,
+                                                lineNumber: 150,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -1774,7 +1747,7 @@ function InventoryPage() {
                                                 children: "تحذيرات"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/inventory.js",
-                                                lineNumber: 182,
+                                                lineNumber: 151,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("th", {
@@ -1782,18 +1755,18 @@ function InventoryPage() {
                                                 children: "إجراءات"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/inventory.js",
-                                                lineNumber: 183,
+                                                lineNumber: 152,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/pages/inventory.js",
-                                        lineNumber: 175,
+                                        lineNumber: 144,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/pages/inventory.js",
-                                    lineNumber: 174,
+                                    lineNumber: 143,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tbody", {
@@ -1802,14 +1775,14 @@ function InventoryPage() {
                                             const warnings = getWarnings(p);
                                             const daysLeft = p.expiryDate ? (new Date(p.expiryDate) - new Date()) / (1000 * 60 * 60 * 24) : null;
                                             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("tr", {
-                                                className: "transition border-t hover:bg-gray-50",
+                                                className: "border-t hover:bg-gray-50",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
                                                         className: "p-3",
                                                         children: p.name
                                                     }, void 0, false, {
                                                         fileName: "[project]/pages/inventory.js",
-                                                        lineNumber: 199,
+                                                        lineNumber: 166,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -1817,7 +1790,7 @@ function InventoryPage() {
                                                         children: p.sku
                                                     }, void 0, false, {
                                                         fileName: "[project]/pages/inventory.js",
-                                                        lineNumber: 200,
+                                                        lineNumber: 167,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -1825,7 +1798,7 @@ function InventoryPage() {
                                                         children: p.category
                                                     }, void 0, false, {
                                                         fileName: "[project]/pages/inventory.js",
-                                                        lineNumber: 201,
+                                                        lineNumber: 168,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -1833,7 +1806,7 @@ function InventoryPage() {
                                                         children: p.quantity
                                                     }, void 0, false, {
                                                         fileName: "[project]/pages/inventory.js",
-                                                        lineNumber: 202,
+                                                        lineNumber: 170,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -1841,15 +1814,15 @@ function InventoryPage() {
                                                         children: p.minQty
                                                     }, void 0, false, {
                                                         fileName: "[project]/pages/inventory.js",
-                                                        lineNumber: 213,
+                                                        lineNumber: 182,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
                                                         className: "p-3 text-xs",
-                                                        children: p.expiryDate ? daysLeft < 0 ? "❌ منتهي" : `${p.expiryDate}` : "-"
+                                                        children: p.expiryDate ? daysLeft < 0 ? "❌ منتهي" : p.expiryDate : "-"
                                                     }, void 0, false, {
                                                         fileName: "[project]/pages/inventory.js",
-                                                        lineNumber: 214,
+                                                        lineNumber: 184,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -1858,12 +1831,12 @@ function InventoryPage() {
                                                             warnings: warnings
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/inventory.js",
-                                                            lineNumber: 222,
+                                                            lineNumber: 193,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/pages/inventory.js",
-                                                        lineNumber: 221,
+                                                        lineNumber: 192,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
@@ -1874,18 +1847,18 @@ function InventoryPage() {
                                                             children: "🔄 توريد / خصم"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/inventory.js",
-                                                            lineNumber: 225,
+                                                            lineNumber: 197,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/pages/inventory.js",
-                                                        lineNumber: 224,
+                                                        lineNumber: 196,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, p.id, true, {
                                                 fileName: "[project]/pages/inventory.js",
-                                                lineNumber: 195,
+                                                lineNumber: 165,
                                                 columnNumber: 19
                                             }, this);
                                         }),
@@ -1893,38 +1866,38 @@ function InventoryPage() {
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("td", {
                                                 colSpan: 8,
                                                 className: "p-4 text-center text-gray-400",
-                                                children: "لا توجد بيانات مخزون حالياً…"
+                                                children: "لا توجد أصناف حالياً…"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/inventory.js",
-                                                lineNumber: 238,
+                                                lineNumber: 210,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/pages/inventory.js",
-                                            lineNumber: 237,
+                                            lineNumber: 209,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/inventory.js",
-                                    lineNumber: 186,
+                                    lineNumber: 156,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/inventory.js",
-                            lineNumber: 173,
+                            lineNumber: 142,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/pages/inventory.js",
-                        lineNumber: 172,
+                        lineNumber: 141,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pages/inventory.js",
-                lineNumber: 160,
+                lineNumber: 137,
                 columnNumber: 7
             }, this),
             showModal && selected && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Modal$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1942,13 +1915,13 @@ function InventoryPage() {
                                     children: selected.name
                                 }, void 0, false, {
                                     fileName: "[project]/pages/inventory.js",
-                                    lineNumber: 256,
+                                    lineNumber: 228,
                                     columnNumber: 23
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/inventory.js",
-                            lineNumber: 255,
+                            lineNumber: 227,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -1958,7 +1931,7 @@ function InventoryPage() {
                                     children: "نوع العملية"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/inventory.js",
-                                    lineNumber: 260,
+                                    lineNumber: 232,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("select", {
@@ -1971,7 +1944,7 @@ function InventoryPage() {
                                             children: "➕ توريد"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/inventory.js",
-                                            lineNumber: 268,
+                                            lineNumber: 240,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("option", {
@@ -1979,19 +1952,19 @@ function InventoryPage() {
                                             children: "➖ خصم"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/inventory.js",
-                                            lineNumber: 269,
+                                            lineNumber: 241,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/inventory.js",
-                                    lineNumber: 263,
+                                    lineNumber: 235,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/inventory.js",
-                            lineNumber: 259,
+                            lineNumber: 231,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -2001,7 +1974,7 @@ function InventoryPage() {
                                     children: "الكمية"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/inventory.js",
-                                    lineNumber: 274,
+                                    lineNumber: 246,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
@@ -2012,33 +1985,306 @@ function InventoryPage() {
                                     onChange: (e)=>setQty(e.target.value)
                                 }, void 0, false, {
                                     fileName: "[project]/pages/inventory.js",
-                                    lineNumber: 277,
+                                    lineNumber: 249,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/inventory.js",
-                            lineNumber: 273,
+                            lineNumber: 245,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/inventory.js",
-                    lineNumber: 254,
+                    lineNumber: 226,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/pages/inventory.js",
-                lineNumber: 249,
+                lineNumber: 221,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/pages/inventory.js",
-        lineNumber: 159,
+        lineNumber: 136,
         columnNumber: 5
     }, this);
 } // // pages/inventory.js
+ // import { useState } from "react";
+ // import Layout from "../components/Layout";
+ // import Modal from "../components/Modal";
+ // import { useAuth } from "../context/AuthContext";
+ // import WarningIndicator from "../components/WarningIndicator";
+ // // ⚠️ حالياً نستخدم بيانات تجريبية داخل الصفحة نفسها
+ // // لاحقاً يمكن نقلها إلى InventoryContext أو API
+ // const initialProducts = [
+ //   {
+ //     id: 1,
+ //     name: "باراسيتامول 500mg",
+ //     sku: "P-500",
+ //     category: "مسكنات",
+ //     quantity: 35,
+ //     minQty: 10,
+ //     expiryDate: "2026-01-15",
+ //   },
+ //   {
+ //     id: 2,
+ //     name: "فيتامين C 1000mg",
+ //     sku: "VIT-C-1000",
+ //     category: "فيتامينات",
+ //     quantity: 8,
+ //     minQty: 15,
+ //     expiryDate: "2025-12-01",
+ //   },
+ //   {
+ //     id: 3,
+ //     name: "أموكسيسيلين 250mg",
+ //     sku: "AMOX-250",
+ //     category: "مضادات حيوية",
+ //     quantity: 0,
+ //     minQty: 5,
+ //     expiryDate: "2024-11-20",
+ //   },
+ // ];
+ // function getWarnings(p) {
+ //   const warnings = [];
+ //   if (p.quantity <= 0) warnings.push("out_of_stock");
+ //   else if (p.quantity <= (p.minQty || 5)) warnings.push("low_stock");
+ //   if (p.expiryDate) {
+ //     const diffDays =
+ //       (new Date(p.expiryDate).getTime() - new Date().getTime()) /
+ //       (1000 * 60 * 60 * 24);
+ //     if (diffDays < 0) warnings.push("expired");
+ //     else if (diffDays <= 60) warnings.push("near_expiry");
+ //   }
+ //   return warnings;
+ // }
+ // export default function InventoryPage() {
+ //   const { user, hasPermission } = useAuth();
+ //   const [products, setProducts] = useState(initialProducts);
+ //   const [showModal, setShowModal] = useState(false);
+ //   const [selected, setSelected] = useState(null);
+ //   const [qty, setQty] = useState("");
+ //   const [type, setType] = useState("in");
+ //   if (!hasPermission(["admin", "pharmacist"])) {
+ //     return (
+ //       <Layout user={user} title="المخزون">
+ //         <div dir="rtl" className="p-6 text-center text-red-600">
+ //           ⚠️ ليس لديك صلاحية لدخول شاشة المخزون.
+ //         </div>
+ //       </Layout>
+ //     );
+ //   }
+ //   const openModal = (p) => {
+ //     setSelected(p);
+ //     setQty("");
+ //     setType("in");
+ //     setShowModal(true);
+ //   };
+ //   const handleConfirm = () => {
+ //     const n = Number(qty);
+ //     if (!n || n <= 0) {
+ //       alert("أدخل كمية صحيحة");
+ //       return;
+ //     }
+ //     setProducts((prev) =>
+ //       prev.map((p) =>
+ //         p.id === selected.id
+ //           ? {
+ //               ...p,
+ //               quantity: type === "in" ? p.quantity + n : p.quantity - n,
+ //             }
+ //           : p
+ //       )
+ //     );
+ //     setShowModal(false);
+ //   };
+ //   const printInventoryReport = () => {
+ //     const html = `
+ //       <html dir="rtl" lang="ar">
+ //         <head>
+ //           <meta charSet="utf-8" />
+ //           <title>تقرير المخزون</title>
+ //           <style>
+ //             body { font-family: 'Tajawal', sans-serif; padding: 20px; }
+ //             h2 { color:#0ea5e9; margin-bottom: 10px; }
+ //             table { width:100%; border-collapse: collapse; margin-top:10px; }
+ //             th, td { border:1px solid #ddd; padding:6px; text-align:center; }
+ //             th { background:#f3f4f6; }
+ //           </style>
+ //         </head>
+ //         <body>
+ //           <h2>🏬 تقرير المخزون</h2>
+ //           <table>
+ //             <thead>
+ //               <tr>
+ //                 <th>المنتج</th>
+ //                 <th>الكود</th>
+ //                 <th>الفئة</th>
+ //                 <th>الكمية</th>
+ //                 <th>الحد الأدنى</th>
+ //                 <th>الصلاحية</th>
+ //               </tr>
+ //             </thead>
+ //             <tbody>
+ //               ${products
+ //                 .map(
+ //                   (p) => `
+ //                 <tr>
+ //                   <td>${p.name}</td>
+ //                   <td>${p.sku}</td>
+ //                   <td>${p.category}</td>
+ //                   <td>${p.quantity}</td>
+ //                   <td>${p.minQty}</td>
+ //                   <td>${p.expiryDate || "-"}</td>
+ //                 </tr>
+ //               `
+ //                 )
+ //                 .join("")}
+ //             </tbody>
+ //           </table>
+ //           <script>
+ //             window.onload = () => {
+ //               window.print();
+ //               setTimeout(() => window.close(), 800);
+ //             };
+ //           </script>
+ //         </body>
+ //       </html>
+ //     `;
+ //     const w = window.open("", "_blank", "width=900,height=900");
+ //     w.document.write(html);
+ //     w.document.close();
+ //   };
+ //   return (
+ //     <Layout user={user} title="المخزون">
+ //       <div dir="rtl" className="space-y-6">
+ //         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+ //           <h1 className="text-xl font-bold text-gray-800">🏬 إدارة المخزون</h1>
+ //           <button
+ //             onClick={printInventoryReport}
+ //             className="px-4 py-2 text-sm text-white bg-green-600 rounded-lg hover:bg-green-700"
+ //           >
+ //             🖨️ طباعة تقرير المخزون
+ //           </button>
+ //         </div>
+ //         <div className="overflow-x-auto bg-white border shadow rounded-xl">
+ //           <table className="w-full text-sm text-right">
+ //             <thead className="text-gray-700 bg-gray-50">
+ //               <tr>
+ //                 <th className="p-3">المنتج</th>
+ //                 <th className="p-3">الكود</th>
+ //                 <th className="p-3">الفئة</th>
+ //                 <th className="p-3">الكمية</th>
+ //                 <th className="p-3">الحد الأدنى</th>
+ //                 <th className="p-3">الصلاحية</th>
+ //                 <th className="p-3 text-center">تحذيرات</th>
+ //                 <th className="p-3 text-center">إجراءات</th>
+ //               </tr>
+ //             </thead>
+ //             <tbody>
+ //               {products.map((p) => {
+ //                 const warnings = getWarnings(p);
+ //                 const daysLeft = p.expiryDate
+ //                   ? (new Date(p.expiryDate) - new Date()) /
+ //                     (1000 * 60 * 60 * 24)
+ //                   : null;
+ //                 return (
+ //                   <tr
+ //                     key={p.id}
+ //                     className="transition border-t hover:bg-gray-50"
+ //                   >
+ //                     <td className="p-3">{p.name}</td>
+ //                     <td className="p-3 text-xs text-gray-600">{p.sku}</td>
+ //                     <td className="p-3">{p.category}</td>
+ //                     <td
+ //                       className={`p-3 ${
+ //                         p.quantity <= 0
+ //                           ? "text-red-700 font-bold"
+ //                           : p.quantity < (p.minQty || 5)
+ //                           ? "text-amber-600 font-semibold"
+ //                           : ""
+ //                       }`}
+ //                     >
+ //                       {p.quantity}
+ //                     </td>
+ //                     <td className="p-3">{p.minQty}</td>
+ //                     <td className="p-3 text-xs">
+ //                       {p.expiryDate
+ //                         ? daysLeft < 0
+ //                           ? "❌ منتهي"
+ //                           : `${p.expiryDate}`
+ //                         : "-"}
+ //                     </td>
+ //                     <td className="p-3 text-center">
+ //                       <WarningIndicator warnings={warnings} />
+ //                     </td>
+ //                     <td className="p-3 text-center">
+ //                       <button
+ //                         onClick={() => openModal(p)}
+ //                         className="px-3 py-1 text-xs text-white rounded-lg bg-sky-600 hover:bg-sky-700"
+ //                       >
+ //                         🔄 توريد / خصم
+ //                       </button>
+ //                     </td>
+ //                   </tr>
+ //                 );
+ //               })}
+ //               {products.length === 0 && (
+ //                 <tr>
+ //                   <td colSpan={8} className="p-4 text-center text-gray-400">
+ //                     لا توجد بيانات مخزون حالياً…
+ //                   </td>
+ //                 </tr>
+ //               )}
+ //             </tbody>
+ //           </table>
+ //         </div>
+ //       </div>
+ //       {showModal && selected && (
+ //         <Modal
+ //           title="تعديل المخزون"
+ //           onClose={() => setShowModal(false)}
+ //           onConfirm={handleConfirm}
+ //         >
+ //           <div dir="rtl" className="space-y-3 text-sm">
+ //             <p>
+ //               المنتج: <strong>{selected.name}</strong>
+ //             </p>
+ //             <div>
+ //               <label className="block mb-1 text-xs text-gray-500">
+ //                 نوع العملية
+ //               </label>
+ //               <select
+ //                 className="w-full p-2 border rounded"
+ //                 value={type}
+ //                 onChange={(e) => setType(e.target.value)}
+ //               >
+ //                 <option value="in">➕ توريد</option>
+ //                 <option value="out">➖ خصم</option>
+ //               </select>
+ //             </div>
+ //             <div>
+ //               <label className="block mb-1 text-xs text-gray-500">
+ //                 الكمية
+ //               </label>
+ //               <input
+ //                 type="number"
+ //                 className="w-full p-2 border rounded"
+ //                 placeholder="مثال: 10"
+ //                 value={qty}
+ //                 onChange={(e) => setQty(e.target.value)}
+ //               />
+ //             </div>
+ //           </div>
+ //         </Modal>
+ //       )}
+ //     </Layout>
+ //   );
+ // }
+ // // pages/inventory.js
  // import { useState } from "react";
  // import Layout from "../components/Layout";
  // import Modal from "../components/Modal";
