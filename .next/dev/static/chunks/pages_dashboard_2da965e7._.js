@@ -10,8 +10,8 @@
   "static/chunks/node_modules_react-dom_4411d9bd._.js",
   "static/chunks/node_modules_react-icons_fa_index_mjs_c19690bf._.js",
   "static/chunks/node_modules_react-icons_lib_7cd2a28b._.js",
-  "static/chunks/node_modules_recharts_es6_d004b383._.js",
-  "static/chunks/node_modules_015df133._.js"
+  "static/chunks/node_modules_recharts_es6_134f76d6._.js",
+  "static/chunks/node_modules_57c95898._.js"
 ],
     source: "entry"
 });

@@ -1,0 +1,6 @@
+ALTER TABLE products
+  ADD COLUMN sku VARCHAR(100) NULL AFTER name,
+  ADD COLUMN category VARCHAR(100) NULL AFTER sku,
+  ADD COLUMN company VARCHAR(100) NULL AFTER category,
+  ADD COLUMN min_qty INT NOT NULL DEFAULT 0 AFTER quantity,
+  ADD COLUMN expiry_date DATE NULL AFTER min_qty;

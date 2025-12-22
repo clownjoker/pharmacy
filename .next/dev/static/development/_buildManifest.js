@@ -1,21 +1,6 @@
 self.__BUILD_MANIFEST = {
-  "/": [
-    "static/chunks/pages/index.js"
-  ],
-  "/dashboard": [
-    "static/chunks/pages/dashboard.js"
-  ],
-  "/inventory": [
-    "static/chunks/pages/inventory.js"
-  ],
-  "/pharmacist": [
-    "static/chunks/pages/pharmacist.js"
-  ],
-  "/reports": [
-    "static/chunks/pages/reports.js"
-  ],
-  "/users": [
-    "static/chunks/pages/users.js"
+  "/sales": [
+    "static/chunks/pages/sales.js"
   ],
   "__rewrites": {
     "afterFiles": [],
@@ -25,6 +10,7 @@ self.__BUILD_MANIFEST = {
   "sortedPages": [
     "/",
     "/403",
+    "/Profile",
     "/_app",
     "/_error",
     "/accounts",
@@ -36,7 +22,6 @@ self.__BUILD_MANIFEST = {
     "/pharmacist",
     "/products",
     "/products/edit/[id]",
-    "/profile",
     "/profitReport",
     "/reports",
     "/returns",
