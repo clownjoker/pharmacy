@@ -1,51 +1,90 @@
 // pages/index.js
 import { useState } from "react";
 import { useRouter } from "next/router";
+
 export default function Login() {
   const router = useRouter();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleLogin = async (e) => {
-  e.preventDefault();
-
-  if (!username || !password) {
-    alert("⚠️ الرجاء إدخال البيانات كاملة");
-    return;
-  }
-
+  const handleLogin = async () => {
   try {
-    const res = await fetch("http://localhost:5000/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
+    const res = await api.post("/auth/login", {
+      username,
+      password,
     });
 
-    const data = await res.json();
+    // ✅ البيانات كما يرجعها الباك
+    const user = res.data;
 
-    if (!res.ok) {
-      alert(data.message || "خطأ في تسجيل الدخول");
-      return;
-    }
+    // تخزين المستخدم
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("role_id", user.role_id);
 
-    localStorage.setItem("pharmacy_token", data.token);
-    localStorage.setItem("pharmacy_user", JSON.stringify(data.user));
+    toast.success("تم تسجيل الدخول بنجاح");
 
-    // التوجيه حسب الدور من الباك اند
-    const redirectMap = {
-      admin: "/dashboard",
-      pharmacist: "/pharmacist",
-      cashier: "/cashier",
-    };
-
-    router.push(redirectMap[data.user.role] || "/dashboard");
+    router.push("/dashboard");
   } catch (err) {
-    console.error(err);
-    alert("فشل الاتصال بالسيرفر");
+    toast.error(
+      err?.response?.data?.message ||
+        "اسم المستخدم أو كلمة المرور غير صحيحة"
+    );
   }
 };
+
+
+//   const handleLogin = async (e) => {
+//   e.preventDefault();
+
+//   if (!username || !password) {
+//     alert("⚠️ الرجاء إدخال البيانات كاملة");
+//     return;
+//   }
+
+//   try {
+//     const res = await fetch("http://localhost:5000/api/auth/login", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ username, password }),
+//     });
+
+//     const data = await res.json();
+
+//     if (!res.ok) {
+//       alert(data.message || "خطأ في تسجيل الدخول");
+//       return;
+//     }
+
+//     localStorage.setItem("pharmacy_token", data.token);
+//     localStorage.setItem("pharmacy_user", JSON.stringify(data.user));
+
+//     // التوجيه حسب الدور من الباك اند
+//     const redirectMap = {
+//       admin: "/dashboard",
+//       pharmacist: "/pharmacist",
+//       cashier: "/cashier",
+//     };
+
+//     router.push(redirectMap[data.user.role] || "/dashboard");
+//   } catch (err) {
+//     console.error(err);
+//     alert("فشل الاتصال بالسيرفر");
+//   }
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   // const handleLogin = (e) => {

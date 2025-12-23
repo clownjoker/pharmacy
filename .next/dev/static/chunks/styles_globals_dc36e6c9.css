@@ -575,6 +575,11 @@ input:where([type="file"]):focus {
   margin: .125rem;
 }
 
+.mx-0\.5 {
+  margin-left: .125rem;
+  margin-right: .125rem;
+}
+
 .mx-1 {
   margin-left: .25rem;
   margin-right: .25rem;
@@ -596,6 +601,10 @@ input:where([type="file"]):focus {
 
 .-mt-1 {
   margin-top: -.25rem;
+}
+
+.mb-0\.5 {
+  margin-bottom: .125rem;
 }
 
 .mb-1 {
@@ -746,10 +755,6 @@ input:where([type="file"]):focus {
   min-height: 60vh;
 }
 
-.min-h-\[90px\] {
-  min-height: 90px;
-}
-
 .min-h-screen {
   min-height: 100vh;
 }
@@ -863,10 +868,6 @@ input:where([type="file"]):focus {
   user-select: none;
 }
 
-.list-inside {
-  list-style-position: inside;
-}
-
 .list-disc {
   list-style-type: disc;
 }
@@ -897,10 +898,6 @@ input:where([type="file"]):focus {
 
 .items-center {
   align-items: center;
-}
-
-.justify-start {
-  justify-content: flex-start;
 }
 
 .justify-end {
@@ -1093,11 +1090,6 @@ input:where([type="file"]):focus {
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
-}
-
-.border-green-100 {
-  --tw-border-opacity: 1;
-  border-color: rgb(220 252 231 / var(--tw-border-opacity, 1));
 }
 
 .border-green-200 {
@@ -1330,11 +1322,6 @@ input:where([type="file"]):focus {
   background-color: rgb(2 132 199 / var(--tw-bg-opacity, 1));
 }
 
-.bg-sky-700 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(3 105 161 / var(--tw-bg-opacity, 1));
-}
-
 .bg-slate-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
@@ -1535,10 +1522,6 @@ input:where([type="file"]):focus {
   --tw-gradient-to: #ca8a04b3 var(--tw-gradient-to-position);
 }
 
-.p-0 {
-  padding: 0;
-}
-
 .p-1\.5 {
   padding: .375rem;
 }
@@ -1684,6 +1667,10 @@ input:where([type="file"]):focus {
 
 .pr-4 {
   padding-right: 1rem;
+}
+
+.pr-6 {
+  padding-right: 1.5rem;
 }
 
 .pt-2 {
@@ -1930,6 +1917,11 @@ input:where([type="file"]):focus {
   color: rgb(3 105 161 / var(--tw-text-opacity, 1));
 }
 
+.text-sky-800 {
+  --tw-text-opacity: 1;
+  color: rgb(7 89 133 / var(--tw-text-opacity, 1));
+}
+
 .text-slate-400 {
   --tw-text-opacity: 1;
   color: rgb(148 163 184 / var(--tw-text-opacity, 1));
@@ -2007,10 +1999,6 @@ input:where([type="file"]):focus {
   --tw-shadow: 0 20px 25px -5px #0000001a, 0 8px 10px -6px #0000001a;
   --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.outline {
-  outline-style: solid;
 }
 
 .filter {
@@ -2198,11 +2186,6 @@ body.modal-open {
   background-color: rgb(254 243 199 / var(--tw-bg-opacity, 1));
 }
 
-.hover\:bg-amber-50:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 251 235 / var(--tw-bg-opacity, 1));
-}
-
 .hover\:bg-amber-600:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(217 119 6 / var(--tw-bg-opacity, 1));
@@ -2221,6 +2204,11 @@ body.modal-open {
 .hover\:bg-blue-50:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-blue-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-emerald-50:hover {
@@ -2251,11 +2239,6 @@ body.modal-open {
 .hover\:bg-gray-50:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));
-}
-
-.hover\:bg-green-50:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(240 253 244 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-green-700:hover {
@@ -2403,12 +2386,6 @@ body.modal-open {
   --tw-ring-color: rgb(56 189 248 / var(--tw-ring-opacity, 1));
 }
 
-.active\:scale-\[\.98\]:active {
-  --tw-scale-x: .98;
-  --tw-scale-y: .98;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
 .group:hover .group-hover\:bg-black\/20 {
   background-color: #0003;
 }
@@ -2422,10 +2399,6 @@ body.modal-open {
 }
 
 @media (min-width: 640px) {
-  .sm\:col-span-2 {
-    grid-column: span 2 / span 2;
-  }
-
   .sm\:block {
     display: block;
   }
@@ -2509,14 +2482,6 @@ body.modal-open {
     width: 50%;
   }
 
-  .md\:w-auto {
-    width: auto;
-  }
-
-  .md\:max-w-xs {
-    max-width: 20rem;
-  }
-
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2539,10 +2504,6 @@ body.modal-open {
 
   .md\:flex-row {
     flex-direction: row;
-  }
-
-  .md\:flex-wrap {
-    flex-wrap: wrap;
   }
 
   .md\:items-center {

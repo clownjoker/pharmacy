@@ -1,200 +1,405 @@
-import { useMemo, useState, useEffect } from 'react'
-import Layout from '../components/Layout'
-import toast from 'react-hot-toast'
-import axios from 'axios'
+// pages/users.js
+import { useMemo, useState, useEffect } from "react";
+import Layout from "../components/Layout";
+import toast from "react-hot-toast";
+import api from "../utils/api";
 
-// API
-const api = axios.create({
-  baseURL: "http://localhost:5000/api",
-})
+// 🔐 كل الصلاحيات المتاحة (ثابتة في الواجهة)
+const ALL_PERMISSIONS = [
+  { key: "view_reports", label: "عرض التقارير" },
+  { key: "add_sale", label: "إضافة عملية بيع" },
+  { key: "manage_medicines", label: "إدارة الأدوية" },
+  { key: "manage_users", label: "إدارة المستخدمين" },
+  { key: "view_inventory", label: "عرض المخزون" },
+];
 
-// Roles ثابتة حسب الـ DB
+// 🧑‍💼 الأدوار حسب الـ DB (role_id)
 const ROLE_LABELS = {
-  1: 'مدير النظام',
-  2: 'صيدلي',
-  3: 'كاشير',
-}
+  1: "مدير النظام",
+  2: "صيدلي",
+  3: "كاشير",
+};
 
 export default function UsersPage() {
-  const [users, setUsers] = useState([])
-  const [search, setSearch] = useState('')
-  const [showAddModal, setShowAddModal] = useState(false)
+  const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState("");
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showPermModal, setShowPermModal] = useState(false);
 
-  // نموذج إضافة مستخدم
+  // نموذج إضافة مستخدم جديد
   const [newUser, setNewUser] = useState({
-    name: '',
-    username: '',
-    password: '',
-    role_id: 3,
-  })
+    name: "",
+    username: "",
+    email: "",
+    password: "",
+    role_id: 3, // افتراضي: كاشير
+    active: true,
+  });
 
-  // تحميل المستخدمين
+  // المستخدم المحدد لتعديل صلاحياته
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [permDraft, setPermDraft] = useState([]);
+
+  // 🔄 تحميل المستخدمين من الباك
   const loadUsers = async () => {
     try {
-      const res = await api.get("/users")
-      setUsers(res.data)
-    } catch {
-      toast.error("خطأ في تحميل المستخدمين")
+      const res = await api.get("/users");
+
+      const data = Array.isArray(res.data) ? res.data : res.data?.users || [];
+
+      // تأمين حقل الصلاحيات ليكون دائمًا مصفوفة
+      const normalized = data.map((u) => ({
+        ...u,
+        permissions: Array.isArray(u.permissions) ? u.permissions : [],
+      }));
+
+      setUsers(normalized);
+    } catch (err) {
+      console.error("loadUsers error:", err);
+      toast.error("خطأ في تحميل المستخدمين");
     }
-  }
+  };
 
   useEffect(() => {
-    loadUsers()
-  }, [])
+    loadUsers();
+  }, []);
 
-  // فلترة
+  // 🔍 فلترة المستخدمين
   const filteredUsers = useMemo(() => {
-    const q = search.trim().toLowerCase()
-    if (!q) return users
+    const q = search.trim().toLowerCase();
+    if (!q) return users;
+
     return users.filter(
       (u) =>
         u.name?.toLowerCase().includes(q) ||
-        u.username?.toLowerCase().includes(q)
-    )
-  }, [users, search])
+        u.username?.toLowerCase().includes(q) ||
+        u.email?.toLowerCase().includes(q)
+    );
+  }, [users, search]);
 
-  // إضافة مستخدم
+  // ➕ إضافة مستخدم
   const handleAddUser = async () => {
     if (!newUser.name || !newUser.username || !newUser.password) {
-      toast.error("يرجى إدخال جميع الحقول")
-      return
+      toast.error("⚠️ يرجى إدخال الاسم واسم المستخدم وكلمة المرور");
+      return;
     }
 
     try {
-      await api.post("/users", newUser)
-      toast.success("تم إضافة المستخدم")
-      setShowAddModal(false)
-      setNewUser({ name: '', username: '', password: '', role_id: 3 })
-      loadUsers()
-    } catch {
-      toast.error("فشل إنشاء المستخدم")
-    }
-  }
+      const payload = {
+        name: newUser.name,
+        username: newUser.username,
+        email: newUser.email || null,
+        password: newUser.password,
+        role_id: Number(newUser.role_id) || 3,
+        active: newUser.active ? 1 : 0,
+      };
 
-  // تفعيل / تعطيل
+      const res = await api.post("/users", payload);
+
+      // لو الـ API يرجع المستخدم، نضيفه مباشرة، وإلا نعمل reload
+      if (res?.data && res.data.id) {
+        setUsers((prev) => [
+          ...prev,
+          {
+            ...res.data,
+            permissions: Array.isArray(res.data.permissions)
+              ? res.data.permissions
+              : [],
+          },
+        ]);
+      } else {
+        await loadUsers();
+      }
+
+      toast.success("تم إضافة المستخدم بنجاح");
+      setShowAddModal(false);
+      setNewUser({
+        name: "",
+        username: "",
+        email: "",
+        password: "",
+        role_id: 3,
+        active: true,
+      });
+    } catch (err) {
+      console.error("addUser error:", err);
+      toast.error("فشل إنشاء المستخدم");
+    }
+  };
+
+  // 🔄 تفعيل / تعطيل مستخدم
   const toggleActive = async (id) => {
     try {
-      await api.patch(`/users/${id}/toggle`)
-      loadUsers()
-      toast.success("تم تحديث الحالة")
-    } catch {
-      toast.error("خطأ في تغيير الحالة")
-    }
-  }
+      const res = await api.patch(`/users/${id}/toggle`);
 
-  // حذف
+      const newActive =
+        typeof res.data?.active !== "undefined"
+          ? !!res.data.active
+          : undefined;
+
+      setUsers((prev) =>
+        prev.map((u) =>
+          u.id === id
+            ? {
+                ...u,
+                active:
+                  typeof newActive === "boolean" ? newActive : !u.active,
+              }
+            : u
+        )
+      );
+
+      toast.success("تم تحديث حالة المستخدم");
+    } catch (err) {
+      console.error("toggleActive error:", err);
+      toast.error("خطأ في تغيير حالة المستخدم");
+    }
+  };
+
+  // 🗑️ حذف مستخدم
   const deleteUser = async (id) => {
-    if (!confirm("هل تريد حذف هذا المستخدم؟")) return
+    if (!confirm("هل تريد حذف هذا المستخدم؟")) return;
 
     try {
-      await api.delete(`/users/${id}`)
-      setUsers(prev => prev.filter(u => u.id !== id))
-      toast.success("تم الحذف")
-    } catch {
-      toast.error("خطأ في الحذف")
+      await api.delete(`/users/${id}`);
+      setUsers((prev) => prev.filter((u) => u.id !== id));
+      toast.success("تم حذف المستخدم");
+    } catch (err) {
+      console.error("deleteUser error:", err);
+      toast.error("خطأ في حذف المستخدم");
     }
-  }
+  };
+
+  // ⚙️ فتح مودال الصلاحيات
+  const openPermModal = (user) => {
+    setSelectedUser(user);
+    setPermDraft(Array.isArray(user.permissions) ? user.permissions : []);
+    setShowPermModal(true);
+  };
+
+  // تبديل صلاحية في القائمة المؤقتة
+  const togglePermission = (permKey) => {
+    setPermDraft((prev) =>
+      prev.includes(permKey)
+        ? prev.filter((p) => p !== permKey)
+        : [...prev, permKey]
+    );
+  };
+
+  // 💾 حفظ الصلاحيات في الباك
+  const savePermissions = async () => {
+    if (!selectedUser) return;
+
+    try {
+      await api.put(`/users/${selectedUser.id}/permissions`, {
+        permissions: permDraft,
+      });
+
+      toast.success("تم حفظ الصلاحيات بنجاح");
+
+      // تحديث البيانات محليًا
+      setUsers((prev) =>
+        prev.map((u) =>
+          u.id === selectedUser.id ? { ...u, permissions: [...permDraft] } : u
+        )
+      );
+
+      setShowPermModal(false);
+      setSelectedUser(null);
+      setPermDraft([]);
+    } catch (err) {
+      console.error("savePermissions error:", err);
+      toast.error("فشل حفظ الصلاحيات");
+    }
+  };
 
   return (
-    <Layout title="إدارة المستخدمين">
+    <Layout title="إدارة المستخدمين والصلاحيات">
       <div dir="rtl" className="space-y-6">
-
-        {/* البحث + إضافة */}
-        <div className="flex gap-3 p-4 bg-white border rounded-lg">
+        {/* 🔍 البحث + إضافة مستخدم */}
+        <div className="flex flex-col gap-3 p-4 bg-white border rounded-lg shadow-sm md:flex-row md:items-center md:justify-between">
           <input
             type="text"
-            placeholder="بحث بالاسم أو اسم المستخدم"
+            placeholder="بحث بالاسم / اسم المستخدم / البريد"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 p-2 border rounded"
+            className="w-full p-2 text-sm border rounded md:w-1/2 focus:ring-2 focus:ring-sky-400"
           />
           <button
             onClick={() => setShowAddModal(true)}
-            className="px-4 py-2 text-white bg-green-600 rounded"
+            className="px-4 py-2 text-sm text-white rounded shadow bg-emerald-600 hover:bg-emerald-700"
           >
-            إضافة مستخدم
+            ➕ إضافة مستخدم
           </button>
         </div>
 
-        {/* جدول المستخدمين */}
-        <div className="overflow-x-auto bg-white border rounded-lg">
-          <table className="w-full text-sm text-right">
-            <thead className="bg-gray-50">
+        {/* 🧾 جدول المستخدمين */}
+        <div className="overflow-x-auto bg-white border rounded-lg shadow-sm">
+          <table className="w-full text-sm text-right min-w-[980px]">
+            <thead className="text-xs text-gray-700 bg-gray-50">
               <tr>
-                <th>#</th>
-                <th>الاسم</th>
-                <th>اسم المستخدم</th>
-                <th>الدور</th>
-                <th>الحالة</th>
-                <th>إجراءات</th>
+                <th className="px-3 py-2">#</th>
+                <th className="px-3 py-2">الاسم</th>
+                <th className="px-3 py-2">اسم المستخدم</th>
+                <th className="px-3 py-2">البريد</th>
+                <th className="px-3 py-2">الدور</th>
+                <th className="px-3 py-2">الحالة</th>
+                <th className="px-3 py-2">الصلاحيات</th>
+                <th className="px-3 py-2">إجراءات</th>
               </tr>
             </thead>
             <tbody>
-              {filteredUsers.map((u, i) => (
-                <tr key={u.id} className="border-t">
-                  <td className="p-2">{i + 1}</td>
-                  <td className="p-2">{u.name}</td>
-                  <td className="p-2">{u.username}</td>
-                  <td className="p-2">{ROLE_LABELS[u.role_id]}</td>
-                  <td className="p-2">
-                    {u.active ? 'مفعل' : 'موقوف'}
-                  </td>
-                  <td className="flex gap-2 p-2">
-                    <button
-                      onClick={() => toggleActive(u.id)}
-                      className="px-2 py-1 bg-yellow-100 rounded"
-                    >
-                      حالة
-                    </button>
-                    <button
-                      onClick={() => deleteUser(u.id)}
-                      className="px-2 py-1 bg-red-100 rounded"
-                    >
-                      حذف
-                    </button>
+              {filteredUsers.length ? (
+                filteredUsers.map((u, i) => (
+                  <tr
+                    key={u.id}
+                    className="transition border-t hover:bg-gray-50"
+                  >
+                    <td className="px-3 py-2">{i + 1}</td>
+                    <td className="px-3 py-2">{u.name}</td>
+                    <td className="px-3 py-2">{u.username}</td>
+                    <td className="px-3 py-2">{u.email || "—"}</td>
+                    <td className="px-3 py-2">
+                      <span className="px-3 py-1 text-xs border rounded-full text-sky-800 bg-sky-50 border-sky-200">
+                        {ROLE_LABELS[u.role_id] || "غير محدد"}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2">
+                      <span
+                        className={`px-3 py-1 text-xs rounded-full ${
+                          u.active
+                            ? "bg-emerald-100 text-emerald-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
+                      >
+                        {u.active ? "مفعّل" : "موقوف"}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2 text-xs">
+                      {Array.isArray(u.permissions) && u.permissions.length ? (
+                        u.permissions.map((p) => (
+                          <span
+                            key={p}
+                            className="inline-block px-2 py-0.5 mx-0.5 mb-0.5 text-[11px] text-indigo-700 bg-indigo-50 rounded"
+                          >
+                            {
+                              ALL_PERMISSIONS.find((x) => x.key === p)
+                                ?.label || p
+                            }
+                          </span>
+                        ))
+                      ) : (
+                        <span className="text-[11px] text-gray-400">
+                          لا توجد صلاحيات خاصة
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-3 py-2">
+                      <div className="flex flex-wrap justify-center gap-2">
+                        <button
+                          onClick={() => openPermModal(u)}
+                          className="px-3 py-1 text-xs text-indigo-700 border border-indigo-100 rounded bg-indigo-50 hover:bg-indigo-100"
+                        >
+                          صلاحيات
+                        </button>
+                        <button
+                          onClick={() => toggleActive(u.id)}
+                          className="px-3 py-1 text-xs border rounded text-amber-700 bg-amber-50 border-amber-100 hover:bg-amber-100"
+                        >
+                          حالة
+                        </button>
+                        <button
+                          onClick={() => deleteUser(u.id)}
+                          className="px-3 py-1 text-xs text-red-700 border border-red-100 rounded bg-red-50 hover:bg-red-100"
+                        >
+                          حذف
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan={8}
+                    className="px-3 py-5 text-sm text-center text-gray-500"
+                  >
+                    لا توجد بيانات مستخدمين حتى الآن…
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
 
-        {/* مودال إضافة */}
+        {/* 🟢 مودال إضافة مستخدم */}
         {showAddModal && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black/40">
-            <div className="w-full max-w-md p-6 bg-white rounded">
-              <h2 className="mb-3 font-bold">إضافة مستخدم</h2>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+            <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
+              <h2 className="mb-3 text-base font-bold text-gray-800">
+                ➕ إضافة مستخدم جديد
+              </h2>
 
-              <Field label="الاسم">
+              <Field label="الاسم الكامل">
                 <input
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 text-sm border rounded"
                   value={newUser.name}
-                  onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                  onChange={(e) =>
+                    setNewUser((prev) => ({ ...prev, name: e.target.value }))
+                  }
                 />
               </Field>
 
               <Field label="اسم المستخدم">
                 <input
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 text-sm border rounded"
                   value={newUser.username}
-                  onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
+                  onChange={(e) =>
+                    setNewUser((prev) => ({
+                      ...prev,
+                      username: e.target.value,
+                    }))
+                  }
+                />
+              </Field>
+
+              <Field label="البريد الإلكتروني (اختياري)">
+                <input
+                  className="w-full p-2 text-sm border rounded"
+                  value={newUser.email}
+                  onChange={(e) =>
+                    setNewUser((prev) => ({
+                      ...prev,
+                      email: e.target.value,
+                    }))
+                  }
                 />
               </Field>
 
               <Field label="كلمة المرور">
                 <input
                   type="password"
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 text-sm border rounded"
                   value={newUser.password}
-                  onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+                  onChange={(e) =>
+                    setNewUser((prev) => ({
+                      ...prev,
+                      password: e.target.value,
+                    }))
+                  }
                 />
               </Field>
 
               <Field label="الدور">
                 <select
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 text-sm border rounded"
                   value={newUser.role_id}
-                  onChange={(e) => setNewUser({ ...newUser, role_id: Number(e.target.value) })}
+                  onChange={(e) =>
+                    setNewUser((prev) => ({
+                      ...prev,
+                      role_id: Number(e.target.value),
+                    }))
+                  }
                 >
                   <option value={1}>مدير النظام</option>
                   <option value={2}>صيدلي</option>
@@ -202,9 +407,33 @@ export default function UsersPage() {
                 </select>
               </Field>
 
+              <Field label="الحالة">
+                <label className="inline-flex items-center gap-2 text-xs text-gray-700">
+                  <input
+                    type="checkbox"
+                    checked={newUser.active}
+                    onChange={(e) =>
+                      setNewUser((prev) => ({
+                        ...prev,
+                        active: e.target.checked,
+                      }))
+                    }
+                  />
+                  مفعّل
+                </label>
+              </Field>
+
               <div className="flex justify-end gap-2 mt-4">
-                <button onClick={() => setShowAddModal(false)}>إلغاء</button>
-                <button onClick={handleAddUser} className="px-4 py-2 text-white bg-green-600 rounded">
+                <button
+                  className="px-4 py-2 text-sm bg-gray-100 rounded hover:bg-gray-200"
+                  onClick={() => setShowAddModal(false)}
+                >
+                  إلغاء
+                </button>
+                <button
+                  className="px-4 py-2 text-sm text-white rounded bg-emerald-600 hover:bg-emerald-700"
+                  onClick={handleAddUser}
+                >
                   حفظ
                 </button>
               </div>
@@ -212,19 +441,298 @@ export default function UsersPage() {
           </div>
         )}
 
+        {/* 🔵 مودال الصلاحيات */}
+        {showPermModal && selectedUser && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+            <div className="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg">
+              <h2 className="mb-3 text-base font-bold text-gray-800">
+                صلاحيات المستخدم: {selectedUser.name}
+              </h2>
+
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                {ALL_PERMISSIONS.map((perm) => (
+                  <label
+                    key={perm.key}
+                    className="flex items-center gap-2 p-2 text-xs border rounded cursor-pointer hover:bg-gray-50"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={permDraft.includes(perm.key)}
+                      onChange={() => togglePermission(perm.key)}
+                    />
+                    {perm.label}
+                  </label>
+                ))}
+              </div>
+
+              <div className="flex justify-end gap-2 mt-4">
+                <button
+                  className="px-4 py-2 text-sm bg-gray-100 rounded hover:bg-gray-200"
+                  onClick={() => {
+                    setShowPermModal(false);
+                    setSelectedUser(null);
+                    setPermDraft([]);
+                  }}
+                >
+                  إلغاء
+                </button>
+                <button
+                  className="px-4 py-2 text-sm text-white bg-blue-600 rounded hover:bg-blue-700"
+                  onClick={savePermissions}
+                >
+                  حفظ الصلاحيات
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
-  )
+  );
 }
 
+// 🔹 عنصر حقل بسيط لإعادة الاستخدام
 function Field({ label, children }) {
   return (
     <div className="mb-3">
       <label className="block mb-1 text-xs text-gray-600">{label}</label>
       {children}
     </div>
-  )
+  );
 }
+
+
+
+
+
+
+// import { useMemo, useState, useEffect } from 'react'
+// import Layout from '../components/Layout'
+// import toast from 'react-hot-toast'
+// import axios from 'axios'
+
+// // API
+// const api = axios.create({
+//   baseURL: "http://localhost:5000/api",
+// })
+
+// // Roles ثابتة حسب الـ DB
+// const ROLE_LABELS = {
+//   1: 'مدير النظام',
+//   2: 'صيدلي',
+//   3: 'كاشير',
+// }
+
+// export default function UsersPage() {
+//   const [users, setUsers] = useState([])
+//   const [search, setSearch] = useState('')
+//   const [showAddModal, setShowAddModal] = useState(false)
+
+//   // نموذج إضافة مستخدم
+//   const [newUser, setNewUser] = useState({
+//     name: '',
+//     username: '',
+//     password: '',
+//     role_id: 3,
+//   })
+
+//   // تحميل المستخدمين
+//   const loadUsers = async () => {
+//     try {
+//       const res = await api.get("/users")
+//       setUsers(res.data)
+//     } catch {
+//       toast.error("خطأ في تحميل المستخدمين")
+//     }
+//   }
+
+//   useEffect(() => {
+//     loadUsers()
+//   }, [])
+
+//   // فلترة
+//   const filteredUsers = useMemo(() => {
+//     const q = search.trim().toLowerCase()
+//     if (!q) return users
+//     return users.filter(
+//       (u) =>
+//         u.name?.toLowerCase().includes(q) ||
+//         u.username?.toLowerCase().includes(q)
+//     )
+//   }, [users, search])
+
+//   // إضافة مستخدم
+//   const handleAddUser = async () => {
+//     if (!newUser.name || !newUser.username || !newUser.password) {
+//       toast.error("يرجى إدخال جميع الحقول")
+//       return
+//     }
+
+//     try {
+//       await api.post("/users", newUser)
+//       toast.success("تم إضافة المستخدم")
+//       setShowAddModal(false)
+//       setNewUser({ name: '', username: '', password: '', role_id: 3 })
+//       loadUsers()
+//     } catch {
+//       toast.error("فشل إنشاء المستخدم")
+//     }
+//   }
+
+//   // تفعيل / تعطيل
+//   const toggleActive = async (id) => {
+//     try {
+//       await api.patch(`/users/${id}/toggle`)
+//       loadUsers()
+//       toast.success("تم تحديث الحالة")
+//     } catch {
+//       toast.error("خطأ في تغيير الحالة")
+//     }
+//   }
+
+//   // حذف
+//   const deleteUser = async (id) => {
+//     if (!confirm("هل تريد حذف هذا المستخدم؟")) return
+
+//     try {
+//       await api.delete(`/users/${id}`)
+//       setUsers(prev => prev.filter(u => u.id !== id))
+//       toast.success("تم الحذف")
+//     } catch {
+//       toast.error("خطأ في الحذف")
+//     }
+//   }
+
+//   return (
+//     <Layout title="إدارة المستخدمين">
+//       <div dir="rtl" className="space-y-6">
+
+//         {/* البحث + إضافة */}
+//         <div className="flex gap-3 p-4 bg-white border rounded-lg">
+//           <input
+//             type="text"
+//             placeholder="بحث بالاسم أو اسم المستخدم"
+//             value={search}
+//             onChange={(e) => setSearch(e.target.value)}
+//             className="flex-1 p-2 border rounded"
+//           />
+//           <button
+//             onClick={() => setShowAddModal(true)}
+//             className="px-4 py-2 text-white bg-green-600 rounded"
+//           >
+//             إضافة مستخدم
+//           </button>
+//         </div>
+
+//         {/* جدول المستخدمين */}
+//         <div className="overflow-x-auto bg-white border rounded-lg">
+//           <table className="w-full text-sm text-right">
+//             <thead className="bg-gray-50">
+//               <tr>
+//                 <th>#</th>
+//                 <th>الاسم</th>
+//                 <th>اسم المستخدم</th>
+//                 <th>الدور</th>
+//                 <th>الحالة</th>
+//                 <th>إجراءات</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {filteredUsers.map((u, i) => (
+//                 <tr key={u.id} className="border-t">
+//                   <td className="p-2">{i + 1}</td>
+//                   <td className="p-2">{u.name}</td>
+//                   <td className="p-2">{u.username}</td>
+//                   <td className="p-2">{ROLE_LABELS[u.role_id]}</td>
+//                   <td className="p-2">
+//                     {u.active ? 'مفعل' : 'موقوف'}
+//                   </td>
+//                   <td className="flex gap-2 p-2">
+//                     <button
+//                       onClick={() => toggleActive(u.id)}
+//                       className="px-2 py-1 bg-yellow-100 rounded"
+//                     >
+//                       حالة
+//                     </button>
+//                     <button
+//                       onClick={() => deleteUser(u.id)}
+//                       className="px-2 py-1 bg-red-100 rounded"
+//                     >
+//                       حذف
+//                     </button>
+//                   </td>
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
+//         </div>
+
+//         {/* مودال إضافة */}
+//         {showAddModal && (
+//           <div className="fixed inset-0 flex items-center justify-center bg-black/40">
+//             <div className="w-full max-w-md p-6 bg-white rounded">
+//               <h2 className="mb-3 font-bold">إضافة مستخدم</h2>
+
+//               <Field label="الاسم">
+//                 <input
+//                   className="w-full p-2 border rounded"
+//                   value={newUser.name}
+//                   onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+//                 />
+//               </Field>
+
+//               <Field label="اسم المستخدم">
+//                 <input
+//                   className="w-full p-2 border rounded"
+//                   value={newUser.username}
+//                   onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
+//                 />
+//               </Field>
+
+//               <Field label="كلمة المرور">
+//                 <input
+//                   type="password"
+//                   className="w-full p-2 border rounded"
+//                   value={newUser.password}
+//                   onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+//                 />
+//               </Field>
+
+//               <Field label="الدور">
+//                 <select
+//                   className="w-full p-2 border rounded"
+//                   value={newUser.role_id}
+//                   onChange={(e) => setNewUser({ ...newUser, role_id: Number(e.target.value) })}
+//                 >
+//                   <option value={1}>مدير النظام</option>
+//                   <option value={2}>صيدلي</option>
+//                   <option value={3}>كاشير</option>
+//                 </select>
+//               </Field>
+
+//               <div className="flex justify-end gap-2 mt-4">
+//                 <button onClick={() => setShowAddModal(false)}>إلغاء</button>
+//                 <button onClick={handleAddUser} className="px-4 py-2 text-white bg-green-600 rounded">
+//                   حفظ
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+//         )}
+
+//       </div>
+//     </Layout>
+//   )
+// }
+
+// function Field({ label, children }) {
+//   return (
+//     <div className="mb-3">
+//       <label className="block mb-1 text-xs text-gray-600">{label}</label>
+//       {children}
+//     </div>
+//   )
+// }
 
 
 
