@@ -1,8 +1,9 @@
 // pages/dashboard.js
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 import theme from "../theme";
+import AuthGuard from "../components/AuthGuard";
 
 import {
   LineChart,
@@ -24,31 +25,27 @@ import {
 } from "react-icons/fa";
 
 export default function Dashboard() {
-  const [user] = useState({ name: "المدير أحمد", role: "admin" });
-  const [users, setUsers] = useState([]);
-  const [salesData, setSalesData] = useState([]);
   const router = useRouter();
 
-  useEffect(() => {
-    setUsers([
-      { id: 1, name: "محمد الصيدلي", role: "pharmacist" },
-      { id: 2, name: "أحمد الكاشير", role: "cashier" },
-      { id: 3, name: "مها الإدارية", role: "admin" },
-    ]);
+  // ✅ المستخدم من مصدر واحد فقط
+  const user =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("pharmacy_user"))
+      : null;
 
-    setSalesData([
-      { month: "يناير", total: 3200 },
-      { month: "فبراير", total: 4100 },
-      { month: "مارس", total: 3800 },
-      { month: "أبريل", total: 5200 },
-      { month: "مايو", total: 6100 },
-      { month: "يونيو", total: 5700 },
-    ]);
-  }, []);
+  // بيانات تجريبية
+  const [salesData] = useState([
+    { month: "يناير", total: 3200 },
+    { month: "فبراير", total: 4100 },
+    { month: "مارس", total: 3800 },
+    { month: "أبريل", total: 5200 },
+    { month: "مايو", total: 6100 },
+    { month: "يونيو", total: 5700 },
+  ]);
 
   const totalSales = salesData.reduce((s, m) => s + m.total, 0);
 
-  // روابط الوصول السريع — محسّنة بصرياً
+  // روابط الوصول السريع
   const quickLinks = [
     {
       title: "المنتجات",
@@ -88,107 +85,89 @@ export default function Dashboard() {
     },
   ];
 
+  if (!user) return null;
+
   return (
-    <Layout user={user} title="لوحة التحكم">
-      <div dir="rtl" className="space-y-10">
+    <AuthGuard allowedRoles={["admin"]}>
+      <Layout user={user} title="لوحة التحكم">
+        <div dir="rtl" className="space-y-10">
 
-        {/* 🔵 الوصول السريع — تصميم احترافي */}
-        <section>
-          <h2 className="mb-4 text-2xl font-bold text-gray-800">الوصول السريع</h2>
+          {/* 🔵 الوصول السريع */}
+          <section>
+            <h2 className="mb-4 text-2xl font-bold text-gray-800">
+              الوصول السريع
+            </h2>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-            {quickLinks.map((link, index) => (
-              <button
-                key={index}
-                onClick={() => router.push(link.path)}
-                className={`
-                  relative flex flex-col items-center justify-center p-5 
-                  rounded-2xl shadow-md bg-gradient-to-br ${link.color}
-                  text-white transition-all duration-200 
-                  hover:scale-[1.05] hover:shadow-xl
-                `}
-              >
-                <div className="absolute inset-0 transition bg-black/10 rounded-2xl group-hover:bg-black/20"></div>
-                <div className="relative mb-2 text-4xl">{link.icon}</div>
-                <h3 className="relative text-sm font-semibold">{link.title}</h3>
-              </button>
-            ))}
-          </div>
-        </section>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+              {quickLinks.map((link, index) => (
+                <button
+                  key={index}
+                  onClick={() => router.push(link.path)}
+                  className={`
+                    relative flex flex-col items-center justify-center p-5
+                    rounded-2xl shadow-md bg-gradient-to-br ${link.color}
+                    text-white transition-all duration-200
+                    hover:scale-[1.05] hover:shadow-xl
+                  `}
+                >
+                  <div className="relative mb-2 text-4xl">{link.icon}</div>
+                  <h3 className="relative text-sm font-semibold">
+                    {link.title}
+                  </h3>
+                </button>
+              ))}
+            </div>
+          </section>
 
-        {/* 🟢 بطاقات ملخص — تصميم أكثر فخامة */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <SummaryCard
-            title="إجمالي المبيعات"
-            value={`${totalSales.toLocaleString()} ر.س`}
-            color="text-sky-600"
-          />
-          <SummaryCard title="عدد الفواتير" value="248" color="text-blue-600" />
-          <SummaryCard title="عدد الأدوية" value="126" color="text-green-600" />
-          <SummaryCard
-            title="عدد المستخدمين"
-            value={users.length}
-            color="text-amber-600"
-          />
-        </div>
-
-        {/* 📈 الرسم البياني — احترافي */}
-        <div className="p-5 bg-white border shadow-lg rounded-xl">
-          <h3 className="mb-3 text-lg font-bold text-gray-800">
-            المبيعات الشهرية
-          </h3>
-
-          <ResponsiveContainer width="100%" height={260}>
-            <LineChart data={salesData}>
-              <CartesianGrid strokeDasharray="4 4" stroke="#e5e7eb" />
-              <XAxis dataKey="month" stroke="#6b7280" />
-              <YAxis stroke="#6b7280" />
-              <Tooltip />
-              <Line
-                type="monotone"
-                dataKey="total"
-                stroke={theme.colors.primary}
-                strokeWidth={3}
-                dot={{ r: 5 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* 📝 آخر العمليات + التحليل */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          
-          <div className="p-5 bg-white border shadow-lg rounded-xl lg:col-span-2">
-            <h3 className="mb-4 text-lg font-bold text-gray-800">آخر العمليات</h3>
-            <ul className="space-y-3 text-sm">
-              <ActivityCard
-                icon="💰"
-                text="تم إنشاء فاتورة بقيمة 245 ر.س بواسطة أحمد."
-              />
-              <ActivityCard
-                icon="📦"
-                text="تم تحديث مخزون دواء “فيتامين سي”."
-              />
-              <ActivityCard
-                icon="📊"
-                text="تم عرض تقرير المبيعات اليومية."
-              />
-            </ul>
+          {/* 🟢 بطاقات الملخص */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <SummaryCard
+              title="إجمالي المبيعات"
+              value={`${totalSales.toLocaleString()} ر.س`}
+              color="text-sky-600"
+            />
+            <SummaryCard
+              title="عدد الفواتير"
+              value="248"
+              color="text-blue-600"
+            />
+            <SummaryCard
+              title="عدد الأدوية"
+              value="126"
+              color="text-green-600"
+            />
+            <SummaryCard
+              title="عدد المستخدمين"
+              value="3"
+              color="text-amber-600"
+            />
           </div>
 
-          {/* التحليل */}
-          <div className="p-5 border border-green-300 shadow-lg rounded-xl bg-gradient-to-br from-green-50 to-green-100">
-            <h3 className="mb-3 text-lg font-bold text-green-800">📈 تحليل الأداء</h3>
-            <p className="text-sm leading-relaxed text-green-700">
-              أداء المبيعات ارتفع بنسبة <strong>+12%</strong> الأسبوع الماضي،  
-              مع زيادة في عدد الطلبات <strong>+8%</strong>.  
-              استمر بتحسين العروض والسرعة لزيادة الأرباح.
-            </p>
-          </div>
+          {/* 📈 الرسم البياني */}
+          <div className="p-5 bg-white border shadow-lg rounded-xl">
+            <h3 className="mb-3 text-lg font-bold text-gray-800">
+              المبيعات الشهرية
+            </h3>
 
+            <ResponsiveContainer width="100%" height={260}>
+              <LineChart data={salesData}>
+                <CartesianGrid strokeDasharray="4 4" stroke="#e5e7eb" />
+                <XAxis dataKey="month" stroke="#6b7280" />
+                <YAxis stroke="#6b7280" />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="total"
+                  stroke={theme.colors.primary}
+                  strokeWidth={3}
+                  dot={{ r: 5 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </div>
-    </Layout>
+      </Layout>
+    </AuthGuard>
   );
 }
 
@@ -202,15 +181,265 @@ function SummaryCard({ title, value, color }) {
   );
 }
 
-// 🟣 بطاقة عملية
-function ActivityCard({ icon, text }) {
-  return (
-    <li className="flex items-center gap-3 p-3 transition border rounded-lg bg-gray-50 hover:bg-gray-100">
-      <span className="text-xl">{icon}</span>
-      <span>{text}</span>
-    </li>
-  );
-}
+
+
+
+
+
+
+
+
+// // pages/dashboard.js
+// import { useState, useEffect } from "react";
+// import { useRouter } from "next/router";
+// import Layout from "../components/Layout";
+// import theme from "../theme";
+// import AuthGuard from "../components/AuthGuard";
+
+// import {
+//   LineChart,
+//   Line,
+//   XAxis,
+//   YAxis,
+//   CartesianGrid,
+//   Tooltip,
+//   ResponsiveContainer,
+// } from "recharts";
+
+// import {
+//   FaPills,
+//   FaCashRegister,
+//   FaChartLine,
+//   FaMoneyBillWave,
+//   FaUsers,
+//   FaClock,
+// } from "react-icons/fa";
+
+// export default function Dashboard() {
+//   // const [user] = useState({ name: "المدير أحمد", role: "admin" });
+//   // const [users, setUser] = useState([]);
+//   const [salesData, setSalesData] = useState([]);
+//   // const router = useRouter();
+//   const [users, setUser] = useState(null);
+//   const [ready, setReady] = useState(false);
+//   const router = useRouter();
+
+//   // useEffect(() => {
+//   //   setUsers([
+//   //     { id: 1, name: "محمد الصيدلي", role: "pharmacist" },
+//   //     { id: 2, name: "أحمد الكاشير", role: "cashier" },
+//   //     { id: 3, name: "مها الإدارية", role: "admin" },
+//   //   ]);
+
+//   //   setSalesData([
+//   //     { month: "يناير", total: 3200 },
+//   //     { month: "فبراير", total: 4100 },
+//   //     { month: "مارس", total: 3800 },
+//   //     { month: "أبريل", total: 5200 },
+//   //     { month: "مايو", total: 6100 },
+//   //     { month: "يونيو", total: 5700 },
+//   //   ]);
+//   // }, []);
+
+//   useEffect(() => {
+//     const token = localStorage.getItem("token");
+//     const userStr = localStorage.getItem("user");
+
+//     if (!token || !userStr) {
+//       router.replace("/");
+//       return;
+//     }
+
+//     try {
+//       const parsedUser = JSON.parse(userStr);
+//       const role = Number(parsedUser.role_id);
+
+//       if (role !== 1) {
+//         router.replace("/");
+//         return;
+//       }
+
+//       setUser(parsedUser);
+//       setReady(true);
+//     } catch (err) {
+//       console.error("Dashboard auth error:", err);
+//       router.replace("/");
+//     }
+//   }, [router]);
+
+//   // ⛔ لا ترسم الصفحة قبل التأكد
+//   if (!ready) return null;
+
+
+
+//   const totalSales = salesData.reduce((s, m) => s + m.total, 0);
+
+//   // روابط الوصول السريع — محسّنة بصرياً
+//   const quickLinks = [
+//     {
+//       title: "المنتجات",
+//       icon: <FaPills />,
+//       path: "/products",
+//       color: "from-green-500 to-emerald-600",
+//     },
+//     {
+//       title: "المبيعات",
+//       icon: <FaCashRegister />,
+//       path: "/sales",
+//       color: "from-sky-500 to-blue-600",
+//     },
+//     {
+//       title: "التقارير",
+//       icon: <FaChartLine />,
+//       path: "/reports",
+//       color: "from-purple-500 to-indigo-600",
+//     },
+//     {
+//       title: "الحسابات",
+//       icon: <FaMoneyBillWave />,
+//       path: "/accounts",
+//       color: "from-amber-500 to-yellow-600",
+//     },
+//     {
+//       title: "المستخدمون",
+//       icon: <FaUsers />,
+//       path: "/users",
+//       color: "from-teal-500 to-cyan-600",
+//     },
+//     {
+//       title: "الشفت",
+//       icon: <FaClock />,
+//       path: "/shifts",
+//       color: "from-pink-500 to-rose-600",
+//     },
+//   ];
+// if (!users) return null;
+
+//   return (
+//     <AuthGuard allowedRoles={["admin"]}>
+//     <Layout user={users}  title="لوحة التحكم">
+//       <div dir="rtl" className="space-y-10">
+
+//         {/* 🔵 الوصول السريع — تصميم احترافي */}
+//         <section>
+//           <h2 className="mb-4 text-2xl font-bold text-gray-800">الوصول السريع</h2>
+
+//           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+//             {quickLinks.map((link, index) => (
+//               <button
+//                 key={index}
+//                 onClick={() => router.push(link.path)}
+//                 className={`
+//                   relative flex flex-col items-center justify-center p-5 
+//                   rounded-2xl shadow-md bg-gradient-to-br ${link.color}
+//                   text-white transition-all duration-200 
+//                   hover:scale-[1.05] hover:shadow-xl
+//                 `}
+//               >
+//                 <div className="absolute inset-0 transition bg-black/10 rounded-2xl group-hover:bg-black/20"></div>
+//                 <div className="relative mb-2 text-4xl">{link.icon}</div>
+//                 <h3 className="relative text-sm font-semibold">{link.title}</h3>
+//               </button>
+//             ))}
+//           </div>
+//         </section>
+
+//         {/* 🟢 بطاقات ملخص — تصميم أكثر فخامة */}
+//         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+//           <SummaryCard
+//             title="إجمالي المبيعات"
+//             value={`${totalSales.toLocaleString()} ر.س`}
+//             color="text-sky-600"
+//           />
+//           <SummaryCard title="عدد الفواتير" value="248" color="text-blue-600" />
+//           <SummaryCard title="عدد الأدوية" value="126" color="text-green-600" />
+//           <SummaryCard
+//             title="عدد المستخدمين"
+//             value={users.length}
+//             color="text-amber-600"
+//           />
+//         </div>
+
+//         {/* 📈 الرسم البياني — احترافي */}
+//         <div className="p-5 bg-white border shadow-lg rounded-xl">
+//           <h3 className="mb-3 text-lg font-bold text-gray-800">
+//             المبيعات الشهرية
+//           </h3>
+
+//           <ResponsiveContainer width="100%" height={260}>
+//             <LineChart data={salesData}>
+//               <CartesianGrid strokeDasharray="4 4" stroke="#e5e7eb" />
+//               <XAxis dataKey="month" stroke="#6b7280" />
+//               <YAxis stroke="#6b7280" />
+//               <Tooltip />
+//               <Line
+//                 type="monotone"
+//                 dataKey="total"
+//                 stroke={theme.colors.primary}
+//                 strokeWidth={3}
+//                 dot={{ r: 5 }}
+//               />
+//             </LineChart>
+//           </ResponsiveContainer>
+//         </div>
+
+//         {/* 📝 آخر العمليات + التحليل */}
+//         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          
+//           <div className="p-5 bg-white border shadow-lg rounded-xl lg:col-span-2">
+//             <h3 className="mb-4 text-lg font-bold text-gray-800">آخر العمليات</h3>
+//             <ul className="space-y-3 text-sm">
+//               <ActivityCard
+//                 icon="💰"
+//                 text="تم إنشاء فاتورة بقيمة 245 ر.س بواسطة أحمد."
+//               />
+//               <ActivityCard
+//                 icon="📦"
+//                 text="تم تحديث مخزون دواء “فيتامين سي”."
+//               />
+//               <ActivityCard
+//                 icon="📊"
+//                 text="تم عرض تقرير المبيعات اليومية."
+//               />
+//             </ul>
+//           </div>
+
+//           {/* التحليل */}
+//           <div className="p-5 border border-green-300 shadow-lg rounded-xl bg-gradient-to-br from-green-50 to-green-100">
+//             <h3 className="mb-3 text-lg font-bold text-green-800">📈 تحليل الأداء</h3>
+//             <p className="text-sm leading-relaxed text-green-700">
+//               أداء المبيعات ارتفع بنسبة <strong>+12%</strong> الأسبوع الماضي،  
+//               مع زيادة في عدد الطلبات <strong>+8%</strong>.  
+//               استمر بتحسين العروض والسرعة لزيادة الأرباح.
+//             </p>
+//           </div>
+
+//         </div>
+//       </div>
+//     </Layout>
+//     </AuthGuard>
+//   );
+// }
+
+// // 🟡 بطاقة الملخص
+// function SummaryCard({ title, value, color }) {
+//   return (
+//     <div className="p-5 transition bg-white border shadow-md rounded-xl hover:shadow-lg">
+//       <p className="text-sm text-gray-500">{title}</p>
+//       <h3 className={`mt-1 text-2xl font-bold ${color}`}>{value}</h3>
+//     </div>
+//   );
+// }
+
+// // 🟣 بطاقة عملية
+// function ActivityCard({ icon, text }) {
+//   return (
+//     <li className="flex items-center gap-3 p-3 transition border rounded-lg bg-gray-50 hover:bg-gray-100">
+//       <span className="text-xl">{icon}</span>
+//       <span>{text}</span>
+//     </li>
+//   );
+// }
 
 
 

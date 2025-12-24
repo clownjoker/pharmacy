@@ -462,62 +462,228 @@ function triggerUpdate(msg) {
     }
 }
 }),
+"[project]/utils/api.js [client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "default",
+    ()=>__TURBOPACK__default__export__
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [client] (ecmascript)");
+;
+const api = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].create({
+    baseURL: "http://127.0.0.1:5000/api",
+    headers: {
+        "Content-Type": "application/json"
+    }
+});
+// إضافة التوكن تلقائيًا إن وُجد
+api.interceptors.request.use((config)=>{
+    if ("TURBOPACK compile-time truthy", 1) {
+        const token = localStorage.getItem("token");
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+    }
+    return config;
+});
+const __TURBOPACK__default__export__ = api;
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+ // import axios from "axios";
+ // const api = axios.create({
+ //   baseURL: "http://127.0.0.1:5000/api",
+ // });
+ // export default api;
+}),
 "[project]/pages/index.js [client] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
+// pages/index.js
 __turbopack_context__.s([
     "default",
     ()=>LoginPage
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/jsx-dev-runtime.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/index.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/router.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-hot-toast/dist/index.mjs [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/utils/api.js [client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 ;
+;
+;
+;
 function LoginPage() {
     _s();
+    const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"])();
+    const [username, setUsername] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [password, setPassword] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [showPassword, setShowPassword] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const handleLogin = async (e)=>{
+        e.preventDefault();
+        if (!username || !password) {
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].error("يرجى إدخال اسم المستخدم وكلمة المرور");
+            return;
+        }
+        try {
+            setLoading(true);
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].post("/auth/login", {
+                username,
+                password
+            });
+            console.log("LOGIN RESPONSE:", res.data);
+            const { token, user } = res.data;
+            // ✅ تحقق أساسي
+            if (!token || !user || !user.id || user.role_id == null) {
+                throw new Error("بيانات المستخدم غير مكتملة");
+            }
+            // 🧠 تحويل role_id → role نصي (مهم جدًا)
+            let role = "";
+            switch(Number(user.role_id)){
+                case 1:
+                    role = "admin";
+                    break;
+                case 2:
+                    role = "pharmacist";
+                    break;
+                case 3:
+                    role = "cashier";
+                    break;
+                default:
+                    throw new Error("دور المستخدم غير معروف");
+            }
+            // 💾 تخزين الجلسة (موحّد مع AuthGuard)
+            localStorage.setItem("token", token);
+            localStorage.setItem("pharmacy_user", JSON.stringify({
+                id: user.id,
+                name: user.name,
+                username: user.username,
+                role: role
+            }));
+            // 🚦 توجيه تلقائي حسب الدور
+            switch(role){
+                case "admin":
+                    window.location.replace("/dashboard");
+                    break;
+                case "pharmacist":
+                    window.location.replace("/pharmacy");
+                    break;
+                case "cashier":
+                    window.location.replace("/cashier");
+                    break;
+            }
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].success(`مرحبًا ${user.name}`);
+        } catch (err) {
+            console.error("LOGIN ERROR:", err);
+            const msg = err.response?.data?.message || err.message || "فشل تسجيل الدخول";
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"].error(msg);
+            localStorage.clear();
+        } finally{
+            setLoading(false);
+        }
+    };
+    //   const handleLogin = async (e) => {
+    //     e.preventDefault();
+    //     if (!username || !password) {
+    //       toast.error("يرجى إدخال اسم المستخدم وكلمة المرور");
+    //       return;
+    //     }
+    //     try {
+    //       setLoading(true);
+    //       const res = await api.post("/auth/login", {
+    //         username,
+    //         password,
+    //       });
+    //       console.log("LOGIN RESPONSE:", res.data);
+    //       const { token, user } = res.data;
+    //       // ✅ تحقق بسيط وصحيح (بدون تشدد زائد)
+    //       if (!token || !user || !user.id || user.role_id == null) {
+    //         throw new Error("بيانات المستخدم غير مكتملة");
+    //       }
+    //       // 💾 تخزين الجلسة
+    //       localStorage.setItem("token", token);
+    //       // localStorage.setItem("user", JSON.stringify(user));
+    //       localStorage.setItem(
+    //   "pharmacy_user",
+    //   JSON.stringify({
+    //     id: 1,
+    //     name: "Admin",
+    //     role: "admin"
+    //   })
+    // );
+    //       // 🚦 التوجيه حسب role_id من قاعدة البيانات
+    //      switch (Number(user.role_id)) {
+    //   case 1:
+    //     window.location.href = "/dashboard";
+    //     break;
+    //   case 2:
+    //     window.location.href = "/pharmacist";
+    //     break;
+    //   case 3:
+    //     window.location.href = "/cashier";
+    //     break;
+    //   default:
+    //     toast.error("دور المستخدم غير معروف");
+    //     localStorage.clear();
+    // }
+    //       toast.success(`مرحبًا ${user.name}`);
+    //     } catch (err) {
+    //       console.error("LOGIN ERROR:", err);
+    //       const msg =
+    //         err.response?.data?.message ||
+    //         err.message ||
+    //         "فشل تسجيل الدخول";
+    //       toast.error(msg);
+    //     } finally {
+    //       setLoading(false);
+    //     }
+    //   };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         dir: "rtl",
-        className: "flex items-center justify-center min-h-screen bg-gradient-to-br from-sky-100 to-white",
+        className: "grid min-h-screen px-4 place-items-center bg-gradient-to-br from-sky-100 to-white",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "w-full max-w-md p-8 bg-white shadow-xl rounded-2xl",
+            className: "w-full max-w-md p-8 bg-white shadow-lg rounded-2xl",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex flex-col items-center mb-6 text-center",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex items-center justify-center w-16 h-16 mb-3 text-3xl text-white rounded-full shadow bg-sky-500",
+                            className: "flex items-center justify-center w-16 h-16 mb-3 text-3xl text-white rounded-full shadow-md bg-sky-500",
                             children: "💊"
                         }, void 0, false, {
                             fileName: "[project]/pages/index.js",
-                            lineNumber: 15,
+                            lineNumber: 182,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
                             className: "text-2xl font-bold text-gray-800",
-                            children: "نظام إدارة الصيدلية"
+                            children: "صيدلية المعلّم"
                         }, void 0, false, {
                             fileName: "[project]/pages/index.js",
-                            lineNumber: 18,
+                            lineNumber: 185,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                             className: "mt-1 text-sm text-gray-500",
-                            children: "تسجيل الدخول إلى لوحة التحكم"
+                            children: "يرجى تسجيل الدخول للمتابعة"
                         }, void 0, false, {
                             fileName: "[project]/pages/index.js",
-                            lineNumber: 21,
+                            lineNumber: 188,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/index.js",
-                    lineNumber: 14,
+                    lineNumber: 181,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
-                    className: "space-y-5",
+                    onSubmit: handleLogin,
+                    className: "space-y-5 text-right",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "relative",
@@ -525,24 +691,26 @@ function LoginPage() {
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                     type: "text",
                                     placeholder: "اسم المستخدم",
-                                    className: "w-full px-10 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                                    value: username,
+                                    onChange: (e)=>setUsername(e.target.value),
+                                    className: "w-full px-10 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-sky-400 focus:border-sky-400"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/index.js",
-                                    lineNumber: 31,
+                                    lineNumber: 197,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: "absolute inset-y-0 flex items-center text-gray-400 right-3",
+                                    className: "absolute inset-y-0 flex items-center text-lg text-gray-500 right-3",
                                     children: "👤"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/index.js",
-                                    lineNumber: 36,
+                                    lineNumber: 204,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/index.js",
-                            lineNumber: 30,
+                            lineNumber: 196,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -551,49 +719,52 @@ function LoginPage() {
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                     type: showPassword ? "text" : "password",
                                     placeholder: "كلمة المرور",
-                                    className: "w-full px-10 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                                    value: password,
+                                    onChange: (e)=>setPassword(e.target.value),
+                                    className: "w-full px-10 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-sky-400 focus:border-sky-400"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/index.js",
-                                    lineNumber: 43,
+                                    lineNumber: 211,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: "absolute inset-y-0 flex items-center text-gray-400 right-3",
+                                    className: "absolute inset-y-0 flex items-center text-lg text-gray-500 right-3",
                                     children: "🔒"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/index.js",
-                                    lineNumber: 48,
+                                    lineNumber: 218,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                     type: "button",
-                                    onClick: ()=>setShowPassword(!showPassword),
-                                    className: "absolute inset-y-0 text-gray-400 left-3 hover:text-gray-600",
+                                    onClick: ()=>setShowPassword((v)=>!v),
+                                    className: "absolute inset-y-0 flex items-center text-gray-500 left-3 hover:text-gray-700",
                                     children: showPassword ? "🙈" : "👁️"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/index.js",
-                                    lineNumber: 52,
+                                    lineNumber: 222,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/index.js",
-                            lineNumber: 42,
+                            lineNumber: 210,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                            type: "button",
-                            className: "w-full py-2.5 text-white bg-sky-600 hover:bg-sky-700 rounded-md shadow transition",
-                            children: "تسجيل الدخول"
+                            type: "submit",
+                            disabled: loading,
+                            className: `w-full py-2.5 text-white rounded-md shadow-md transition ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-sky-600 hover:bg-sky-700"}`,
+                            children: loading ? "جاري التحقق..." : "تسجيل الدخول"
                         }, void 0, false, {
                             fileName: "[project]/pages/index.js",
-                            lineNumber: 62,
+                            lineNumber: 232,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/index.js",
-                    lineNumber: 27,
+                    lineNumber: 194,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -601,18 +772,18 @@ function LoginPage() {
                     children: "© 2025 جميع الحقوق محفوظة — نظام إدارة الصيدلية"
                 }, void 0, false, {
                     fileName: "[project]/pages/index.js",
-                    lineNumber: 71,
+                    lineNumber: 245,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/pages/index.js",
-            lineNumber: 11,
+            lineNumber: 179,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/pages/index.js",
-        lineNumber: 7,
+        lineNumber: 175,
         columnNumber: 5
     }, this);
 } // // pages/index.js
@@ -939,7 +1110,11 @@ function LoginPage() {
  //   </div>
  // );
  // }
-_s(LoginPage, "daguiRHWMFkqPgCh/ppD7CF5VuQ=");
+_s(LoginPage, "tXDGNcrS3tp9C7/1A68xuTJEaAY=", false, function() {
+    return [
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"]
+    ];
+});
 _c = LoginPage;
 var _c;
 __turbopack_context__.k.register(_c, "LoginPage");
@@ -973,4 +1148,4 @@ __turbopack_context__.r("[next]/entry/page-loader.ts { PAGE => \"[project]/pages
 }),
 ]);
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__2d716426._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__1825ac54._.js.map

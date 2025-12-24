@@ -5,6 +5,7 @@ import Layout from '../components/Layout';
 import Modal from '../components/Modal';
 import theme from '../theme';
 import toast from 'react-hot-toast';
+import AuthGuard from '../components/AuthGuard';
 
 const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
@@ -390,7 +391,8 @@ export default function Cashier() {
     w.close();
   };
   return (
-    <Layout user={user} title="نقطة البيع (الكاشير)">
+    <AuthGuard allowedRoles={["cashier"]}>
+    <Layout title="نقطة البيع (الكاشير)">
       <div dir="rtl" className="space-y-6">
         
         {/* 💼 ملخص الوردية */}
@@ -663,6 +665,7 @@ export default function Cashier() {
         </Modal>
       )}
     </Layout>
+    </AuthGuard>
   );
 }
 

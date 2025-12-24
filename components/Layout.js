@@ -43,7 +43,7 @@ export default function Layout({ user, title, children }) {
   }
 
   return (
-    <AuthGuard>
+    // <AuthGuard>
     <div dir="rtl" className="flex flex-col min-h-screen bg-gray-50">
       <header
         className="sticky top-0 z-40 w-full bg-white border-b shadow-sm"
@@ -138,7 +138,7 @@ export default function Layout({ user, title, children }) {
         onCancel={() => setShowLogoutModal(false)}
       />
     </div>
-    </AuthGuard>
+    // </AuthGuard>
   )
 }
 
